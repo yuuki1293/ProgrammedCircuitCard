@@ -5,7 +5,9 @@
   "refmap": "mixins.pccard.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "PatternProviderBlockEntityMixin"
+    "PatternProviderBlockEntityMixin",
+    "PatternProviderLogicMixin",
+    "PatternProviderPartMixin"
   ],
   "injectors": {
     "defaultRequire": 1
