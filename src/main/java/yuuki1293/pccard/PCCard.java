@@ -26,7 +26,7 @@ public class PCCard {
 
     public PCCard() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        modEventBus.addListener(this::onRegisterEvent);
+        modEventBus.addListener(this::onBuildCreativeModeTabContentsEvent);
 
         ITEMS.register(modEventBus);
         MinecraftForge.EVENT_BUS.register(this);
@@ -35,7 +35,7 @@ public class PCCard {
     }
 
     @SubscribeEvent
-    public void onRegisterEvent(BuildCreativeModeTabContentsEvent event) {
+    public void onBuildCreativeModeTabContentsEvent(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey().equals(AECreativeTabIds.MAIN)) {
             event.accept(PROGRAMMED_CIRCUIT_CARD_ITEM);
             LOGGER.debug("Add Programmed Circuit Card in AE2 creative tab");
