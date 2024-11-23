@@ -64,12 +64,20 @@ repositories {
             includeGroup 'com.gregtechceu.gtceu'
         }
     }
+    maven {
+        name "Modmaven"
+        url "https://modmaven.dev/"
+        content {
+            includeGroup 'appeng'
+        }
+    }
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     implementation fg.deobf("com.gregtechceu.gtceu:gtceu-${minecraft_version}:${gtm_version}") { transitive = false } // GregTech CEu: Modern
+    implementation fg.deobf("appeng:appliedenergistics2-forge:${ae2_version}")
 }
 
 tasks.named('processResources', ProcessResources).configure {
