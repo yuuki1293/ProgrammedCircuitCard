@@ -36,6 +36,8 @@ minecraft {
 
         client {
             property 'forge.enabledGameTestNamespaces', mod_id
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
         }
 
         server {
@@ -65,11 +67,18 @@ repositories {
         }
     }
     maven {
-        name "Modmaven"
-        url "https://modmaven.dev/"
+        name = "Modmaven"
+        url = "https://modmaven.dev/"
         content {
             includeGroup 'appeng'
             includeGroup 'mezz.jei'
+        }
+    }
+    maven {
+        name = "TerraformersMC"
+        url = "https://maven.terraformersmc.com/"
+        content {
+            includeGroup 'dev.emi'
         }
     }
 }
@@ -79,8 +88,10 @@ dependencies {
 
     implementation fg.deobf("com.gregtechceu.gtceu:gtceu-${minecraft_version}:${gtm_version}") { transitive = false } // GregTech CEu: Modern
     implementation fg.deobf("appeng:appliedenergistics2-forge:${ae2_version}") // AE2
-    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
-    runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}") // JEI
+    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") // JEI
+    compileOnly fg.deobf("dev.emi:emi-forge:${emi_version}:api") // EMI
+    runtimeOnly fg.deobf("dev.emi:emi-forge:${emi_version}") // EMI
 }
 
 tasks.named('processResources', ProcessResources).configure {
