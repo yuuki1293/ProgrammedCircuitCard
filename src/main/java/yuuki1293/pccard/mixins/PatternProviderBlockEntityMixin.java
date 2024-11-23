@@ -5,5 +5,5 @@ import appeng.blockentity.crafting.PatternProviderBlockEntity;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(PatternProviderBlockEntity.class)
-public class PatternProviderBlockEntityMixin implements IUpgradeableObject {
+public abstract class PatternProviderBlockEntityMixin implements IUpgradeableObject {
 }
