@@ -30,14 +30,14 @@ public class PatternProviderScreenMixin extends AEBaseScreen<PatternProviderMenu
     private void init(CallbackInfo ci) {
         this.widgets.add("upgrades", new UpgradesPanel(
             menu.getSlots(SlotSemantics.UPGRADE),
-            this::programmedCircuitCard$getCompatibleUpgrades));
+            this::pCCard$getCompatibleUpgrades));
     }
 
     @Unique
-    private List<Component> programmedCircuitCard$getCompatibleUpgrades() {
+    private List<Component> pCCard$getCompatibleUpgrades() {
         var list = new ArrayList<Component>();
         list.add(GuiText.CompatibleUpgrades.text());
-        list.addAll(Upgrades.getTooltipLinesForMachine(((IPatternProviderMenuMixin) menu).programmedCircuitCard$getUpgrades().getUpgradableItem()));
+        list.addAll(Upgrades.getTooltipLinesForMachine(((IPatternProviderMenuMixin) menu).pCCard$getUpgrades().getUpgradableItem()));
         return list;
     }
 }

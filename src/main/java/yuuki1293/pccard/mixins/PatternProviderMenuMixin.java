@@ -19,10 +19,10 @@ import yuuki1293.pccard.IPatternProviderMenuMixin;
 @Mixin(value = PatternProviderMenu.class, remap = false)
 public abstract class PatternProviderMenuMixin extends AEBaseMenu implements IPatternProviderMenuMixin {
     @Unique
-    private IUpgradeableObject programmedCircuitCard$host;
+    private IUpgradeableObject pCCard$host;
     @Unique
     @GuiSync(8)
-    public boolean programmedCircuitCard$pcMode = false;
+    public boolean pCCard$pcMode = false;
 
     public PatternProviderMenuMixin(MenuType<?> menuType, int id, Inventory playerInventory, Object host) {
         super(menuType, id, playerInventory, host);
@@ -30,33 +30,33 @@ public abstract class PatternProviderMenuMixin extends AEBaseMenu implements IPa
 
     @Inject(method = "<init>(ILnet/minecraft/world/entity/player/Inventory;Lappeng/helpers/patternprovider/PatternProviderLogicHost;)V", at = @At("TAIL"))
     private void init(int id, Inventory playerInventory, PatternProviderLogicHost host, CallbackInfo ci) {
-        this.programmedCircuitCard$host = (IUpgradeableObject) host;
+        this.pCCard$host = (IUpgradeableObject) host;
 
-        this.programmedCircuitCard$setupUpgrades();
+        this.pCCard$setupUpgrades();
     }
 
     @Unique
-    public void programmedCircuitCard$setupUpgrades() {
-        setupUpgrades(this.programmedCircuitCard$getHost().getUpgrades());
+    public void pCCard$setupUpgrades() {
+        setupUpgrades(this.pCCard$getHost().getUpgrades());
     }
 
     @Unique
-    public boolean programmedCircuitCard$getPCMode() {
-        return this.programmedCircuitCard$pcMode;
+    public boolean pCCard$getPCMode() {
+        return this.pCCard$pcMode;
     }
 
     @Unique
-    public IUpgradeableObject programmedCircuitCard$getHost() {
-        return this.programmedCircuitCard$host;
+    public IUpgradeableObject pCCard$getHost() {
+        return this.pCCard$host;
     }
 
     @Unique
-    public IUpgradeInventory programmedCircuitCard$getUpgrades() {
-        return programmedCircuitCard$getHost().getUpgrades();
+    public IUpgradeInventory pCCard$getUpgrades() {
+        return pCCard$getHost().getUpgrades();
     }
 
     @Unique
-    public boolean programmedCircuitCard$hasUpgrade(ItemLike upgradeCard) {
-        return programmedCircuitCard$getUpgrades().isInstalled(upgradeCard);
+    public boolean pCCard$hasUpgrade(ItemLike upgradeCard) {
+        return pCCard$getUpgrades().isInstalled(upgradeCard);
     }
 }

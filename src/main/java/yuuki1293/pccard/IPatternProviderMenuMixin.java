@@ -7,17 +7,17 @@ import org.spongepowered.asm.mixin.Unique;
 
 public interface IPatternProviderMenuMixin {
     @Unique
-    void programmedCircuitCard$setupUpgrades();
+    void pCCard$setupUpgrades();
 
     @Unique
-    boolean programmedCircuitCard$getPCMode();
+    boolean pCCard$getPCMode();
 
     @Unique
-    IUpgradeableObject programmedCircuitCard$getHost();
+    IUpgradeableObject pCCard$getHost();
 
     @Unique
-    IUpgradeInventory programmedCircuitCard$getUpgrades();
+    IUpgradeInventory pCCard$getUpgrades();
 
     @Unique
-    boolean programmedCircuitCard$hasUpgrade(ItemLike upgradeCard);
+    boolean pCCard$hasUpgrade(ItemLike upgradeCard);
 }
