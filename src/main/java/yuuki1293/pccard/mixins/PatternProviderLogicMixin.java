@@ -14,6 +14,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -29,6 +30,8 @@ import java.util.Objects;
 
 @Mixin(value = PatternProviderLogic.class, remap = false)
 public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
+    @Shadow public abstract void updatePatterns();
+
     @Unique
     private static Logger pCCard$LOGGER = LogUtils.getLogger();
 
@@ -47,6 +50,7 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
     @Unique
     private void pCCard$onUpgradesChanged() {
         this.pCCard$host.saveChanges();
+        this.updatePatterns();
     }
 
     @Inject(method = "writeToNBT", at = @At("HEAD"))
