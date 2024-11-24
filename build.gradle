@@ -82,6 +82,11 @@ repositories {
             includeGroup 'dev.emi'
         }
     }
+    maven {
+        name = "Registrate"
+        url = "https://maven.tterrag.com/"
+    }
+    mavenLocal()
 }
 
 dependencies {
@@ -94,6 +99,7 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") // JEI
     compileOnly fg.deobf("dev.emi:emi-forge:${emi_version}:api") // EMI
     runtimeOnly fg.deobf("dev.emi:emi-forge:${emi_version}") // EMI
+    compileOnly fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}") // Registrate
 }
 
 tasks.named('processResources', ProcessResources).configure {
