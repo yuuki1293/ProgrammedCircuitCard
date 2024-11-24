@@ -17,53 +17,48 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import yuuki1293.pccard.MachineTypeHolder;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 @Mixin(value = PatternProviderLogic.class, remap = false)
 public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
     @Unique
-    private static Logger programmedCircuitCard$LOGGER = LogUtils.getLogger();
+    private static Logger pCCard$LOGGER = LogUtils.getLogger();
 
     @Unique
-    private IUpgradeInventory programmedCircuitCard$upgrades;
+    private IUpgradeInventory pCCard$upgrades;
+    
+    @Unique
+    private PatternProviderLogicHost pCCard$host;
 
-    @Inject(method = "<init>(Lappeng/api/networking/IManagedGridNode;Lappeng/helpers/patternprovider/PatternProviderLogicHost;I)V", at = @At("RETURN"))
-    private void init(IManagedGridNode mainNode, PatternProviderLogicHost host, int patternInventorySize, CallbackInfo ci) {
-        try {
-            var onUpgradesChanged = this.getClass().getDeclaredMethod("onUpgradesChanged");
-            onUpgradesChanged.setAccessible(true);
+    @Inject(method = "<init>(Lappeng/api/networking/IManagedGridNode;Lappeng/helpers/patternprovider/PatternProviderLogicHost;)V", at = @At("TAIL"))
+    private void init(IManagedGridNode mainNode, PatternProviderLogicHost host, CallbackInfo ci) {
+        pCCard$upgrades = UpgradeInventories.forMachine(MachineTypeHolder.MACHINE_TYPE, 1, this::pCCard$onUpgradesChanged);
+        this.pCCard$host = host;
+    }
 
-            programmedCircuitCard$upgrades = UpgradeInventories.forMachine(MachineTypeHolder.MACHINE_TYPE, 1, () -> {
-                try {
-                    onUpgradesChanged.invoke(this);
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    programmedCircuitCard$LOGGER.error("Can't invoke method", e);
-                }
-            });
-        } catch (NoSuchMethodException e) {
-            programmedCircuitCard$LOGGER.error("Can't find method", e);
-        }
+    @Unique
+    private void pCCard$onUpgradesChanged() {
+        this.pCCard$host.saveChanges();
     }
 
     @Inject(method = "writeToNBT", at = @At("HEAD"))
     private void writeToNBT(CompoundTag tag, CallbackInfo ci) {
-        this.programmedCircuitCard$upgrades.writeToNBT(tag, "upgrades");
+        this.pCCard$upgrades.writeToNBT(tag, "upgrades");
     }
 
     @Inject(method = "readFromNBT", at = @At("HEAD"))
     private void readFromNBT(CompoundTag tag, CallbackInfo ci) {
-        this.programmedCircuitCard$upgrades.readFromNBT(tag, "upgrades");
+        this.pCCard$upgrades.readFromNBT(tag, "upgrades");
     }
 
     @Override
     public IUpgradeInventory getUpgrades() {
-        return programmedCircuitCard$upgrades;
+        return pCCard$upgrades;
     }
 
     @Inject(method = "addDrops", at = @At("HEAD"))
     public void addDrops(List<ItemStack> drops, CallbackInfo ci) {
-        for (var is : this.programmedCircuitCard$upgrades) {
+        for (var is : this.pCCard$upgrades) {
             if (!is.isEmpty()) {
                 drops.add(is);
             }
@@ -72,6 +67,6 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
 
     @Inject(method = "clearContent", at = @At("HEAD"))
     public void clearContent(CallbackInfo ci) {
-        this.programmedCircuitCard$upgrades.clear();
+        this.pCCard$upgrades.clear();
     }
 }
