@@ -4,6 +4,7 @@ import appeng.api.ids.AECreativeTabIds;
 import appeng.api.upgrades.Upgrades;
 import appeng.core.definitions.AEBlocks;
 import appeng.core.definitions.AEParts;
+import appeng.core.localization.GuiText;
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.MinecraftForge;
@@ -48,8 +49,10 @@ public class PCCard {
     }
 
     public void postRegistrationInitialization(){
-        Upgrades.add(PROGRAMMED_CIRCUIT_CARD_ITEM.get(), AEParts.PATTERN_PROVIDER, 1);
-        Upgrades.add(PROGRAMMED_CIRCUIT_CARD_ITEM.get(), AEBlocks.PATTERN_PROVIDER, 1);
+        String patternProviderGroup = GuiText.CraftingInterface.getTranslationKey();
+
+        Upgrades.add(PROGRAMMED_CIRCUIT_CARD_ITEM.get(), AEParts.PATTERN_PROVIDER, 1, patternProviderGroup);
+        Upgrades.add(PROGRAMMED_CIRCUIT_CARD_ITEM.get(), AEBlocks.PATTERN_PROVIDER, 1, patternProviderGroup);
     }
 
     @SubscribeEvent
