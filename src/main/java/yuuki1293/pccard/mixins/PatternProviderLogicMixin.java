@@ -8,6 +8,7 @@ import appeng.api.upgrades.UpgradeInventories;
 import appeng.crafting.pattern.AEProcessingPattern;
 import appeng.helpers.patternprovider.PatternProviderLogic;
 import appeng.helpers.patternprovider.PatternProviderLogicHost;
+import appeng.helpers.patternprovider.PatternProviderTarget;
 import com.gregtechceu.gtceu.common.data.GTItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -16,6 +17,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import yuuki1293.pccard.MachineTypeHolder;
@@ -28,7 +31,8 @@ import java.util.Objects;
 
 @Mixin(value = PatternProviderLogic.class, remap = false)
 public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
-    @Shadow public abstract void updatePatterns();
+    @Shadow
+    public abstract void updatePatterns();
 
     @Unique
     private IUpgradeInventory pCCard$upgrades;
@@ -64,7 +68,7 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
     }
 
     @Inject(method = "addDrops", at = @At("HEAD"))
-    public void addDrops(List<ItemStack> drops, CallbackInfo ci) {
+    private void addDrops(List<ItemStack> drops, CallbackInfo ci) {
         for (var is : this.pCCard$upgrades) {
             if (!is.isEmpty()) {
                 drops.add(is);
@@ -73,12 +77,12 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
     }
 
     @Inject(method = "clearContent", at = @At("HEAD"))
-    public void clearContent(CallbackInfo ci) {
+    private void clearContent(CallbackInfo ci) {
         this.pCCard$upgrades.clear();
     }
 
     @Inject(method = "getAvailablePatterns", at = @At("RETURN"))
-    public void getAvailablePatterns(CallbackInfoReturnable<List<IPatternDetails>> cir) {
+    private void getAvailablePatterns(CallbackInfoReturnable<List<IPatternDetails>> cir) {
         if (pCCard$upgrades.isInstalled(PCCard.PROGRAMMED_CIRCUIT_CARD_ITEM.get())) {
             var ret = cir.getReturnValue();
             for (int i = 0; i < ret.size(); i++) {
@@ -100,6 +104,24 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
                 }
             }
         }
+    }
+
+    @Unique
+    private PatternProviderTarget target;
+
+    @ModifyVariable(method = "pushPattern", at = @At(value = "STORE"), ordinal = 0,
+        slice = @Slice(
+            from = @At(value = "INVOKE", target = "Lappeng/helpers/patternprovider/PatternProviderLogic;rearrangeRoundRobin(Ljava/util/List;)V"),
+            to = @At(value = "INVOKE", target = "Lappeng/helpers/patternprovider/PatternProviderLogic;isBlocking()Z")
+        ))
+    private PatternProviderTarget captureAdapter(PatternProviderTarget adapter) {
+        this.target = adapter;
+        return adapter;
+    }
+
+    @Inject(method = "onPushPatternSuccess", at = @At("HEAD"))
+    private void onPushPatternSuccess(IPatternDetails pattern, CallbackInfo ci) {
+        target
     }
 }
 

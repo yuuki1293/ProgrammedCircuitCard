@@ -8,8 +8,7 @@
     "PatternProviderBlockEntityMixin",
     "PatternProviderLogicMixin",
     "PatternProviderMenuMixin",
-    "PatternProviderPartMixin",
-    "PatternProviderScreenMixin"
+    "PatternProviderPartMixin"
   ],
   "injectors": {
     "defaultRequire": 1

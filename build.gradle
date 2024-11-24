@@ -93,7 +93,8 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor' // Mixin
 
-    implementation fg.deobf("com.gregtechceu.gtceu:gtceu-${minecraft_version}:${gtm_version}") { transitive = false } // GregTech CEu: Modern
+    implementation fg.deobf("com.gregtechceu.gtceu:gtceu-${minecraft_version}:${gtm_version}") { transitive = false }
+    // GregTech CEu: Modern
     implementation fg.deobf("appeng:appliedenergistics2-forge:${ae2_version}") // AE2
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}") // JEI
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") // JEI
@@ -104,12 +105,12 @@ dependencies {
 
 tasks.named('processResources', ProcessResources).configure {
     var replaceProperties = [
-            minecraft_version: minecraft_version, minecraft_version_range: minecraft_version_range,
-            forge_version: forge_version, forge_version_range: forge_version_range,
+            minecraft_version   : minecraft_version, minecraft_version_range: minecraft_version_range,
+            forge_version       : forge_version, forge_version_range: forge_version_range,
             loader_version_range: loader_version_range,
-            mod_id: mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
-            mod_authors: mod_authors, mod_description: mod_description,
-            ae2_version_range: ae2_version_range, gtm_version_range: gtm_version_range
+            mod_id              : mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
+            mod_authors         : mod_authors, mod_description: mod_description,
+            ae2_version_range   : ae2_version_range, gtm_version_range: gtm_version_range
     ]
     inputs.properties replaceProperties
 
@@ -121,6 +122,8 @@ tasks.named('processResources', ProcessResources).configure {
 mixin {
     add sourceSets.main, 'mixins.pccard.refmap.json'
     config 'mixins.pccard.json'
+
+    mixin.debug = true
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
