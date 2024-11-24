@@ -7,9 +7,14 @@
   "mixins": [
     "PatternProviderBlockEntityMixin",
     "PatternProviderLogicMixin",
-    "PatternProviderPartMixin"
+    "PatternProviderMenuMixin",
+    "PatternProviderPartMixin",
+    "PatternProviderScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "client": [
+    "PatternProviderScreenMixin"
+  ]
 }
