@@ -28,7 +28,7 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
     @Unique
     private IUpgradeInventory programmedCircuitCard$upgrades;
 
-    @Inject(method = "<init>(Lappeng/api/networking/IManagedGridNode;Lappeng/helpers/patternprovider/PatternProviderLogicHost;I)V", at = @At("TAIL"))
+    @Inject(method = "<init>(Lappeng/api/networking/IManagedGridNode;Lappeng/helpers/patternprovider/PatternProviderLogicHost;I)V", at = @At("RETURN"))
     private void init(IManagedGridNode mainNode, PatternProviderLogicHost host, int patternInventorySize, CallbackInfo ci) {
         try {
             var onUpgradesChanged = this.getClass().getDeclaredMethod("onUpgradesChanged");

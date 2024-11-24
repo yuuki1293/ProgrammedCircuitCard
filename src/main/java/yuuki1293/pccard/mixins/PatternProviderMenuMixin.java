@@ -28,7 +28,7 @@ public abstract class PatternProviderMenuMixin extends AEBaseMenu implements IPa
         super(menuType, id, playerInventory, host);
     }
 
-    @Inject(method = "<init>(Lnet/minecraft/world/inventory/MenuType;ILnet/minecraft/world/entity/player/Inventory;Lappeng/helpers/patternprovider/PatternProviderLogicHost;)V", at = @At("TAIL"))
+    @Inject(method = "<init>(Lnet/minecraft/world/inventory/MenuType;ILnet/minecraft/world/entity/player/Inventory;Lappeng/helpers/patternprovider/PatternProviderLogicHost;)V", at = @At("RETURN"))
     private void init(MenuType<? extends PatternProviderMenu> menuType, int id, Inventory playerInventory, PatternProviderLogicHost host, CallbackInfo ci) {
         this.programmedCircuitCard$host = (IUpgradeableObject) host;
 
