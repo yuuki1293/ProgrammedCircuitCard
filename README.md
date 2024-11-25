@@ -8,4 +8,4 @@ This project includes the following third-party library:
   - Source: Included in the `libs` directory of this repository.
   - The library's source code is available as required by the LGPL license.
 
-Please refer to the [LICENSE.LGPL](./LICENSE.LGPL) file for detailed license terms.
+Please refer to the [LICENSE.LGPL](./libs/LICENSE.AdvancedAE.txt) file for detailed license terms.
