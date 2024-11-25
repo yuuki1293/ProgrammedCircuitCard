@@ -110,7 +110,7 @@ dependencies {
     compileOnly fg.deobf("dev.emi:emi-forge:${emi_version}:api") // EMI
     runtimeOnly fg.deobf("dev.emi:emi-forge:${emi_version}") // EMI
     compileOnly fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}") // Registrate
-    compileOnly fg.deobf("com.lowdragmc.ldlib:ldlib-forge-${minecraft_version}:1.0.31") { transitive = false } // ldlib
+    compileOnly fg.deobf("com.lowdragmc.ldlib:ldlib-forge-${minecraft_version}:${ldlib_version}") { transitive = false } // ldlib
 }
 
 tasks.named('processResources', ProcessResources).configure {
