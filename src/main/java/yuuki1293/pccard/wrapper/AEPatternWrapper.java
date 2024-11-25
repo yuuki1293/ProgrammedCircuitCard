@@ -8,11 +8,13 @@ public class AEPatternWrapper implements IPatternDetails {
     private final AEItemKey definition;
     private final IPatternDetails.IInput[] inputs;
     private final GenericStack[] outputs;
+    private final int number;
 
-    public AEPatternWrapper(AEItemKey definition, IInput[] inputs, GenericStack[] outputs) {
+    public AEPatternWrapper(AEItemKey definition, IInput[] inputs, GenericStack[] outputs, int number) {
         this.definition = definition;
         this.inputs = inputs;
         this.outputs = outputs;
+        this.number = number;
     }
 
     @Override
@@ -28,5 +30,9 @@ public class AEPatternWrapper implements IPatternDetails {
     @Override
     public GenericStack[] getOutputs() {
         return outputs;
+    }
+
+    public int getNumber() {
+        return number;
     }
 }
