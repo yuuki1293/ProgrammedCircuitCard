@@ -1,5 +1,5 @@
 {
-  "required": true,
+  "required": false,
   "minVersion": "0.8",
   "package": "yuuki1293.pccard.mixins",
   "refmap": "mixins.pccard.refmap.json",
@@ -10,10 +10,10 @@
     "PatternProviderMenuMixin",
     "PatternProviderPartMixin"
   ],
-  "injectors": {
-    "defaultRequire": 1
-  },
   "client": [
     "PatternProviderScreenMixin"
-  ]
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }
