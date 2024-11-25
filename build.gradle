@@ -96,8 +96,12 @@ repositories {
             includeGroup 'com.lowdragmc.ldlib'
         }
     }
-    flatDir {
-        dirs 'libs'
+    maven {
+        name = "Curse Maven"
+        url = "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
     }
     mavenLocal()
 }
@@ -114,8 +118,9 @@ dependencies {
     runtimeOnly fg.deobf("dev.emi:emi-forge:${emi_version}") // EMI
     compileOnly fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}") // Registrate
     compileOnly fg.deobf("com.lowdragmc.ldlib:ldlib-forge-${minecraft_version}:${ldlib_version}") { transitive = false } // ldlib
-    implementation fg.deobf('net.pedroksl.adcanced_ae:AdvancedAE-0.3.3-1.20.1:0.3.3-1.20.1') // Advanced AE
-    implementation fg.deobf('com.glodblock.github.extendedae:ExtendedAE-1.20-1.2.1-forge:1.20-1.2.1-forge') // Extended AE
+//    implementation fg.deobf('net.pedroksl.adcanced_ae:AdvancedAE-0.3.3-1.20.1:0.3.3-1.20.1') // Advanced AE
+//    implementation fg.deobf('com.glodblock.github.extendedae:ExtendedAE-1.20-1.2.1-forge:1.20-1.2.1-forge') // Extended AE
+    runtimeOnly fg.deobf("curse.maven:applied-flux-965012:5639620")
 }
 
 tasks.named('processResources', ProcessResources).configure {
