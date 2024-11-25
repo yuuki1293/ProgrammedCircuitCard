@@ -85,6 +85,16 @@ repositories {
     maven {
         name = "Registrate"
         url = "https://maven.tterrag.com/"
+        content {
+            includeGroup 'com.tterrag.registrate'
+        }
+    }
+    maven {
+        name = "firstdarkdev"
+        url = "https://maven.firstdarkdev.xyz/snapshots"
+        content {
+            includeGroup 'com.lowdragmc.ldlib'
+        }
     }
     mavenLocal()
 }
@@ -93,14 +103,14 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor' // Mixin
 
-    implementation fg.deobf("com.gregtechceu.gtceu:gtceu-${minecraft_version}:${gtm_version}") { transitive = false }
-    // GregTech CEu: Modern
+    implementation fg.deobf("com.gregtechceu.gtceu:gtceu-${minecraft_version}:${gtm_version}") { transitive = false } // GregTech CEu: Modern
     implementation fg.deobf("appeng:appliedenergistics2-forge:${ae2_version}") // AE2
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}") // JEI
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") // JEI
     compileOnly fg.deobf("dev.emi:emi-forge:${emi_version}:api") // EMI
     runtimeOnly fg.deobf("dev.emi:emi-forge:${emi_version}") // EMI
     compileOnly fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}") // Registrate
+    compileOnly fg.deobf("com.lowdragmc.ldlib:ldlib-forge-${minecraft_version}:1.0.31") { transitive = false } // ldlib
 }
 
 tasks.named('processResources', ProcessResources).configure {
