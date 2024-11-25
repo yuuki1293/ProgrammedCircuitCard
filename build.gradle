@@ -115,6 +115,7 @@ dependencies {
     compileOnly fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}") // Registrate
     compileOnly fg.deobf("com.lowdragmc.ldlib:ldlib-forge-${minecraft_version}:${ldlib_version}") { transitive = false } // ldlib
     implementation fg.deobf('net.pedroksl.adcanced_ae:AdvancedAE-0.3.3-1.20.1:0.3.3-1.20.1') // Advanced AE
+    implementation fg.deobf('com.glodblock.github.extendedae:ExtendedAE-1.20-1.2.1-forge:1.20-1.2.1-forge') // Extended AE
 }
 
 tasks.named('processResources', ProcessResources).configure {

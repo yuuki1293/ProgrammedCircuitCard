@@ -8,4 +8,10 @@ This project includes the following third-party library:
   - Source: Included in the `libs` directory of this repository.
   - The library's source code is available as required by the LGPL license.
 
-Please refer to the [LICENSE.LGPL](./libs/LICENSE.AdvancedAE.txt) file for detailed license terms.
+- **Extended AE**
+  - Version: 1.20-1.2.1-forge
+  - License: GNU Lesser General Public License (LGPL)
+  - Source: Included in the `libs` directory of this repository.
+  - The library's source code is available as required by the LGPL license.
+
+Please refer to the [LICENSE._NAME_.txt](./libs) file for detailed license terms.
