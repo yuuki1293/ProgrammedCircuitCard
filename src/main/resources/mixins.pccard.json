@@ -8,7 +8,8 @@
     "PatternProviderBlockEntityMixin",
     "PatternProviderLogicMixin",
     "PatternProviderMenuMixin",
-    "PatternProviderPartMixin"
+    "PatternProviderPartMixin",
+    "WidgetContainerMixin"
   ],
   "client": [
     "PatternProviderScreenMixin"

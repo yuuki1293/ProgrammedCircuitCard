@@ -120,7 +120,8 @@ dependencies {
     compileOnly fg.deobf("com.lowdragmc.ldlib:ldlib-forge-${minecraft_version}:${ldlib_version}") { transitive = false } // ldlib
 //    implementation fg.deobf('net.pedroksl.adcanced_ae:AdvancedAE-0.3.3-1.20.1:0.3.3-1.20.1') // Advanced AE
 //    implementation fg.deobf('com.glodblock.github.extendedae:ExtendedAE-1.20-1.2.1-forge:1.20-1.2.1-forge') // Extended AE
-    runtimeOnly fg.deobf("curse.maven:applied-flux-965012:5639620")
+    implementation fg.deobf("curse.maven:glodium-957920:5006780")
+    implementation fg.deobf("curse.maven:applied-flux-965012:5329825")
 }
 
 tasks.named('processResources', ProcessResources).configure {
