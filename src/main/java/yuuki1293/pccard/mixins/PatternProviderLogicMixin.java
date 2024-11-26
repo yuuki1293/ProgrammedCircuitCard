@@ -5,16 +5,21 @@ import appeng.api.networking.IManagedGridNode;
 import appeng.api.stacks.KeyCounter;
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.api.upgrades.IUpgradeableObject;
+import appeng.api.upgrades.MachineUpgradesChanged;
 import appeng.api.upgrades.UpgradeInventories;
 import appeng.crafting.pattern.AEProcessingPattern;
 import appeng.helpers.patternprovider.PatternProviderLogic;
 import appeng.helpers.patternprovider.PatternProviderLogicHost;
+import appeng.util.inv.AppEngInternalInventory;
 import com.gregtechceu.gtceu.api.machine.SimpleTieredMachine;
 import com.gregtechceu.gtceu.common.data.GTItems;
 import com.gregtechceu.gtceu.common.item.IntCircuitBehaviour;
+import com.mojang.logging.LogUtils;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -33,8 +38,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-@Mixin(value = PatternProviderLogic.class, remap = false)
+@Mixin(value = PatternProviderLogic.class, remap = false, priority = 2000)
 public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
+    @Unique
+    private static Logger LOGGER = LogUtils.getLogger();
+
     @Shadow
     public abstract void updatePatterns();
 
@@ -43,6 +51,8 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
     private PatternProviderLogicHost host;
     @Unique
     private IUpgradeInventory pCCard$upgrades;
+    @Unique
+    private IUpgradeInventory pCCard$cache = null;
 
     @Unique
     private PatternProviderLogicHost pCCard$host;
@@ -71,7 +81,60 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
 
     @Override
     public IUpgradeInventory getUpgrades() {
-        return pCCard$upgrades;
+        if (pCCard$cache != null) return pCCard$cache;
+
+        var upgrades = Arrays.stream(PatternProviderLogic.class.getDeclaredFields())
+            .filter(f -> f.getDeclaringClass().isAssignableFrom(IUpgradeInventory.class))
+            .map(f -> {
+                f.setAccessible(true);
+                try {
+                    return (IUpgradeInventory) f.get(this);
+                } catch (IllegalAccessException e) {
+                    LOGGER.error("Can't get field", e);
+                    return null;
+                }
+            }).toList();
+
+        if (upgrades.contains(null)) return pCCard$upgrades;
+
+        try {
+            var maxStackField = AppEngInternalInventory.class.getDeclaredField("maxStack");
+            var count = upgrades.stream()
+                .map(i -> {
+                    try {
+                        return ((int[]) maxStackField.get(i)).length;
+                    } catch (IllegalAccessException e) {
+                        LOGGER.error("Can't get field", e);
+                        return 0;
+                    }
+                })
+                .reduce(Math::addExact).orElse(1);
+
+            var changesCallback = pCCard$getMachineUpgradesChanged(upgrades);
+
+            this.pCCard$cache = UpgradeInventories.forMachine(MachineTypeHolder.MACHINE_TYPE, count, changesCallback);
+            return pCCard$cache;
+        } catch (NoSuchFieldException e) {
+            LOGGER.error("Can't get upgrades slot", e);
+            return pCCard$upgrades;
+        }
+    }
+
+    @Unique
+    private @NotNull MachineUpgradesChanged pCCard$getMachineUpgradesChanged(List<IUpgradeInventory> upgrades) throws NoSuchFieldException {
+        var changeCallbackField = pCCard$upgrades.getClass().getDeclaredField("changeCallback");
+        var callbacks = upgrades.stream()
+            .map(i -> {
+                try {
+                    return (MachineUpgradesChanged) changeCallbackField.get(i);
+                } catch (IllegalAccessException e) {
+                    LOGGER.error("Can't get field", e);
+                    return null;
+                }
+            }).toList();
+        return (MachineUpgradesChanged) () -> {
+            callbacks.forEach(MachineUpgradesChanged::onUpgradesChanged);
+        };
     }
 
     @Inject(method = "addDrops", at = @At("HEAD"))
@@ -135,7 +198,8 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
     }
 
     @Inject(method = "pushPattern", at = @At(value = "INVOKE", target = "Lappeng/helpers/patternprovider/PatternProviderLogic;onPushPatternSuccess(Lappeng/api/crafting/IPatternDetails;)V", ordinal = 1))
-    private void onPushPatternSuccess(IPatternDetails patternDetails, KeyCounter[] inputHolder, CallbackInfoReturnable<Boolean> cir) {
+    private void onPushPatternSuccess(IPatternDetails patternDetails, KeyCounter[]
+        inputHolder, CallbackInfoReturnable<Boolean> cir) {
         if (pCCard$hasPCCard() && patternDetails instanceof AEPatternWrapper pattern) {
             var be = this.host.getBlockEntity();
             var level = be.getLevel();
