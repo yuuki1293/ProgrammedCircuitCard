@@ -39,7 +39,7 @@ public abstract class WidgetContainerMixin {
         WidgetStyle widgetStyle = style.getWidget(id);
         widget.setSize(widgetStyle.getWidth(), widgetStyle.getHeight());
 
-        if (compositeWidgets.put(id, widget) != null) {
+        if (compositeWidgets.containsKey(id)) {
             if (id.equals("upgrades")) {
                 var upgradeWidget = (UpgradesPanel) compositeWidgets.get("upgrades");
                 var merged = WidgetUtils.merge(upgradeWidget, (UpgradesPanel) widget);
@@ -47,6 +47,8 @@ public abstract class WidgetContainerMixin {
             } else {
                 throw new IllegalStateException("Duplicate id: " + id);
             }
+        } else {
+            compositeWidgets.put(id, widget);
         }
     }
 }

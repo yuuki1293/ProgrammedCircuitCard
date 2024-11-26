@@ -20,7 +20,7 @@ public class WidgetUtils {
             var slots1 = (List<Slot>) slotsField.get(u1);
             @SuppressWarnings("unchecked")
             var slots2 = (List<Slot>) slotsField.get(u2);
-            var newSlots = Stream.concat(slots1.stream(), slots2.stream()).toList();
+            var newSlots = Stream.concat(slots1.stream(), slots2.stream()).distinct().toList();
 
             @SuppressWarnings("unchecked")
             var tooltipSupplier1 = (Supplier<List<Component>>) tooltipSupplierField.get(u1);
