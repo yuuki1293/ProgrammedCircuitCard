@@ -84,7 +84,8 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
         if (pCCard$cache != null) return pCCard$cache;
 
         var upgrades = Arrays.stream(PatternProviderLogic.class.getDeclaredFields())
-            .filter(f -> f.getDeclaringClass().isAssignableFrom(IUpgradeInventory.class))
+            .filter(f -> IUpgradeInventory.class.isAssignableFrom(f.getType()))
+            .filter(f -> !f.getName().equals("pCCard$cache"))
             .map(f -> {
                 f.setAccessible(true);
                 try {
