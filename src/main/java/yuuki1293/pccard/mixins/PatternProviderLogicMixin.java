@@ -41,7 +41,7 @@ import java.util.Objects;
 @Mixin(value = PatternProviderLogic.class, remap = false, priority = 2000)
 public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
     @Unique
-    private static Logger LOGGER = LogUtils.getLogger();
+    private static Logger pCCard$LOGGER = LogUtils.getLogger();
 
     @Shadow
     public abstract void updatePatterns();
@@ -91,7 +91,7 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
                 try {
                     return (IUpgradeInventory) f.get(this);
                 } catch (IllegalAccessException e) {
-                    LOGGER.error("Can't get field", e);
+                    pCCard$LOGGER.error("Can't get field", e);
                     return null;
                 }
             }).toList();
@@ -106,7 +106,7 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
                     try {
                         return ((int[]) maxStackField.get(i)).length;
                     } catch (IllegalAccessException e) {
-                        LOGGER.error("Can't get field", e);
+                        pCCard$LOGGER.error("Can't get field", e);
                         return 0;
                     }
                 })
@@ -117,7 +117,7 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
             this.pCCard$cache = UpgradeInventories.forMachine(MachineTypeHolder.MACHINE_TYPE, count, changesCallback);
             return pCCard$cache;
         } catch (NoSuchFieldException e) {
-            LOGGER.error("Can't get upgrades slot", e);
+            pCCard$LOGGER.error("Can't get upgrades slot", e);
             return pCCard$upgrades;
         }
     }
@@ -130,13 +130,11 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
                 try {
                     return (MachineUpgradesChanged) changeCallbackField.get(i);
                 } catch (IllegalAccessException e) {
-                    LOGGER.error("Can't get field", e);
+                    pCCard$LOGGER.error("Can't get field", e);
                     return null;
                 }
             }).toList();
-        return (MachineUpgradesChanged) () -> {
-            callbacks.forEach(MachineUpgradesChanged::onUpgradesChanged);
-        };
+        return () -> callbacks.forEach(MachineUpgradesChanged::onUpgradesChanged);
     }
 
     @Inject(method = "addDrops", at = @At("HEAD"))
