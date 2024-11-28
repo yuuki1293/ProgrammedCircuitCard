@@ -68,7 +68,7 @@ repositories {
         }
     }
     maven {
-        name = "Modmaven"
+        name = "Mod Maven"
         url = "https://modmaven.dev/"
         content {
             includeGroup 'appeng'
@@ -100,7 +100,7 @@ repositories {
         name = "Curse Maven"
         url = "https://www.cursemaven.com"
         content {
-            includeGroup "curse.maven"
+            includeGroup 'curse.maven'
         }
     }
     mavenLocal()
@@ -119,9 +119,9 @@ dependencies {
     compileOnly fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}") // Registrate
     compileOnly fg.deobf("com.lowdragmc.ldlib:ldlib-forge-${minecraft_version}:${ldlib_version}") { transitive = false } // ldlib
 //    implementation fg.deobf('net.pedroksl.adcanced_ae:AdvancedAE-0.3.3-1.20.1:0.3.3-1.20.1') // Advanced AE
-//    implementation fg.deobf('com.glodblock.github.extendedae:ExtendedAE-1.20-1.2.1-forge:1.20-1.2.1-forge') // Extended AE
-    implementation fg.deobf("curse.maven:glodium-957920:5006780")
-    implementation fg.deobf("curse.maven:applied-flux-965012:5329825")
+    runtimeOnly fg.deobf('curse.maven:extendedae-892005:5867594') // Extended AE
+    runtimeOnly fg.deobf('curse.maven:glodium-957920:5006780')
+    runtimeOnly fg.deobf('curse.maven:applied-flux-965012:5329825')
 }
 
 tasks.named('processResources', ProcessResources).configure {
