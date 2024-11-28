@@ -53,13 +53,14 @@ public class PCCard {
         Upgrades.add(item, AEBlocks.PATTERN_PROVIDER, 1, patternProviderGroup);
 
         // Extended AE Pattern Provider
+        var exPatternProviderGroup = "ME Extended Pattern Provider";
         var resourceBE = new ResourceLocation("expatternprovider", "ex_pattern_provider");
         var resourcePart = new ResourceLocation("expatternprovider", "ex_pattern_provider_part");
         var patternProviderBE = ForgeRegistries.BLOCKS.getValue(resourceBE);
         var patternProviderPart = ForgeRegistries.BLOCKS.getValue(resourcePart);
         if(patternProviderBE != null && patternProviderPart != null) {
-            Upgrades.add(item, patternProviderBE, 1, patternProviderGroup);
-            Upgrades.add(item, patternProviderPart, 1, patternProviderGroup);
+            Upgrades.add(item, patternProviderBE, 1, exPatternProviderGroup);
+            Upgrades.add(item, patternProviderPart, 1, exPatternProviderGroup);
         }
     }
 
