@@ -6,6 +6,7 @@ import appeng.core.definitions.AEBlocks;
 import appeng.core.definitions.AEParts;
 import appeng.core.localization.GuiText;
 import com.mojang.logging.LogUtils;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -49,10 +50,21 @@ public class PCCard {
     }
 
     public void postRegistrationInitialization(){
-        String patternProviderGroup = GuiText.CraftingInterface.getTranslationKey();
+        var patternProviderGroup = GuiText.CraftingInterface.getTranslationKey();
+        var item = PROGRAMMED_CIRCUIT_CARD_ITEM.get();
 
-        Upgrades.add(PROGRAMMED_CIRCUIT_CARD_ITEM.get(), AEParts.PATTERN_PROVIDER, 1, patternProviderGroup);
-        Upgrades.add(PROGRAMMED_CIRCUIT_CARD_ITEM.get(), AEBlocks.PATTERN_PROVIDER, 1, patternProviderGroup);
+        Upgrades.add(item, AEParts.PATTERN_PROVIDER, 1, patternProviderGroup);
+        Upgrades.add(item, AEBlocks.PATTERN_PROVIDER, 1, patternProviderGroup);
+
+        // Extended AE Pattern Provider
+        var resourceBE = new ResourceLocation("expatternprovider", "ex_pattern_provider");
+        var resourcePart = new ResourceLocation("expatternprovider", "ex_pattern_provider_part");
+        var patternProviderBE = ForgeRegistries.BLOCKS.getValue(resourceBE);
+        var patternProviderPart = ForgeRegistries.BLOCKS.getValue(resourcePart);
+        if(patternProviderBE != null && patternProviderPart != null) {
+            Upgrades.add(item, patternProviderBE, 1, patternProviderGroup);
+            Upgrades.add(item, patternProviderPart, 1, patternProviderGroup);
+        }
     }
 
     @SubscribeEvent
