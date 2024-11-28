@@ -100,6 +100,7 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
 
         try {
             var maxStackField = AppEngInternalInventory.class.getDeclaredField("maxStack");
+            maxStackField.setAccessible(true);
             var count = upgrades.stream()
                 .map(i -> {
                     try {
