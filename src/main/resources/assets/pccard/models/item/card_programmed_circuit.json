@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "pccard:item/card_programmed_circuit"
+  }
+}
