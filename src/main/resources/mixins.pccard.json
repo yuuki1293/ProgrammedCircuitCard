@@ -5,12 +5,10 @@
   "refmap": "mixins.pccard.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "AEBaseMenuMixin",
     "PatternProviderBlockEntityMixin",
     "PatternProviderLogicMixin",
     "PatternProviderMenuMixin",
-    "PatternProviderPartMixin",
-    "WidgetContainerMixin"
+    "PatternProviderPartMixin"
   ],
   "client": [
     "PatternProviderScreenMixin"

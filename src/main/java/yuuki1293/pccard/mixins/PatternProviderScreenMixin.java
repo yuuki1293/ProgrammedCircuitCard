@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import yuuki1293.pccard.CompetitionFixer;
 import yuuki1293.pccard.IPatternProviderMenuMixin;
 
 import java.util.ArrayList;
@@ -28,6 +29,8 @@ public class PatternProviderScreenMixin extends AEBaseScreen<PatternProviderMenu
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void init(CallbackInfo ci) {
+        if (CompetitionFixer.hasPatternProviderUpgrade()) return;
+
         this.widgets.add("upgrades", new UpgradesPanel(
             menu.getSlots(SlotSemantics.UPGRADE),
             this::pCCard$getCompatibleUpgrades));

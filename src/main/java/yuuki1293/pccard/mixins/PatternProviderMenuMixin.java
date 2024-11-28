@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import yuuki1293.pccard.CompetitionFixer;
 import yuuki1293.pccard.IPatternProviderMenuMixin;
 
 @Mixin(value = PatternProviderMenu.class, remap = false)
@@ -30,8 +31,9 @@ public abstract class PatternProviderMenuMixin extends AEBaseMenu implements IPa
 
     @Inject(method = "<init>(ILnet/minecraft/world/entity/player/Inventory;Lappeng/helpers/patternprovider/PatternProviderLogicHost;)V", at = @At("TAIL"))
     private void init(int id, Inventory playerInventory, PatternProviderLogicHost host, CallbackInfo ci) {
-        this.pCCard$host = (IUpgradeableObject) host;
+        if (CompetitionFixer.hasPatternProviderUpgrade()) return;
 
+        this.pCCard$host = (IUpgradeableObject) host;
         this.pCCard$setupUpgrades();
     }
 
