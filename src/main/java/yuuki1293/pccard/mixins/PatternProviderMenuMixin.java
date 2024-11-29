@@ -4,11 +4,9 @@ import appeng.api.upgrades.IUpgradeInventory;
 import appeng.api.upgrades.IUpgradeableObject;
 import appeng.helpers.patternprovider.PatternProviderLogicHost;
 import appeng.menu.AEBaseMenu;
-import appeng.menu.guisync.GuiSync;
 import appeng.menu.implementations.PatternProviderMenu;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.level.ItemLike;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,9 +19,6 @@ import yuuki1293.pccard.IPatternProviderMenuMixin;
 public abstract class PatternProviderMenuMixin extends AEBaseMenu implements IPatternProviderMenuMixin {
     @Unique
     private IUpgradeableObject pCCard$host;
-    @Unique
-    @GuiSync(8)
-    public boolean pCCard$pcMode = false;
 
     public PatternProviderMenuMixin(MenuType<?> menuType, int id, Inventory playerInventory, Object host) {
         super(menuType, id, playerInventory, host);
@@ -43,11 +38,6 @@ public abstract class PatternProviderMenuMixin extends AEBaseMenu implements IPa
     }
 
     @Unique
-    public boolean pCCard$getPCMode() {
-        return this.pCCard$pcMode;
-    }
-
-    @Unique
     public IUpgradeableObject pCCard$getHost() {
         return this.pCCard$host;
     }
@@ -57,8 +47,4 @@ public abstract class PatternProviderMenuMixin extends AEBaseMenu implements IPa
         return pCCard$getHost().getUpgrades();
     }
 
-    @Unique
-    public boolean pCCard$hasUpgrade(ItemLike upgradeCard) {
-        return pCCard$getUpgrades().isInstalled(upgradeCard);
-    }
 }
