@@ -98,37 +98,34 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
         this.pCCard$upgrades.clear();
     }
 
-    @Inject(method = "getAvailablePatterns", at = @At("RETURN"))
-    private void getAvailablePatterns(CallbackInfoReturnable<List<IPatternDetails>> cir) {
+    @ModifyVariable(method = "updatePatterns", at = @At("STORE"), ordinal = 0)
+    private IPatternDetails updatePatterns(IPatternDetails detail) {
         if (pCCard$hasPCCard()) {
-            var ret = cir.getReturnValue();
-            for (int i = 0; i < ret.size(); i++) {
-                var pattern = ret.get(i);
+            if (detail instanceof AEProcessingPattern) {
+                final var definition = detail.getDefinition();
+                final var originalInputs = detail.getInputs();
+                final var originalOutputs = detail.getOutputs();
 
-                if (pattern instanceof AEProcessingPattern) {
-                    final var definition = pattern.getDefinition();
-                    final var originalInputs = pattern.getInputs();
-                    final var originalOutputs = pattern.getOutputs();
+                var inputs = Arrays.stream(originalInputs)
+                    .filter(Objects::nonNull)
+                    .filter(x -> !x.getPossibleInputs()[0].what().getId().equals(GTItems.INTEGRATED_CIRCUIT.getId())) // Check item
+                    .toArray(IPatternDetails.IInput[]::new);
 
-                    var inputs = Arrays.stream(originalInputs)
+                if (!Arrays.equals(inputs, originalInputs)) {
+                    var recipeStack = Arrays.stream(originalInputs)
                         .filter(Objects::nonNull)
-                        .filter(x -> !x.getPossibleInputs()[0].what().getId().equals(GTItems.INTEGRATED_CIRCUIT.getId())) // Check item
-                        .toArray(IPatternDetails.IInput[]::new);
+                        .filter(x -> x.getPossibleInputs()[0].what().getId().equals(GTItems.INTEGRATED_CIRCUIT.getId()))
+                        .findFirst()
+                        .map(x -> x.getPossibleInputs()[0].what().wrapForDisplayOrFilter())
+                        .orElse(ItemStack.EMPTY);
+                    var number = IntCircuitBehaviour.getCircuitConfiguration(recipeStack);
 
-                    if (!Arrays.equals(inputs, originalInputs)) {
-                        var recipeStack = Arrays.stream(originalInputs)
-                            .filter(Objects::nonNull)
-                            .filter(x -> x.getPossibleInputs()[0].what().getId().equals(GTItems.INTEGRATED_CIRCUIT.getId()))
-                            .findFirst()
-                            .map(x -> x.getPossibleInputs()[0].what().wrapForDisplayOrFilter())
-                            .orElse(ItemStack.EMPTY);
-                        var number = IntCircuitBehaviour.getCircuitConfiguration(recipeStack);
-
-                        ret.set(i, new AEPatternWrapper(definition, inputs, originalOutputs, number));
-                    }
+                    return new AEPatternWrapper(definition, inputs, originalOutputs, number);
                 }
             }
         }
+
+        return detail;
     }
 
     @Unique
