@@ -12,10 +12,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import yuuki1293.pccard.MachineTypeHolder;
 
 @Mixin(value = PatternProviderBlockEntity.class, remap = false)
 public abstract class PatternProviderBlockEntityMixin extends AEBaseBlockEntity implements PatternProviderLogicHost, IUpgradeableObject {
@@ -25,19 +21,8 @@ public abstract class PatternProviderBlockEntityMixin extends AEBaseBlockEntity 
         super(blockEntityType, pos, blockState);
     }
 
-    @Inject(method = "createLogic", at = @At("HEAD"))
-    private void createLogic(CallbackInfoReturnable<PatternProviderLogic> cir) {
-        MachineTypeHolder.MACHINE_TYPE = getItemFromBlockEntity();
-    }
-
     @Override
     public IUpgradeInventory getUpgrades() {
         return ((IUpgradeableObject) getLogic()).getUpgrades();
-    }
-
-    @Override
-    public void saveChanges(){
-        super.saveChanges();
-        this.logic.updatePatterns();
     }
 }

@@ -28,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import yuuki1293.pccard.CompetitionFixer;
-import yuuki1293.pccard.MachineTypeHolder;
+import yuuki1293.pccard.Holder;
 import yuuki1293.pccard.PCCard;
 import yuuki1293.pccard.wrapper.AEPatternWrapper;
 
@@ -50,15 +50,17 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
     @Unique
     private IUpgradeInventory pCCard$upgrades;
 
-    @Unique
-    private PatternProviderLogicHost pCCard$host;
-
     @Inject(method = "<init>(Lappeng/api/networking/IManagedGridNode;Lappeng/helpers/patternprovider/PatternProviderLogicHost;I)V", at = @At("TAIL"))
     private void init(IManagedGridNode mainNode, PatternProviderLogicHost host, int patternInventorySize, CallbackInfo ci) {
         if (CompetitionFixer.hasPatternProviderUpgrade()) return;
 
-        pCCard$upgrades = UpgradeInventories.forMachine(MachineTypeHolder.MACHINE_TYPE, 1, this.pCCard$host::saveChanges);
-        this.pCCard$host = host;
+        pCCard$upgrades = UpgradeInventories.forMachine(host.getTerminalIcon().getItem(), 1, this::pCCard$upgradesChange);
+    }
+
+    @Unique
+    private void pCCard$upgradesChange() {
+        this.host.saveChanges();
+        updatePatterns();
     }
 
     @Inject(method = "writeToNBT", at = @At("HEAD"))
