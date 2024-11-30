@@ -31,7 +31,7 @@ public class UpgradeInventoriesMixin {
             || machineId.equals("ae2:cable_pattern_provider")
             || machineId.equals("expatternprovider:ex_pattern_provider")
             || machineId.equals("expatternprovider:ex_pattern_provider_part")) {
-            return (MachineUpgradesChanged) () -> {
+            return () -> {
                 changeCallback.onUpgradesChanged();
                 Holder.callback.onUpgradesChanged();
             };

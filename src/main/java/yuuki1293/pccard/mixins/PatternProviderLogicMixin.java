@@ -12,11 +12,9 @@ import appeng.helpers.patternprovider.PatternProviderLogicHost;
 import com.gregtechceu.gtceu.api.machine.SimpleTieredMachine;
 import com.gregtechceu.gtceu.common.data.GTItems;
 import com.gregtechceu.gtceu.common.item.IntCircuitBehaviour;
-import com.mojang.logging.LogUtils;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
-import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -28,7 +26,6 @@ import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import yuuki1293.pccard.CompetitionFixer;
-import yuuki1293.pccard.Holder;
 import yuuki1293.pccard.PCCard;
 import yuuki1293.pccard.wrapper.AEPatternWrapper;
 
@@ -38,9 +35,6 @@ import java.util.Objects;
 
 @Mixin(value = PatternProviderLogic.class, remap = false, priority = 800)
 public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
-    @Unique
-    private static Logger pCCard$LOGGER = LogUtils.getLogger();
-
     @Shadow
     public abstract void updatePatterns();
 
