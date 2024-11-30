@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import yuuki1293.pccard.CompetitionFixer;
 import yuuki1293.pccard.Holder;
 
-@Mixin(value = PatternProviderLogic.class, remap = false)
+@Mixin(value = PatternProviderLogic.class, remap = false, priority = 1200)
 public abstract class PatternProviderLogicMixinHP {
     @Shadow
     @Final
