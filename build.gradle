@@ -122,6 +122,7 @@ dependencies {
     runtimeOnly fg.deobf('curse.maven:extendedae-892005:5867594') // Extended AE
     runtimeOnly fg.deobf('curse.maven:glodium-957920:5006780')
     runtimeOnly fg.deobf('curse.maven:applied-flux-965012:5329825')
+    runtimeOnly fg.deobf('curse.maven:mae2-1028068:5826205')
 }
 
 tasks.named('processResources', ProcessResources).configure {
