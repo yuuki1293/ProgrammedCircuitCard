@@ -5,6 +5,8 @@ plugins {
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'org.spongepowered.mixin' version '0.7.+'
+    id 'net.darkhax.curseforgegradle' version '1.1.25'
+    id 'com.modrinth.minotaur' version '2.+'
 }
 
 version = mod_version
@@ -185,4 +187,45 @@ publishing {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+}
+
+task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
+    apiToken = System.getenv('CURSEFORGE_API_KEY') ?: 'XXX'
+
+    def mainFile = upload(1150540, jar)
+    mainFile.releaseType = project.version_type
+    mainFile.changelog = file('changelog.txt')
+    mainFile.changelogType = 'text'
+    mainFile.displayName = "${rootProject.name} ${project.version}"
+    mainFile.addGameVersion(project.minecraft_version)
+    mainFile.addJavaVersion('Java 17')
+    mainFile.addRequirement('applied-energistics-2', 'gregtechceu-modern')
+    mainFile.addOptional('ex-pattern-provider', 'modern-ae2-additions')
+    mainFile.addModLoader('forge')
+}
+
+modrinth {
+    var modrinthToken = System.getenv('MODRINTH_TOKEN') ?: 'XXX'
+
+    token = modrinthToken
+    // Remember to have the MODRINTH_TOKEN environment variable set or else this will fail - just make sure it stays private!
+    projectId = 'C3Mtqx9z' // This can be the project ID or the slug. Either will work!
+    versionNumber = project.version as String
+    versionName = "${rootProject.name} ${project.version}"
+    // You don't need to set this manually. Will fail if Modrinth has this version already
+    versionType = project.version_type // This is the default -- can also be `beta` or `alpha`
+    uploadFile = jar // With Loom, this MUST be set to `remapJar` instead of `jar`!
+    gameVersions = [project.minecraft_version] // Must be an array, even with only one version
+    loaders = ['forge'] // Must also be an array - no need to specify this if you're using Loom or ForgeGradle
+    changelog = file('changelog.txt').text
+    dependencies {
+        required.project 'ae2'
+        required.project 'gregtechceu-modern'
+        optional.project 'extended-ae'
+        optional.project 'modern-ae2-additions'
+    }
+}
+
+task uploadAll {
+    dependsOn publishCurseForge, modrinth
 }
