@@ -2,7 +2,6 @@ package yuuki1293.pccard.mixins;
 
 import appeng.api.crafting.IPatternDetails;
 import appeng.api.networking.IManagedGridNode;
-import appeng.api.stacks.KeyCounter;
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.api.upgrades.IUpgradeableObject;
 import appeng.api.upgrades.UpgradeInventories;
@@ -19,13 +18,10 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.Slice;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import yuuki1293.pccard.CompetitionFixer;
+import yuuki1293.pccard.IPatternProviderLogicMixin;
 import yuuki1293.pccard.PCCard;
 import yuuki1293.pccard.wrapper.AEPatternWrapper;
 
@@ -34,13 +30,15 @@ import java.util.List;
 import java.util.Objects;
 
 @Mixin(value = PatternProviderLogic.class, remap = false, priority = 800)
-public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
+public abstract class PatternProviderLogicMixin implements IUpgradeableObject, IPatternProviderLogicMixin {
     @Shadow
     public abstract void updatePatterns();
 
     @Shadow
     @Final
     private PatternProviderLogicHost host;
+
+    @Shadow private Direction sendDirection;
     @Unique
     private IUpgradeInventory pCCard$upgrades;
 
@@ -124,28 +122,18 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
         return detail;
     }
 
+    /**
+     *  NOTE: call after {@code pushPattern}
+     */
+    @Override
     @Unique
-    private Direction pCCard$direction;
-
-    @ModifyVariable(method = "pushPattern", at = @At(value = "STORE"), ordinal = 0,
-        slice = @Slice(
-            from = @At(value = "INVOKE", target = "Lappeng/helpers/patternprovider/PatternProviderLogic;rearrangeRoundRobin(Ljava/util/List;)V"),
-            to = @At(value = "INVOKE", target = "Lappeng/helpers/patternprovider/PatternProviderLogic;isBlocking()Z")
-        ))
-    private Direction captureAdapter(Direction direction) {
-        this.pCCard$direction = direction;
-        return direction;
-    }
-
-    @Inject(method = "pushPattern", at = @At(value = "INVOKE", target = "Lappeng/helpers/patternprovider/PatternProviderLogic;onPushPatternSuccess(Lappeng/api/crafting/IPatternDetails;)V", ordinal = 1))
-    private void onPushPatternSuccess(IPatternDetails patternDetails, KeyCounter[]
-        inputHolder, CallbackInfoReturnable<Boolean> cir) {
-        if (pCCard$hasPCCard() && patternDetails instanceof AEPatternWrapper pattern) {
+    public void pCCard$setPCNumber(IPatternDetails patternDetails) {
+        if (pCCard$hasPCCard() && patternDetails instanceof AEPatternWrapper patternDetailsW) {
             var be = this.host.getBlockEntity();
             var level = be.getLevel();
             if (level == null) return;
 
-            var blockPos = be.getBlockPos().relative(pCCard$direction);
+            var blockPos = be.getBlockPos().relative(sendDirection);
             var gtMachine = SimpleTieredMachine.getMachine(level, blockPos);
             if (gtMachine == null) return; // filter gtMachine
 
@@ -153,7 +141,7 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
                 var inv = tieredMachine.getCircuitInventory();
                 var machineStack = GTItems.INTEGRATED_CIRCUIT.asStack();
 
-                var number = pattern.getNumber();
+                var number = patternDetailsW.getNumber();
                 IntCircuitBehaviour.setCircuitConfiguration(machineStack, number);
                 inv.setStackInSlot(0, machineStack);
             }
@@ -161,7 +149,7 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject {
     }
 
     @Unique
-    private boolean pCCard$hasPCCard() {
+    public boolean pCCard$hasPCCard() {
         return isUpgradedWith(PCCard.PROGRAMMED_CIRCUIT_CARD_ITEM.get());
     }
 }
