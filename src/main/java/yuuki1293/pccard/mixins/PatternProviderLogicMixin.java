@@ -168,11 +168,12 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject, I
     private BlockPos pCCard$getSendPos() {
         try {
             if (Arrays.stream(PatternProviderLogic.class.getDeclaredFields()).anyMatch(f -> f.getName().equals("sendPos"))) {
+                @SuppressWarnings("JavaReflectionMemberAccess")
                 var posFiled = PatternProviderLogic.class.getDeclaredField("sendPos");
                 posFiled.setAccessible(true);
                 var pos = posFiled.get(this);
 
-                if(pos != null)
+                if (pos != null)
                     return (BlockPos) posFiled.get(this);
             }
 

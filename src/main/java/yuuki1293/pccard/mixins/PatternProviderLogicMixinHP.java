@@ -27,6 +27,7 @@ public abstract class PatternProviderLogicMixinHP {
     private void init(IManagedGridNode mainNode, PatternProviderLogicHost host, int patternInventorySize, CallbackInfo ci) {
         if (CompetitionFixer.hasPatternProviderUpgrade()) {
             try {
+                @SuppressWarnings("JavaReflectionMemberAccess")
                 var upgradeField = PatternProviderLogic.class.getDeclaredField("af_$upgrades");
                 upgradeField.setAccessible(true);
                 upgradeField.set(this, UpgradeInventories.forMachine(host.getTerminalIcon().getItem(), 2, this::pCCardHP$upgradesChange));
