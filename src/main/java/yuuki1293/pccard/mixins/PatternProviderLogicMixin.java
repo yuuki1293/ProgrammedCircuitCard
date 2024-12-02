@@ -48,7 +48,8 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject, I
     @Final
     private PatternProviderLogicHost host;
 
-    @Shadow private Direction sendDirection;
+    @Shadow
+    private Direction sendDirection;
     @Unique
     private IUpgradeInventory pCCard$upgrades;
 
@@ -164,9 +165,9 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject, I
      * @return machine block pos
      */
     @Unique
-    private BlockPos pCCard$getSendPos(){
+    private BlockPos pCCard$getSendPos() {
         try {
-            if(Arrays.stream(PatternProviderLogic.class.getDeclaredFields()).anyMatch(f -> f.getName().equals("sendPos"))){
+            if (Arrays.stream(PatternProviderLogic.class.getDeclaredFields()).anyMatch(f -> f.getName().equals("sendPos"))) {
                 var posFiled = PatternProviderLogic.class.getDeclaredField("sendPos");
                 posFiled.setAccessible(true);
 

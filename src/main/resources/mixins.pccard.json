@@ -9,8 +9,7 @@
     "PatternProviderBlockEntityMixin",
     "PatternProviderLogicMixin",
     "PatternProviderLogicMixinHP",
-    "PatternProviderMenuMixin",
-    "UpgradeInventoriesMixin"
+    "PatternProviderMenuMixin"
   ],
   "client": [
     "PatternProviderScreenMixin"
