@@ -11,9 +11,12 @@ import appeng.helpers.patternprovider.PatternProviderLogicHost;
 import com.gregtechceu.gtceu.api.machine.SimpleTieredMachine;
 import com.gregtechceu.gtceu.common.data.GTItems;
 import com.gregtechceu.gtceu.common.item.IntCircuitBehaviour;
+import com.mojang.logging.LogUtils;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -31,6 +34,9 @@ import java.util.Objects;
 
 @Mixin(value = PatternProviderLogic.class, remap = false, priority = 800)
 public abstract class PatternProviderLogicMixin implements IUpgradeableObject, IPatternProviderLogicMixin {
+    @Unique
+    private static Logger pCCard$LOGGER = LogUtils.getLogger();
+
     @Shadow
     public abstract void updatePatterns();
 
@@ -133,7 +139,7 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject, I
             var level = be.getLevel();
             if (level == null) return;
 
-            var blockPos = be.getBlockPos().relative(sendDirection);
+            var blockPos = pCCard$getSendPos();
             var gtMachine = SimpleTieredMachine.getMachine(level, blockPos);
             if (gtMachine == null) return; // filter gtMachine
 
@@ -145,6 +151,30 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject, I
                 IntCircuitBehaviour.setCircuitConfiguration(machineStack, number);
                 inv.setStackInSlot(0, machineStack);
             }
+        }
+    }
+
+
+    /**
+     * support MAE2 pattern p2p
+     * @return machine block pos
+     */
+    @Unique
+    private BlockPos pCCard$getSendPos(){
+        try {
+            if(Arrays.stream(PatternProviderLogic.class.getDeclaredFields()).anyMatch(f -> f.getName().equals("sendPos"))){
+                var posFiled = PatternProviderLogic.class.getDeclaredField("sendPos");
+                posFiled.setAccessible(true);
+
+                return (BlockPos) posFiled.get(this);
+            } else {
+                var be = this.host.getBlockEntity();
+
+                return be.getBlockPos().relative(sendDirection);
+            }
+        } catch (Exception e) {
+            pCCard$LOGGER.error("Error while getting sendPos", e);
+            return BlockPos.ZERO;
         }
     }
 
