@@ -9,8 +9,10 @@ import appeng.crafting.pattern.AEProcessingPattern;
 import appeng.helpers.patternprovider.PatternProviderLogic;
 import appeng.helpers.patternprovider.PatternProviderLogicHost;
 import com.gregtechceu.gtceu.api.machine.SimpleTieredMachine;
+import com.gregtechceu.gtceu.api.machine.trait.NotifiableItemStackHandler;
 import com.gregtechceu.gtceu.common.data.GTItems;
 import com.gregtechceu.gtceu.common.item.IntCircuitBehaviour;
+import com.gregtechceu.gtceu.common.machine.multiblock.part.ItemBusPartMachine;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -150,15 +152,22 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject, I
 
             if (gtMachine instanceof SimpleTieredMachine tieredMachine) {
                 var inv = tieredMachine.getCircuitInventory();
-                var machineStack = GTItems.INTEGRATED_CIRCUIT.asStack();
-
-                var number = patternDetailsW.getNumber();
-                IntCircuitBehaviour.setCircuitConfiguration(machineStack, number);
-                inv.setStackInSlot(0, machineStack);
+                pCCard$setInvNumber(inv, patternDetailsW);
+            } else if (gtMachine instanceof ItemBusPartMachine busPartMachine) {
+                var inv = busPartMachine.getCircuitInventory();
+                pCCard$setInvNumber(inv, patternDetailsW);
             }
         }
     }
 
+    @Unique
+    private void pCCard$setInvNumber(NotifiableItemStackHandler inv, AEPatternWrapper details) {
+        var machineStack = GTItems.INTEGRATED_CIRCUIT.asStack();
+
+        var number = details.getNumber();
+        IntCircuitBehaviour.setCircuitConfiguration(machineStack, number);
+        inv.setStackInSlot(0, machineStack);
+    }
 
     /**
      * support MAE2 pattern p2p
