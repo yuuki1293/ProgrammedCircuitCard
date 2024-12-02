@@ -23,6 +23,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import yuuki1293.pccard.CompetitionFixer;
 import yuuki1293.pccard.IPatternProviderLogicMixin;
 import yuuki1293.pccard.PCCard;
@@ -36,6 +37,9 @@ import java.util.Objects;
 public abstract class PatternProviderLogicMixin implements IUpgradeableObject, IPatternProviderLogicMixin {
     @Unique
     private static Logger pCCard$LOGGER = LogUtils.getLogger();
+
+    @Unique
+    private static Direction pCCard$sendDirection;
 
     @Shadow
     public abstract void updatePatterns();
@@ -170,7 +174,7 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject, I
             } else {
                 var be = this.host.getBlockEntity();
 
-                return be.getBlockPos().relative(sendDirection);
+                return be.getBlockPos().relative(pCCard$sendDirection);
             }
         } catch (Exception e) {
             pCCard$LOGGER.error("Error while getting sendPos", e);
@@ -181,6 +185,11 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject, I
     @Unique
     public boolean pCCard$hasPCCard() {
         return isUpgradedWith(PCCard.PROGRAMMED_CIRCUIT_CARD_ITEM.get());
+    }
+
+    @Inject(method = "sendStacksOut", at = @At("HEAD"))
+    private void sendStacksOut(CallbackInfoReturnable<Boolean> cir) {
+        pCCard$sendDirection = this.sendDirection;
     }
 }
 
