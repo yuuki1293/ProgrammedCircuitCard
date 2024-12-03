@@ -175,24 +175,9 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject, I
      */
     @Unique
     private BlockPos pCCard$getSendPos() {
-        try {
-            if (Arrays.stream(PatternProviderLogic.class.getDeclaredFields()).anyMatch(f -> f.getName().equals("sendPos"))) {
-                @SuppressWarnings("JavaReflectionMemberAccess")
-                var posFiled = PatternProviderLogic.class.getDeclaredField("sendPos");
-                posFiled.setAccessible(true);
-                var pos = posFiled.get(this);
+        var be = this.host.getBlockEntity();
 
-                if (pos != null)
-                    return (BlockPos) posFiled.get(this);
-            }
-
-            var be = this.host.getBlockEntity();
-
-            return be.getBlockPos().relative(pCCard$sendDirection);
-        } catch (Exception e) {
-            pCCard$LOGGER.error("Error while getting sendPos", e);
-            return BlockPos.ZERO;
-        }
+        return be.getBlockPos().relative(pCCard$sendDirection);
     }
 
     @Unique
