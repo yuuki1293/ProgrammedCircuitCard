@@ -75,6 +75,12 @@ repositories {
         url = "https://modmaven.dev/"
         content {
             includeGroup 'appeng'
+        }
+    }
+    maven {
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+        content {
             includeGroup 'mezz.jei'
         }
     }
@@ -119,11 +125,11 @@ dependencies {
 
     implementation fg.deobf("com.gregtechceu.gtceu:gtceu-${minecraft_version}:${gtm_version}") { transitive = false } // GregTech CEu: Modern
     implementation fg.deobf("appeng:appliedenergistics2-forge:${ae2_version}") // AE2
-    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}") // JEI
-    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") // JEI
-    compileOnly fg.deobf("dev.emi:emi-forge:${emi_version}+${minecraft_version}:api") // EMI
-    runtimeOnly fg.deobf("dev.emi:emi-forge:${emi_version}+${minecraft_version}") // EMI
-    compileOnly fg.deobf("com.lowdragmc.ldlib:ldlib-forge-${minecraft_version}:${ldlib_version}") { transitive = false } // ldlib
+    compileOnly "mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}" // JEI
+    runtimeOnly "mezz.jei:jei-${minecraft_version}-forge:${jei_version}" // JEI
+//    compileOnly fg.deobf("dev.emi:emi-forge:${emi_version}+${minecraft_version}:api") // EMI
+//    runtimeOnly fg.deobf("dev.emi:emi-forge:${emi_version}+${minecraft_version}") // EMI
+    compileOnly fg.deobf("com.lowdragmc.ldlib:ldlib-neoforge-${minecraft_version}:${ldlib_version}") { transitive = false } // ldlib
     runtimeOnly fg.deobf("curse.maven:advancedae-1084104:${adae_version}") // Advanced AE
     runtimeOnly fg.deobf("curse.maven:extendedae-892005:${exae_version}") // Extended AE
     runtimeOnly fg.deobf("curse.maven:glodium-957920:${glodium_version}") // Extended AE assumption
