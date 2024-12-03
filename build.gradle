@@ -10,14 +10,14 @@ plugins {
     id 'com.github.breadmoirai.github-release' version '2.4.1'
 }
 
-version = mod_version
+version = "${minecraft_version}-${mod_version}"
 group = mod_group_id
 
 base {
     archivesName = mod_id
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
@@ -121,16 +121,14 @@ dependencies {
     implementation fg.deobf("appeng:appliedenergistics2-forge:${ae2_version}") // AE2
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}") // JEI
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") // JEI
-    compileOnly fg.deobf("dev.emi:emi-forge:${emi_version}:api") // EMI
-    runtimeOnly fg.deobf("dev.emi:emi-forge:${emi_version}") // EMI
-    compileOnly fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}") // Registrate
+    compileOnly fg.deobf("dev.emi:emi-forge:${emi_version}+${minecraft_version}:api") // EMI
+    runtimeOnly fg.deobf("dev.emi:emi-forge:${emi_version}+${minecraft_version}") // EMI
     compileOnly fg.deobf("com.lowdragmc.ldlib:ldlib-forge-${minecraft_version}:${ldlib_version}") { transitive = false } // ldlib
 //    implementation fg.deobf('net.pedroksl.adcanced_ae:AdvancedAE-0.3.3-1.20.1:0.3.3-1.20.1') // Advanced AE
-    runtimeOnly fg.deobf('curse.maven:extendedae-892005:5867594') // Extended AE
-    runtimeOnly fg.deobf('curse.maven:glodium-957920:5006780')
-    runtimeOnly fg.deobf('curse.maven:applied-flux-965012:5329825')
-    runtimeOnly fg.deobf('curse.maven:mae2-1028068:5826205') // MAE2
-    runtimeOnly fg.deobf('curse.maven:jade-324717:5876199') // Jade
+    runtimeOnly fg.deobf("curse.maven:extendedae-892005:${exae_version}") // Extended AE
+    runtimeOnly fg.deobf("curse.maven:glodium-957920:${glodium_version}")
+    runtimeOnly fg.deobf("curse.maven:applied-flux-965012:${appflux_version}")
+    runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_version}") // Jade
 }
 
 tasks.named('processResources', ProcessResources).configure {
@@ -199,7 +197,7 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
     mainFile.changelogType = 'text'
     mainFile.displayName = "${rootProject.name} ${project.version}"
     mainFile.addGameVersion(project.minecraft_version)
-    mainFile.addJavaVersion('Java 17')
+    mainFile.addJavaVersion('Java 21')
     mainFile.addRequirement('applied-energistics-2', 'gregtechceu-modern')
     mainFile.addOptional('ex-pattern-provider', 'modern-ae2-additions')
     mainFile.addModLoader('forge')
