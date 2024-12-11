@@ -247,7 +247,5 @@ githubRelease {
 }
 
 task uploadAll {
-    publishCurseForge
-    modrinth
-    githubRelease
+    dependsOn publishCurseForge, 'modrinth', 'githubRelease'
 }
