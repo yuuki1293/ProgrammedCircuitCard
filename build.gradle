@@ -200,7 +200,7 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
     mainFile.addGameVersion(project.minecraft_version)
     mainFile.addJavaVersion('Java 17')
     mainFile.addRequirement('applied-energistics-2', 'gregtechceu-modern')
-    mainFile.addOptional('ex-pattern-provider', 'modern-ae2-additions')
+    mainFile.addOptional('ex-pattern-provider', 'modern-ae2-additions', 'jei', 'emi')
     mainFile.addModLoader('forge')
 }
 
@@ -223,6 +223,8 @@ modrinth {
         required.project 'gregtechceu-modern'
         optional.project 'extended-ae'
         optional.project 'modern-ae2-additions'
+        optional.project 'jei'
+        optional.project 'emi'
     }
 }
 
