@@ -1,3 +1,4 @@
 1.20.1 Changelog
+ - 1.0.2  Support GregTech 1.4+
  - 1.0.1  fix: Not working for MultiBlock Item Bus.
  - 1.0.0  First release!
