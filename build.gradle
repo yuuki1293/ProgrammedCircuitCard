@@ -119,8 +119,7 @@ dependencies {
 
     implementation fg.deobf("com.gregtechceu.gtceu:gtceu-${minecraft_version}:${gtm_version}") { transitive = false } // GregTech CEu: Modern
     implementation fg.deobf("appeng:appliedenergistics2-forge:${ae2_version}") // AE2
-    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}") // JEI
-    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") // JEI
+    implementation fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") // JEI
     compileOnly fg.deobf("dev.emi:emi-forge:${emi_version}:api") // EMI
     runtimeOnly fg.deobf("dev.emi:emi-forge:${emi_version}") // EMI
     compileOnly fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}") // Registrate
@@ -248,5 +247,7 @@ githubRelease {
 }
 
 task uploadAll {
-    dependsOn publishCurseForge, modrinth, githubRelease
+    publishCurseForge
+    modrinth
+    githubRelease
 }
