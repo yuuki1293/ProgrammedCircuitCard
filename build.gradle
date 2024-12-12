@@ -252,12 +252,10 @@ task uploadAll {
     group = "publishing"
     description = "Uploads the mod to CurseForge, Modrinth, and GitHub releases."
 
-    doFirst {
-        if (isUnreleasedIncluded()) {
-            logger.error("Remove 'Unreleased' in CHANGELOG.")
-        } else {
-            dependsOn publishCurseForge, 'modrinth', 'githubRelease'
-        }
+    if (isUnreleasedIncluded()) {
+        logger.error("Remove 'Unreleased' in CHANGELOG.")
+    } else {
+        dependsOn publishCurseForge, 'modrinth', 'githubRelease'
     }
 }
 
