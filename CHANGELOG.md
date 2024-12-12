@@ -1,5 +1,5 @@
 # 1.20.1 Changelog
-## [Unreleased]
+## [1.0.3]
 ### Fixed
  - Ex pattern provider has no upgrade slots.
  
