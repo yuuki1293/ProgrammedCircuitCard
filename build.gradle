@@ -125,9 +125,9 @@ dependencies {
     compileOnly fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}") // Registrate
     compileOnly fg.deobf("com.lowdragmc.ldlib:ldlib-forge-${minecraft_version}:${ldlib_version}") { transitive = false } // ldlib
 //    implementation fg.deobf('net.pedroksl.adcanced_ae:AdvancedAE-0.3.3-1.20.1:0.3.3-1.20.1') // Advanced AE
-    runtimeOnly fg.deobf("curse.maven:extendedae-892005:${exae_version}") // Extended AE
+    implementation fg.deobf("curse.maven:extendedae-892005:${exae_version}") // Extended AE
     runtimeOnly fg.deobf("curse.maven:glodium-957920:${glodium_version}")
-    runtimeOnly fg.deobf("curse.maven:applied-flux-965012:${appflux_version}")
+    runtimeOnly fg.deobf("curse.maven:applied-flux-965012:${appflux_version}") // Applied Flux
     runtimeOnly fg.deobf("curse.maven:mae2-1028068:${mae2_version}") // MAE2
     runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_version}") // Jade
 }
