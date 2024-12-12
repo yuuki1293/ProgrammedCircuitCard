@@ -190,6 +190,7 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
+    group = "publishing"
     apiToken = System.getenv('CURSEFORGE_API_KEY') ?: 'XXX'
 
     def mainFile = upload(1150540, jar)
