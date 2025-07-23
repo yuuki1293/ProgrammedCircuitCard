@@ -6,38 +6,44 @@ import appeng.core.definitions.AEBlocks;
 import appeng.core.definitions.AEParts;
 import appeng.core.localization.GuiText;
 import com.mojang.logging.LogUtils;
+import com.mojang.serialization.Codec;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredItem;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import org.slf4j.Logger;
 
 @Mod(PCCard.MODID)
 public class PCCard {
     public static final String MODID = "pccard";
     public static final Logger LOGGER = LogUtils.getLogger();
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
+    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
+    public static final DeferredRegister.DataComponents DATA_COMPONENTS = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, MODID);
 
-    public static final RegistryObject<Item> PROGRAMMED_CIRCUIT_CARD_ITEM = ITEMS.register("card_programmed_circuit", () -> Upgrades.createUpgradeCardItem(new Item.Properties()));
+    public static final DeferredItem<Item> PROGRAMMED_CIRCUIT_CARD_ITEM = ITEMS.register("card_programmed_circuit", () -> Upgrades.createUpgradeCardItem(new Item.Properties()));
 
-    public PCCard() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> RECIPE_CIRCUIT = DATA_COMPONENTS
+        .registerComponentType("recipe_circuit", builder -> builder.persistent(Codec.INT));
+
+    public PCCard(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::onBuildCreativeModeTabContentsEvent);
         modEventBus.addListener(this::commonSetup);
 
         ITEMS.register(modEventBus);
-        MinecraftForge.EVENT_BUS.register(this);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigClient.spec);
+        modEventBus.register(this);
+        modContainer.registerConfig(ModConfig.Type.CLIENT, ConfigClient.SPEC);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
@@ -57,33 +63,35 @@ public class PCCard {
         Upgrades.add(item, AEBlocks.PATTERN_PROVIDER, 1, patternProviderGroup);
 
         // Extended AE Pattern Provider
-        var exPatternProviderGroup = "gui.expatternprovider.ex_pattern_provider";
-        var resourceExBE = new ResourceLocation("expatternprovider", "ex_pattern_provider");
-        var resourceExPart = new ResourceLocation("expatternprovider", "ex_pattern_provider_part");
-        var patternProviderExBE = ForgeRegistries.BLOCKS.getValue(resourceExBE);
-        var patternProviderExPart = ForgeRegistries.ITEMS.getValue(resourceExPart);
-        if (patternProviderExBE != null && patternProviderExPart != null) {
-            Upgrades.add(item, patternProviderExBE, 1, exPatternProviderGroup);
-            Upgrades.add(item, patternProviderExPart, 1, exPatternProviderGroup);
+        {
+            var exPatternProviderGroup = "gui.expatternprovider.ex_pattern_provider";
+            var resourceExBE = ResourceLocation.tryBuild("expatternprovider", "ex_pattern_provider");
+            var resourceExPart = ResourceLocation.tryBuild("expatternprovider", "ex_pattern_provider_part");
+            var patternProviderExBE = BuiltInRegistries.BLOCK.getOptional(resourceExBE);
+            var patternProviderExPart = BuiltInRegistries.ITEM.getOptional(resourceExPart);
+            if (patternProviderExBE.isPresent() && patternProviderExPart.isPresent()) {
+                Upgrades.add(item, patternProviderExBE.get(), 1, exPatternProviderGroup);
+                Upgrades.add(item, patternProviderExPart.get(), 1, exPatternProviderGroup);
+            }
         }
 
         // Advanced AE Pattern Provider
         {
             var adPatternProviderGroup = "gui.advanced_ae.AdvPatternProvider";
             var namespaceAd = "advanced_ae";
-            var resourceAdBE = new ResourceLocation(namespaceAd, "small_adv_pattern_provider");
-            var resourceAdPart = new ResourceLocation(namespaceAd, "small_adv_pattern_provider_part");
-            var resourceAdExBE = new ResourceLocation(namespaceAd, "adv_pattern_provider");
-            var resourceAdExPart = new ResourceLocation(namespaceAd, "adv_pattern_provider_part");
-            var patternProviderAdBE = ForgeRegistries.BLOCKS.getValue(resourceAdBE);
-            var patternProviderAdPart = ForgeRegistries.ITEMS.getValue(resourceAdPart);
-            var patternProviderAdExBE = ForgeRegistries.BLOCKS.getValue(resourceAdExBE);
-            var patternProviderAdExPart = ForgeRegistries.ITEMS.getValue(resourceAdExPart);
-            if (patternProviderAdBE != null && patternProviderAdPart != null && patternProviderAdExBE != null && patternProviderAdExPart != null) {
-                Upgrades.add(item, patternProviderAdBE, 1, adPatternProviderGroup);
-                Upgrades.add(item, patternProviderAdPart, 1, adPatternProviderGroup);
-                Upgrades.add(item, patternProviderAdExBE, 1, adPatternProviderGroup);
-                Upgrades.add(item, patternProviderAdExPart, 1, adPatternProviderGroup);
+            var resourceAdBE = ResourceLocation.tryBuild(namespaceAd, "small_adv_pattern_provider");
+            var resourceAdPart = ResourceLocation.tryBuild(namespaceAd, "small_adv_pattern_provider_part");
+            var resourceAdExBE = ResourceLocation.tryBuild(namespaceAd, "adv_pattern_provider");
+            var resourceAdExPart = ResourceLocation.tryBuild(namespaceAd, "adv_pattern_provider_part");
+            var patternProviderAdBE = BuiltInRegistries.BLOCK.getOptional(resourceAdBE);
+            var patternProviderAdPart = BuiltInRegistries.ITEM.getOptional(resourceAdPart);
+            var patternProviderAdExBE = BuiltInRegistries.BLOCK.getOptional(resourceAdExBE);
+            var patternProviderAdExPart = BuiltInRegistries.ITEM.getOptional(resourceAdExPart);
+            if (patternProviderAdBE.isPresent() && patternProviderAdPart.isPresent() && patternProviderAdExBE.isPresent() && patternProviderAdExPart.isPresent()) {
+                Upgrades.add(item, patternProviderAdBE.get(), 1, adPatternProviderGroup);
+                Upgrades.add(item, patternProviderAdPart.get(), 1, adPatternProviderGroup);
+                Upgrades.add(item, patternProviderAdExBE.get(), 1, adPatternProviderGroup);
+                Upgrades.add(item, patternProviderAdExPart.get(), 1, adPatternProviderGroup);
             }
         }
 
@@ -91,13 +99,13 @@ public class PCCard {
         {
             var expPatternProviderGroup = "gui.expandedae.exp_pattern_provider";
             var namespaceExp = "expandedae";
-            var resourceExpBE = new ResourceLocation(namespaceExp, "exp_pattern_provider");
-            var resourceExpPart = new ResourceLocation(namespaceExp, "exp_pattern_provider_part");
-            var patternProviderExpBE = ForgeRegistries.BLOCKS.getValue(resourceExpBE);
-            var patternProviderExpPart = ForgeRegistries.ITEMS.getValue(resourceExpPart);
-            if (patternProviderExpBE != null && patternProviderExpPart != null) {
-                Upgrades.add(item, patternProviderExpBE, 1, expPatternProviderGroup);
-                Upgrades.add(item, patternProviderExpPart, 1, expPatternProviderGroup);
+            var resourceExpBE = ResourceLocation.tryBuild(namespaceExp, "exp_pattern_provider");
+            var resourceExpPart = ResourceLocation.tryBuild(namespaceExp, "exp_pattern_provider_part");
+            var patternProviderExpBE = BuiltInRegistries.BLOCK.getOptional(resourceExpBE);
+            var patternProviderExpPart = BuiltInRegistries.ITEM.getOptional(resourceExpPart);
+            if (patternProviderExpBE.isPresent() && patternProviderExpPart.isPresent()) {
+                Upgrades.add(item, patternProviderExpBE.get(), 1, expPatternProviderGroup);
+                Upgrades.add(item, patternProviderExpPart.get(), 1, expPatternProviderGroup);
             }
         }
 
@@ -105,13 +113,13 @@ public class PCCard {
         {
             var megaPatternProviderGroup = "block.megacells.mega_pattern_provider";
             var namespaceMega = "megacells";
-            var resourceMegaBE = new ResourceLocation(namespaceMega, "mega_pattern_provider");
-            var resourceMegaPart = new ResourceLocation(namespaceMega, "cable_mega_pattern_provider");
-            var patternProviderMegaBE = ForgeRegistries.BLOCKS.getValue(resourceMegaBE);
-            var patternProviderMegaPart = ForgeRegistries.ITEMS.getValue(resourceMegaPart);
-            if (patternProviderMegaBE != null && patternProviderMegaPart != null) {
-                Upgrades.add(item, patternProviderMegaBE, 1, megaPatternProviderGroup);
-                Upgrades.add(item, patternProviderMegaPart, 1, megaPatternProviderGroup);
+            var resourceMegaBE = ResourceLocation.tryBuild(namespaceMega, "mega_pattern_provider");
+            var resourceMegaPart = ResourceLocation.tryBuild(namespaceMega, "cable_mega_pattern_provider");
+            var patternProviderMegaBE = BuiltInRegistries.BLOCK.getOptional(resourceMegaBE);
+            var patternProviderMegaPart = BuiltInRegistries.ITEM.getOptional(resourceMegaPart);
+            if (patternProviderMegaBE.isPresent() && patternProviderMegaPart.isPresent()) {
+                Upgrades.add(item, patternProviderMegaBE.get(), 1, megaPatternProviderGroup);
+                Upgrades.add(item, patternProviderMegaPart.get(), 1, megaPatternProviderGroup);
             }
         }
     }

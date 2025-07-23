@@ -9,6 +9,7 @@ import appeng.helpers.patternprovider.PatternProviderLogic;
 import appeng.helpers.patternprovider.PatternProviderLogicHost;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -26,8 +27,6 @@ import yuuki1293.pccard.PCCard;
 import yuuki1293.pccard.impl.PatternProviderLogicImpl;
 
 import java.util.List;
-
-import static yuuki1293.pccard.NBTs.NBT_CIRCUIT;
 
 @Mixin(value = PatternProviderLogic.class, remap = false, priority = 800)
 public abstract class PatternProviderLogicMixin implements IUpgradeableObject, IPatternProviderLogicMixin {
@@ -60,17 +59,17 @@ public abstract class PatternProviderLogicMixin implements IUpgradeableObject, I
     }
 
     @Inject(method = "writeToNBT", at = @At("HEAD"))
-    private void writeToNBT(CompoundTag tag, CallbackInfo ci) {
+    private void writeToNBT(CompoundTag tag, HolderLookup.Provider registries, CallbackInfo ci) {
         if (CompetitionFixer.existAppflux.get()) return;
 
-        this.pCCard$upgrades.writeToNBT(tag, "upgrades");
+        this.pCCard$upgrades.writeToNBT(tag, "upgrades", registries);
     }
 
     @Inject(method = "readFromNBT", at = @At("HEAD"))
-    private void readFromNBT(CompoundTag tag, CallbackInfo ci) {
+    private void readFromNBT(CompoundTag tag, HolderLookup.Provider registries, CallbackInfo ci) {
         if (CompetitionFixer.existAppflux.get()) return;
 
-        this.pCCard$upgrades.readFromNBT(tag, "upgrades");
+        this.pCCard$upgrades.readFromNBT(tag, "upgrades", registries);
     }
 
     @Override

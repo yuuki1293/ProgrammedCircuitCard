@@ -1,7 +1,6 @@
 package yuuki1293.pccard.impl;
 
 import appeng.api.crafting.IPatternDetails;
-import appeng.api.crafting.PatternDetailsHelper;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.parts.IPartHost;
@@ -9,16 +8,16 @@ import appeng.parts.storagebus.StorageBusPart;
 import com.gregtechceu.gtceu.api.machine.SimpleTieredMachine;
 import com.gregtechceu.gtceu.api.machine.feature.IHasCircuitSlot;
 import com.gregtechceu.gtceu.api.machine.trait.NotifiableItemStackHandler;
-import com.gregtechceu.gtceu.common.data.GTItems;
-import com.gregtechceu.gtceu.common.item.IntCircuitBehaviour;
+import com.gregtechceu.gtceu.common.item.behavior.IntCircuitBehaviour;
+import com.gregtechceu.gtceu.data.item.GTItems;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.slf4j.Logger;
+import yuuki1293.pccard.PCCard;
 import yuuki1293.pccard.wrapper.IPatternProviderLogicMixin;
 import yuuki1293.pccard.TagUtils;
 import yuuki1293.pccard.wrapper.IAEPattern;
@@ -28,24 +27,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import static yuuki1293.pccard.NBTs.NBT_CIRCUIT;
-
 public class PatternProviderLogicImpl {
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public static ItemStack updatePatterns(IPatternProviderLogicMixin self, ItemStack stack) {
         if (self.pCCard$hasPCCard()) {
             var newStack = stack.copy();
-            var inputs = TagUtils.getInputsFromPattern(newStack);
-            var tagRoot = newStack.getTag();
-            if(tagRoot == null) { // if null, create new empty tag
-                tagRoot = new CompoundTag();
-            }
-
-            if (inputs.isPresent()) {
-                var number = TagUtils.getCircuitNumber(inputs.get()).orElse(0);
-                tagRoot.putInt(NBT_CIRCUIT, number);
-                TagUtils.removeCircuit(inputs.get());
+            var number = TagUtils.extractCircuitNumber(newStack);
+            if (number >= 0) {
+                newStack.set(PCCard.RECIPE_CIRCUIT, number);
             }
 
             return newStack;

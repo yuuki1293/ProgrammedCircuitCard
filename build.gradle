@@ -70,6 +70,7 @@ repositories {
             includeGroup 'curse.maven'
         }
     }
+    maven { url "https://maven.shedaniel.me" }
     mavenLocal()
 }
 
@@ -175,6 +176,7 @@ dependencies {
     implementation "com.gregtechceu.gtceu:gtceu-${minecraft_version}:${gtm_version}"
     implementation "org.appliedenergistics:appliedenergistics2:${ae2_version}" // AE2
     implementation "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}" // JEI
+    compileOnly "me.shedaniel:RoughlyEnoughItems-api-neoforge:${rei_version}"
     compileOnly "dev.emi:emi-neoforge:${emi_version}:api" // EMI
 //    runtimeOnly "dev.emi:emi-forge:${emi_version}") // EMI
 //    compileOnly "com.lowdragmc.ldlib:ldlib-forge-${minecraft_version}:${ldlib_version}" { transitive = false } // ldlib
@@ -191,7 +193,7 @@ dependencies {
     runtimeOnly "curse.maven:jade-324717:${jade_version}" // Jade
     compileOnly "org.appliedenergistics:guideme:${guideme_version}:api" // GuideME
     runtimeOnly "org.appliedenergistics:guideme:${guideme_version}"
-    implementation "curse.maven:expanded-ae-1213351:${expanded_ae_version}" // Expanded AE
+//    implementation "curse.maven:expanded-ae-1213351:${expanded_ae_version}" // Expanded AE
     runtimeOnly "curse.maven:mega-cells-622112:${mega_cells_version}" // Mega Cells
 }
 

@@ -1,8 +1,8 @@
 package yuuki1293.pccard.xmod;
 
 import com.google.common.base.Suppliers;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.forgespi.language.IModInfo;
+import net.neoforged.fml.ModList;
+import net.neoforged.neoforgespi.language.IModInfo;
 
 import java.util.function.Supplier;
 

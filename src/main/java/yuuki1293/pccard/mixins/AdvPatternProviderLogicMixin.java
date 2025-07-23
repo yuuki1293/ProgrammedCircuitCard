@@ -5,9 +5,9 @@ import appeng.api.networking.IManagedGridNode;
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.api.upgrades.IUpgradeableObject;
 import appeng.api.upgrades.UpgradeInventories;
-import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -61,17 +61,17 @@ public abstract class AdvPatternProviderLogicMixin implements IUpgradeableObject
     }
 
     @Inject(method = "writeToNBT", at = @At("HEAD"))
-    private void writeToNBT(CompoundTag tag, CallbackInfo ci) {
+    private void writeToNBT(CompoundTag tag, HolderLookup.Provider registries, CallbackInfo ci) {
         if (CompetitionFixer.existAppflux.get()) return;
 
-        this.pCCard$upgrades.writeToNBT(tag, "upgrades");
+        this.pCCard$upgrades.writeToNBT(tag, "upgrades", registries);
     }
 
     @Inject(method = "readFromNBT", at = @At("HEAD"))
-    private void readFromNBT(CompoundTag tag, CallbackInfo ci) {
+    private void readFromNBT(CompoundTag tag, HolderLookup.Provider registries, CallbackInfo ci) {
         if (CompetitionFixer.existAppflux.get()) return;
 
-        this.pCCard$upgrades.readFromNBT(tag, "upgrades");
+        this.pCCard$upgrades.readFromNBT(tag, "upgrades", registries);
     }
 
     @Override

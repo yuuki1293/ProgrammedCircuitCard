@@ -1,8 +1,8 @@
 package yuuki1293.pccard.mixins;
 
 import appeng.api.stacks.GenericStack;
-import com.gregtechceu.gtceu.common.data.GTItems;
-import com.gregtechceu.gtceu.integration.emi.recipe.Ae2PatternTerminalHandler;
+import appeng.integration.modules.emi.EmiStackHelper;
+import com.gregtechceu.gtceu.data.item.GTItems;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,23 +15,23 @@ import yuuki1293.pccard.PCCard;
 import java.util.List;
 import java.util.stream.Stream;
 
-@Mixin(value = Ae2PatternTerminalHandler.class, remap = false)
-public abstract class Ae2PatternTerminalHandlerMixin {
+@Mixin(value = EmiStackHelper.class, remap = false)
+public abstract class EmiStackHelperMixin {
     @Inject(method = "ofInputs", at = @At("RETURN"), cancellable = true)
     private static void ofInputs(EmiRecipe emiRecipe, CallbackInfoReturnable<List<List<GenericStack>>> cir) {
-        if(!ConfigClient.jeiIntegration) return; // config
+        if(ConfigClient.JEI_INTEGRATION.isFalse()) return; // config
 
         var inputs = cir.getReturnValue();
 
         var circuitStack = GTItems.PROGRAMMED_CIRCUIT.asStack();
         var circuit = emiRecipe.getCatalysts().stream()
             .filter(ei -> {
-                var stack = ei.getEmiStacks().get(0).getItemStack();
+                var stack = ei.getEmiStacks().getFirst().getItemStack();
                 return ItemStack.isSameItem(stack, circuitStack);
             }).findFirst();
 
         if (circuit.isPresent()) {
-            var stack = GenericStack.fromItemStack(circuit.get().getEmiStacks().get(0).getItemStack());
+            var stack = GenericStack.fromItemStack(circuit.get().getEmiStacks().getFirst().getItemStack());
             if (stack == null) {
                 PCCard.LOGGER.error("can't find generic stack");
             } else {
