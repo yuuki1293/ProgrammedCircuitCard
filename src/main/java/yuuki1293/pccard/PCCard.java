@@ -18,7 +18,6 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -38,14 +37,12 @@ public class PCCard {
         .registerComponentType("recipe_circuit", builder -> builder.persistent(Codec.INT));
 
     public PCCard(IEventBus modEventBus, ModContainer modContainer) {
-        modEventBus.addListener(this::onBuildCreativeModeTabContentsEvent);
-        modEventBus.addListener(this::commonSetup);
-
         ITEMS.register(modEventBus);
         modEventBus.register(this);
         modContainer.registerConfig(ModConfig.Type.CLIENT, ConfigClient.SPEC);
     }
 
+    @SubscribeEvent
     private void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(this::postRegistrationInitialization).whenComplete((res, err) -> {
             if (err != null) {
