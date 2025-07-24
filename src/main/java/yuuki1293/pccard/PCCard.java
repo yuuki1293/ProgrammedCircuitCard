@@ -61,9 +61,9 @@ public class PCCard {
 
         // Extended AE Pattern Provider
         {
-            var exPatternProviderGroup = "gui.expatternprovider.ex_pattern_provider";
-            var resourceExBE = ResourceLocation.tryBuild("expatternprovider", "ex_pattern_provider");
-            var resourceExPart = ResourceLocation.tryBuild("expatternprovider", "ex_pattern_provider_part");
+            var exPatternProviderGroup = "gui.extendedae.ex_pattern_provider";
+            var resourceExBE = ResourceLocation.tryBuild("extendedae", "ex_pattern_provider");
+            var resourceExPart = ResourceLocation.tryBuild("extendedae", "ex_pattern_provider_part");
             var patternProviderExBE = BuiltInRegistries.BLOCK.getOptional(resourceExBE);
             var patternProviderExPart = BuiltInRegistries.ITEM.getOptional(resourceExPart);
             if (patternProviderExBE.isPresent() && patternProviderExPart.isPresent()) {
