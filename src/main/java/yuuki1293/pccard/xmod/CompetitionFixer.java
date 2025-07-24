@@ -7,6 +7,8 @@ import net.neoforged.neoforgespi.language.IModInfo;
 import java.util.function.Supplier;
 
 public class CompetitionFixer {
+    public static final String appFluxUpgradeField = "af_upgrades";
+
     public static Supplier<Boolean> existAppflux = Suppliers.memoize(CompetitionFixer::hasPatternProviderUpgrade);
 
     private static boolean hasPatternProviderUpgrade() {

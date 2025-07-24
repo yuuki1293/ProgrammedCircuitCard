@@ -28,7 +28,7 @@ public abstract class PatternProviderLogicMixinHP {
         if (CompetitionFixer.existAppflux.get()) {
             try {
                 @SuppressWarnings("JavaReflectionMemberAccess")
-                var upgradeField = PatternProviderLogic.class.getDeclaredField("af_$upgrades");
+                var upgradeField = PatternProviderLogic.class.getDeclaredField(CompetitionFixer.appFluxUpgradeField);
                 upgradeField.setAccessible(true);
                 upgradeField.set(this, UpgradeInventories.forMachine(host.getTerminalIcon().getItem(), 2, this::pCCardHP$upgradesChange));
             } catch (Exception e) {
