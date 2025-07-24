@@ -128,4 +128,8 @@ public class PCCard {
             LOGGER.debug("Add Programmed Circuit Card in AE2 creative tab");
         }
     }
+
+    public static ResourceLocation id(String id) {
+        return ResourceLocation.fromNamespaceAndPath(MODID, id);
+    }
 }
