@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "yuuki1293.pccard.mixins",
-  "refmap": "mixins.pccard.refmap.json",
+  "refmap": "pccard.mixins.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "AdvCraftingCPULogicMixin",
