@@ -19,6 +19,7 @@
     "common.MixinAe2PatternTerminalHandler",
     "common.MixinAEProcessingPattern",
     "common.MixinCraftingCPULogic",
+    "common.MixinEmiStackHelper",
     "common.MixinExecutingCraftingJob",
     "common.MixinGenericEntryStackHelperJEI",
     "common.MixinPatternDetailsHelper",

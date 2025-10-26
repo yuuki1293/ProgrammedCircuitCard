@@ -139,7 +139,7 @@ dependencies {
     implementation fg.deobf("appeng:appliedenergistics2-forge:${ae2_version}") // AE2
     implementation fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") // JEI
     compileOnly fg.deobf("dev.emi:emi-forge:${emi_version}:api") // EMI
-//    runtimeOnly fg.deobf("dev.emi:emi-forge:${emi_version}") // EMI
+    runtimeOnly fg.deobf("dev.emi:emi-forge:${emi_version}") // EMI
     compileOnly fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}") // Registrate
     compileOnly fg.deobf("com.lowdragmc.ldlib:ldlib-forge-${minecraft_version}:${ldlib_version}") { transitive = false } // ldlib
     compileOnly fg.deobf("curse.maven:advancedae-1084104:${adae_version}") // Advanced AE
