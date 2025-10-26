@@ -1,6 +1,13 @@
 # 1.20.1 Changelog
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
+## [1.2.3] - 2025-10-26
+### Added
+ - Support AE2 15.4.10 & EMI
+
+### Fixed
+ - Fixed trying to read unloaded configs (by @pedroksl)
+
 ## [1.2.2] - 2025-10-16
 ### Fixed
  - Fixed a bug where circuit numbers were not set in certain environments.
