@@ -24,17 +24,7 @@ public class ConfigClient {
         spec = builder.build();
     }
 
-    public static boolean jeiIntegration;
-
-    @SubscribeEvent
-    static void onLoad(final ModConfigEvent.Loading event)
-    {
-        jeiIntegration = JEI_INTEGRATION.get();
-    }
-
-    @SubscribeEvent
-    static void onReLoad(final ModConfigEvent.Reloading event)
-    {
-        jeiIntegration = JEI_INTEGRATION.get();
+    public static boolean getJeiIntegration() {
+        return JEI_INTEGRATION.get();
     }
 }

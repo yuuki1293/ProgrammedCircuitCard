@@ -27,7 +27,7 @@ public abstract class MixinGenericEntryStackHelperJEI {
 
     @Inject(method = "ofInputs", at = @At("TAIL"), cancellable = true)
     private static void ofInputs(IRecipeSlotsView recipeLayout, CallbackInfoReturnable<List<List<GenericStack>>> cir) {
-        if (!ConfigClient.jeiIntegration) return; // config
+        if (!ConfigClient.getJeiIntegration()) return; // config
 
         var inputs = cir.getReturnValue();
 
