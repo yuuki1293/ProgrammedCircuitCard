@@ -110,7 +110,7 @@ public class PatternProviderLogicImpl {
             int depth = current.getB();
 
             // Skip if already visited or if depth exceeds configured limit
-            if (visited.contains(posDir) || depth > ConfigCommon.searchDepth) {
+            if (visited.contains(posDir) || depth > ConfigCommon.getSearchDepth()) {
                 continue;
             }
 

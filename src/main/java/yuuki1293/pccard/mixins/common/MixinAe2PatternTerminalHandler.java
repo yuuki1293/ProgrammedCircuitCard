@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 public abstract class MixinAe2PatternTerminalHandler {
     @Inject(method = "ofInputs", at = @At("RETURN"), cancellable = true)
     private static void ofInputs(EmiRecipe emiRecipe, CallbackInfoReturnable<List<List<GenericStack>>> cir) {
-        if(!ConfigClient.jeiIntegration) return; // config
+        if(!ConfigClient.getJeiIntegration()) return; // config
 
         var inputs = cir.getReturnValue();
 

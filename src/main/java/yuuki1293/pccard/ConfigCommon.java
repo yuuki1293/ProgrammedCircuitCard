@@ -25,17 +25,7 @@ public class ConfigCommon {
         spec = builder.build();
     }
 
-    public static int searchDepth;
-
-    @SubscribeEvent
-    static void onLoad(final ModConfigEvent.Loading event)
-    {
-        searchDepth = SEARCH_DEPTH.get();
-    }
-
-    @SubscribeEvent
-    static void onReLoad(final ModConfigEvent.Reloading event)
-    {
-        searchDepth = SEARCH_DEPTH.get();
+    public static int getSearchDepth() {
+        return SEARCH_DEPTH.get();
     }
 }
