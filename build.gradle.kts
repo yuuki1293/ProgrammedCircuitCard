@@ -111,6 +111,10 @@ mixin {
 
 repositories {
     maven {
+        name = "Sponge / Mixin"
+        url = uri("https://repo.spongepowered.org/repository/maven-public/")
+    }
+    maven {
         name = "GTCEu Maven"
         url = uri("https://maven.gtceu.com")
         content {
