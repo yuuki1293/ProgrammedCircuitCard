@@ -361,6 +361,7 @@ publisher {
     apiKeys {
         curseforge(System.getenv("CURSEFORGE_TOKEN"))
         modrinth(System.getenv("MODRINTH_TOKEN"))
+        github(System.getenv("GITHUB_TOKEN"))
     }
 
     setReleaseType(ReleaseType.RELEASE)
@@ -390,7 +391,7 @@ publisher {
     }
 
     modrinthDepends {
-        required("applied-energistics-2")
+        required("ae2")
         required("gregtechceu-modern")
         required("guideme")
         optional("extended-ae")
@@ -400,5 +401,14 @@ publisher {
         optional("mega")
         optional("jei")
         optional("emi")
+    }
+
+    github {
+        repo("yuuki1293/ProgrammedCircuitCard")
+        tag("v${mcVersion}-${project.version}")
+        createTag(true)
+        createRelease(true)
+        updateRelease(true)
+        target("1.20.1")
     }
 }
