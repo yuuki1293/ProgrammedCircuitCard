@@ -256,7 +256,7 @@ val generateModMetadata by tasks.registering(ProcessResources::class) {
 
     // GuideME guide
     from("guidebook") {
-        into("assets/ae2peat/guides/ae2peat/guide")
+        into("assets/pccard/guides/pccard/guide")
     }
 }
 
