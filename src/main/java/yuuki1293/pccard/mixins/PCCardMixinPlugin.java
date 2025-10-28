@@ -27,14 +27,6 @@ public class PCCardMixinPlugin implements IMixinConfigPlugin {
     private static Set<String> jvmArguments = Set.of();
 
     static {
-        LOAD_WHEN_MOD_PRESENT.put("expandedae", Set.of(
-            "yuuki1293.pccard.mixins.expandedae.MixinExpAppFluxSavePushDirection",
-            "yuuki1293.pccard.mixins.expandedae.MixinExpSavePushDirection"
-        ));
-        EXCLUDE_WHEN_MOD_PRESENT.put("expandedae", Set.of(
-            "yuuki1293.pccard.mixins.common.MixinSavePushDirection"
-        ));
-
         LOAD_WHEN_MOD_PRESENT.put("appflux", Set.of(
             "yuuki1293.pccard.mixins.appflux.MixinAppFluxAddUpgradeSlot",
             "yuuki1293.pccard.mixins.appflux.MixinAppFluxAdvAddUpgradeSlot"
