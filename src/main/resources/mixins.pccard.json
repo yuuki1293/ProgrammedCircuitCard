@@ -27,8 +27,7 @@
     "common.MixinPatternProviderLogic",
     "common.MixinPatternProviderLogicHost",
     "common.MixinPatternProviderMenu",
-    "common.MixinSavePushDirection",
-    "expandedae.MixinExpSavePushDirection"
+    "common.MixinSavePushDirection"
   ],
   "client": [
     "advanced_ae.MixinAdvPatternProviderScreen",
