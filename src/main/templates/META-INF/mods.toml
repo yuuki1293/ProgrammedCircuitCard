@@ -1,0 +1,14 @@
+modLoader="${mod_loader}"
+loaderVersion = "${mod_loader_version_range}"
+license = "${license}"
+issueTrackerURL="${issue_tracker_url}"
+logoFile="${logo_file}"
+
+[[mods]]
+modId = "${mod_id}"
+version = "${version}"
+displayName = "${mod_name}"
+displayURL="${display_url}"
+authors = "${mod_author}"
+description = '''${description}'''
+${dependencies}

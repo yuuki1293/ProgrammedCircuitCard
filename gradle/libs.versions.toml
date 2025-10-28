@@ -1,0 +1,72 @@
+[versions]
+plugin_kotlin = "2.0.0"
+plugin_moddev = "2.0.+"
+plugin_modPublisher = "2.1.+"
+plugin_changelog = "2.2.1"
+
+minecraft = "1.20.1"
+forge = "47.4.0"
+parchmentmc = "2023.09.03"
+mixin = "0.8.5"
+mixinExtras = "0.4.1"
+mixinSquared = "0.3.5-beta.2"
+
+gtm = "7.1.4"
+gtm_range = "1.6"
+ae2 = "15.4.10"
+ae2_range = "15"
+jei = "15.20.0.112"
+emi = "1.1.22+1.20.1"
+registrate = "MC1.20-1.3.3"
+ldlib = "1.0.31"
+adae = "6757852"
+geckolib = "6789487"
+exae = "6870350"
+glodium = "5226922"
+appflux = "6755986"
+mae2 = "6827727"
+jade = "6855440"
+guideme = "20.1.11"
+guideme_range = "20.1.3"
+expandedae = "7043985"
+expandedae_range = "1.2.5"
+megacells = "6175008"
+cloth_config = "11.1.136"
+wirelessterminals = "5217955"
+curios = "5.14.1+1.20.1"
+architectury_api = "5137938"
+
+[libraries]
+mixin = { module = "org.spongepowered:mixin", version.ref = "mixin" }
+mixinExtrasCommon = { module = "io.github.llamalad7:mixinextras-common", version.ref = "mixinExtras" }
+mixinExtrasForge = { module = "io.github.llamalad7:mixinextras-forge", version.ref = "mixinExtras" }
+mixinSquaredCommon = { module = "com.github.bawnorton.mixinsquared:mixinsquared-common", version.ref = "mixinSquared" }
+mixinSquaredForge = { module = "com.github.bawnorton.mixinsquared:mixinsquared-forge", version.ref = "mixinSquared" }
+
+gtm = { module = "com.gregtechceu.gtceu:gtceu-1.20.1", version.ref = "gtm" }
+ae2 = { module = "appeng:appliedenergistics2-forge", version.ref = "ae2" }
+jei = { module = "mezz.jei:jei-1.20.1-forge", version.ref = "jei" }
+emi = { module = "dev.emi:emi-forge", version.ref = "emi" }
+registrate = { module = "com.tterrag.registrate:Registrate", version.ref = "registrate" }
+ldlib = { module = "com.lowdragmc.ldlib:ldlib-forge-1.20.1", version.ref = "ldlib" }
+adae = { module = "curse.maven:advancedae-1084104", version.ref = "adae" }
+geckolib = { module = "curse.maven:geckolib-388172", version.ref = "geckolib" }
+exae = { module = "curse.maven:extendedae-892005", version.ref = "exae" }
+glodium = { module = "curse.maven:glodium-957920", version.ref = "glodium" }
+appflux = { module = "curse.maven:applied-flux-965012", version.ref = "appflux" }
+mae2 = { module = "curse.maven:mae2-1028068", version.ref = "mae2" }
+jade = { module = "curse.maven:jade-324717", version.ref = "jade" }
+guideme = { module = "org.appliedenergistics:guideme", version.ref = "guideme" }
+expandedae = { module = "curse.maven:expanded-ae-1213351", version.ref = "expandedae" }
+megacells = { module = "curse.maven:mega-cells-622112", version.ref = "megacells" }
+cloth_config = { module = "me.shedaniel.cloth:cloth-config-forge", version.ref = "cloth_config" }
+wirelessterminals = { module = "curse.maven:applied-energistics-2-wireless-terminals-459929", version.ref = "wirelessterminals" }
+curios = { module = "top.theillusivec4.curios:curios-forge", version.ref = "curios" }
+architectury_api = { module = "curse.maven:architectury-api-419699", version.ref = "architectury_api" }
+
+[plugins]
+kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "plugin_kotlin" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "plugin_kotlin" }
+moddev = { id = "net.neoforged.moddev.legacyforge", version.ref = "plugin_moddev" }
+modPublisher = { id = "com.hypherionmc.modutils.modpublisher", version.ref = "plugin_modPublisher" }
+changelog = { id = "org.jetbrains.changelog", version.ref = "plugin_changelog"}
