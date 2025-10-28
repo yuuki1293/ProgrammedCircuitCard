@@ -406,6 +406,7 @@ publisher {
     github {
         repo("yuuki1293/ProgrammedCircuitCard")
         tag("v${mcVersion}-${project.version}")
+        displayName("[$mcVersion] v${project.version}")
         createTag(true)
         createRelease(true)
         updateRelease(true)
