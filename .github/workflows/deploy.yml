@@ -1,0 +1,48 @@
+# A deployment template that works out of the box
+# It supports these objectives:
+# - Deploy to CurseForge (Upload Job) [Secrets: CURSEFORGE_TOKEN]
+# - Deploy to Modrinth (Upload Job) [Secrets: MODRINTH_TOKEN]
+# - Deploy to Github Release (Upload Job) [Secrets: GITHUB_API_KEY]
+
+name: Deploy
+
+on:
+  push:
+    tags:
+      - 'v1.[0-9]+.[0-9]+-[0-9]+.[0-9]+.[0-9]+'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Grant Execute Permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Read gradle.properties
+        uses: BrycensRanch/read-properties-action@v1
+        id: properties
+        with:
+          file: gradle.properties
+          all: true
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Publish
+        uses: gradle/gradle-build-action@v2
+        env:
+          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          arguments: publishMod
