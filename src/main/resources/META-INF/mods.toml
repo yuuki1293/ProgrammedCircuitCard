@@ -38,3 +38,9 @@ description='''${mod_description}'''
     versionRange="${guideme_version_range}"
     ordering="NONE"
     side="CLIENT"
+[[dependencies.${mod_id}]]
+    modId="expandedae"
+    mandatory=false
+    versionRange="${expanded_ae_version_range}"
+    ordering="NONE"
+    side="BOTH"
