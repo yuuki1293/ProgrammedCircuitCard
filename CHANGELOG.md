@@ -1,6 +1,10 @@
 # 1.20.1 Changelog
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
+## [Unreleased]
+### Changed
+ - Compatible with Expanded AE 1.2.5 and later. (by @ko-lja)
+
 ## [1.2.3] - 2025-10-26
 ### Added
  - Support AE2 15.4.10 & EMI
