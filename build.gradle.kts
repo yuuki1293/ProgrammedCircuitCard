@@ -229,7 +229,7 @@ val modDependencies = listOf(
     ModDep("gtceu", libs.versions.gtm.range.get()),
     ModDep("ae2", libs.versions.ae2.range.get()),
     ModDep("guideme", libs.versions.guideme.range.get()),
-    ModDep("expandedae", libs.versions.expandedae.range.get())
+    ModDep("expandedae", libs.versions.expandedae.range.get(), mandatory = false)
 )
 
 val generateModMetadata by tasks.registering(ProcessResources::class) {
