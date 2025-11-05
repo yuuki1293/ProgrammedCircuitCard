@@ -1,6 +1,10 @@
 # 1.20.1 Changelog
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
+## [1.2.5] - 2025-11-06
+### Fixed
+ - Expanded AE makes optional.
+
 ## [1.2.4] - 2025-10-28
 ### Changed
  - Compatible with Expanded AE 1.2.5 and later. (by @ko-lja)
