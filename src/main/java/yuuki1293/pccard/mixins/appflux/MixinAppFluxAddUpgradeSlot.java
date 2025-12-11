@@ -19,17 +19,15 @@ public abstract class MixinAppFluxAddUpgradeSlot implements IUpgradeableObject {
     /**
      * expand upgrades slot
      */
-    @TargetHandler(
-        mixin = "com.glodblock.github.appflux.mixins.MixinPatternProviderLogic",
-        name = "initUpgrade"
-    )
+    @TargetHandler(mixin = "com.glodblock.github.appflux.mixins.MixinPatternProviderLogic", name = "initUpgrade")
     @ModifyArg(
-        method = "@MixinSquared:Handler",
-        at = @At(
-            value = "INVOKE",
-            target = "Lappeng/api/upgrades/UpgradeInventories;forMachine(Lnet/minecraft/world/level/ItemLike;ILappeng/api/upgrades/MachineUpgradesChanged;)Lappeng/api/upgrades/IUpgradeInventory;")
-    )
-    private int modifyMaxUpgrades(int maxUpgrades){
+            method = "@MixinSquared:Handler",
+            at =
+                    @At(
+                            value = "INVOKE",
+                            target =
+                                    "Lappeng/api/upgrades/UpgradeInventories;forMachine(Lnet/minecraft/world/level/ItemLike;ILappeng/api/upgrades/MachineUpgradesChanged;)Lappeng/api/upgrades/IUpgradeInventory;"))
+    private int modifyMaxUpgrades(int maxUpgrades) {
         return maxUpgrades + 1;
     }
 
@@ -37,13 +35,9 @@ public abstract class MixinAppFluxAddUpgradeSlot implements IUpgradeableObject {
      * update patterns when set/unset pccard
      */
     @TargetHandler(
-        mixin = "com.glodblock.github.appflux.mixins.MixinPatternProviderLogic",
-        name = "af_$onUpgradesChanged"
-    )
-    @Inject(
-        method = "@MixinSquared:Handler",
-        at = @At("RETURN")
-    )
+            mixin = "com.glodblock.github.appflux.mixins.MixinPatternProviderLogic",
+            name = "af_$onUpgradesChanged")
+    @Inject(method = "@MixinSquared:Handler", at = @At("RETURN"))
     @Unique
     private void af_$onUpgradesChanged(CallbackInfo ci) {
         updatePatterns();

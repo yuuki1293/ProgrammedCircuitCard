@@ -1,10 +1,5 @@
 package yuuki1293.pccard.mixins;
 
-import net.minecraftforge.fml.loading.FMLLoader;
-import org.objectweb.asm.tree.ClassNode;
-import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
-import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
-
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.util.HashMap;
@@ -12,6 +7,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import net.minecraftforge.fml.loading.FMLLoader;
+import org.objectweb.asm.tree.ClassNode;
+import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
+import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
 /**
  * Controls load/unloading of Mixin classes.
@@ -27,31 +26,34 @@ public class PCCardMixinPlugin implements IMixinConfigPlugin {
     private static Set<String> jvmArguments = Set.of();
 
     static {
-        LOAD_WHEN_MOD_PRESENT.put("appflux", Set.of(
-            "yuuki1293.pccard.mixins.appflux.MixinAppFluxAddUpgradeSlot",
-            "yuuki1293.pccard.mixins.appflux.MixinAppFluxAdvAddUpgradeSlot"
-        ));
-        EXCLUDE_WHEN_MOD_PRESENT.put("appflux", Set.of(
-            "yuuki1293.pccard.mixins.common.MixinAddUpgradeSlot",
-            "yuuki1293.pccard.mixins.common.MixinPatternProviderScreen",
-            "yuuki1293.pccard.mixins.common.MixinPatternProviderMenu",
-            "yuuki1293.pccard.mixins.common.MixinPatternProviderLogicHost",
-            "yuuki1293.pccard.mixins.advanced_ae.MixinAdvAddUpgradeSlot",
-            "yuuki1293.pccard.mixins.advanced_ae.MixinSmallAdvPatternProviderScreen",
-            "yuuki1293.pccard.mixins.advanced_ae.MixinAdvPatternProviderMenu",
-            "yuuki1293.pccard.mixins.advanced_ae.MixinAdvPatternProviderLogicHost"
-        ));
+        LOAD_WHEN_MOD_PRESENT.put(
+                "appflux",
+                Set.of(
+                        "yuuki1293.pccard.mixins.appflux.MixinAppFluxAddUpgradeSlot",
+                        "yuuki1293.pccard.mixins.appflux.MixinAppFluxAdvAddUpgradeSlot"));
+        EXCLUDE_WHEN_MOD_PRESENT.put(
+                "appflux",
+                Set.of(
+                        "yuuki1293.pccard.mixins.common.MixinAddUpgradeSlot",
+                        "yuuki1293.pccard.mixins.common.MixinPatternProviderScreen",
+                        "yuuki1293.pccard.mixins.common.MixinPatternProviderMenu",
+                        "yuuki1293.pccard.mixins.common.MixinPatternProviderLogicHost",
+                        "yuuki1293.pccard.mixins.advanced_ae.MixinAdvAddUpgradeSlot",
+                        "yuuki1293.pccard.mixins.advanced_ae.MixinSmallAdvPatternProviderScreen",
+                        "yuuki1293.pccard.mixins.advanced_ae.MixinAdvPatternProviderMenu",
+                        "yuuki1293.pccard.mixins.advanced_ae.MixinAdvPatternProviderLogicHost"));
 
-        LOAD_WHEN_MOD_PRESENT.put("advanced_ae", Set.of(
-            "yuuki1293.pccard.mixins.advanced_ae.MixinAdvAddUpgradeSlot",
-            "yuuki1293.pccard.mixins.advanced_ae.MixinAdvCraftingCPULogic",
-            "yuuki1293.pccard.mixins.advanced_ae.MixinAdvPatternProviderLogic",
-            "yuuki1293.pccard.mixins.advanced_ae.MixinAdvPatternProviderLogicHost",
-            "yuuki1293.pccard.mixins.advanced_ae.MixinAdvPatternProviderMenu",
-            "yuuki1293.pccard.mixins.advanced_ae.MixinAdvPatternProviderScreen",
-            "yuuki1293.pccard.mixins.advanced_ae.MixinAdvProcessingPattern",
-            "yuuki1293.pccard.mixins.advanced_ae.MixinSmallAdvPatternProviderScreen"
-        ));
+        LOAD_WHEN_MOD_PRESENT.put(
+                "advanced_ae",
+                Set.of(
+                        "yuuki1293.pccard.mixins.advanced_ae.MixinAdvAddUpgradeSlot",
+                        "yuuki1293.pccard.mixins.advanced_ae.MixinAdvCraftingCPULogic",
+                        "yuuki1293.pccard.mixins.advanced_ae.MixinAdvPatternProviderLogic",
+                        "yuuki1293.pccard.mixins.advanced_ae.MixinAdvPatternProviderLogicHost",
+                        "yuuki1293.pccard.mixins.advanced_ae.MixinAdvPatternProviderMenu",
+                        "yuuki1293.pccard.mixins.advanced_ae.MixinAdvPatternProviderScreen",
+                        "yuuki1293.pccard.mixins.advanced_ae.MixinAdvProcessingPattern",
+                        "yuuki1293.pccard.mixins.advanced_ae.MixinSmallAdvPatternProviderScreen"));
     }
 
     @Override
@@ -59,15 +61,14 @@ public class PCCardMixinPlugin implements IMixinConfigPlugin {
         jvmArguments = gatherJvmArguments();
         if (shouldSkipAddUpgradesSlotMixins()) {
             EXCLUDE_ALWAYS.addAll(Set.of(
-                "yuuki1293.pccard.mixins.common.MixinAddUpgradeSlot",
-                "yuuki1293.pccard.mixins.common.MixinPatternProviderScreen",
-                "yuuki1293.pccard.mixins.common.MixinPatternProviderMenu",
-                "yuuki1293.pccard.mixins.common.MixinPatternProviderLogicHost",
-                "yuuki1293.pccard.mixins.advanced_ae.MixinAdvAddUpgradeSlot",
-                "yuuki1293.pccard.mixins.advanced_ae.MixinSmallAdvPatternProviderScreen",
-                "yuuki1293.pccard.mixins.advanced_ae.MixinAdvPatternProviderMenu",
-                "yuuki1293.pccard.mixins.advanced_ae.MixinAdvPatternProviderLogicHost"
-            ));
+                    "yuuki1293.pccard.mixins.common.MixinAddUpgradeSlot",
+                    "yuuki1293.pccard.mixins.common.MixinPatternProviderScreen",
+                    "yuuki1293.pccard.mixins.common.MixinPatternProviderMenu",
+                    "yuuki1293.pccard.mixins.common.MixinPatternProviderLogicHost",
+                    "yuuki1293.pccard.mixins.advanced_ae.MixinAdvAddUpgradeSlot",
+                    "yuuki1293.pccard.mixins.advanced_ae.MixinSmallAdvPatternProviderScreen",
+                    "yuuki1293.pccard.mixins.advanced_ae.MixinAdvPatternProviderMenu",
+                    "yuuki1293.pccard.mixins.advanced_ae.MixinAdvPatternProviderLogicHost"));
         }
     }
 
@@ -118,8 +119,7 @@ public class PCCardMixinPlugin implements IMixinConfigPlugin {
     }
 
     @Override
-    public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) {
-    }
+    public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) {}
 
     @Override
     public List<String> getMixins() {
@@ -127,12 +127,10 @@ public class PCCardMixinPlugin implements IMixinConfigPlugin {
     }
 
     @Override
-    public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
-    }
+    public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {}
 
     @Override
-    public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
-    }
+    public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {}
 
     private static Set<String> gatherJvmArguments() {
         RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();

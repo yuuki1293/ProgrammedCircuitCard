@@ -20,14 +20,23 @@ public class MixinAdvPatternProviderMenu extends AEBaseMenu implements IPatternP
     @Unique
     private IUpgradeableObject pCCard$host;
 
-    @Unique ToolboxMenu pCCard$toolbox;
+    @Unique
+    ToolboxMenu pCCard$toolbox;
 
     public MixinAdvPatternProviderMenu(MenuType<?> menuType, int id, Inventory playerInventory, Object host) {
         super(menuType, id, playerInventory, host);
     }
 
-    @Inject(method = "<init>(Lnet/minecraft/world/inventory/MenuType;ILnet/minecraft/world/entity/player/Inventory;Lnet/pedroksl/advanced_ae/common/logic/AdvPatternProviderLogicHost;)V", at = @At("TAIL"))
-    private void init(MenuType<?> menuType, int id, Inventory playerInventory, AdvPatternProviderLogicHost host, CallbackInfo ci) {
+    @Inject(
+            method =
+                    "<init>(Lnet/minecraft/world/inventory/MenuType;ILnet/minecraft/world/entity/player/Inventory;Lnet/pedroksl/advanced_ae/common/logic/AdvPatternProviderLogicHost;)V",
+            at = @At("TAIL"))
+    private void init(
+            MenuType<?> menuType,
+            int id,
+            Inventory playerInventory,
+            AdvPatternProviderLogicHost host,
+            CallbackInfo ci) {
         this.pCCard$host = (IUpgradeableObject) host;
         this.pCCard$toolbox = new ToolboxMenu(this);
         this.pCCard$setupUpgrades();

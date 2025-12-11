@@ -15,10 +15,9 @@ public class ConfigCommon {
         builder.comment("* Programmed Circuit Card Common Config *");
         builder.comment("*****************************************");
 
-        SEARCH_DEPTH = builder
-            .comment("Maximum depth for searching connected machines in subnet tree.")
-            .comment("Higher values allow deeper traversal but may impact performance.")
-            .defineInRange("search_depth", 5, 0, 100);
+        SEARCH_DEPTH = builder.comment("Maximum depth for searching connected machines in subnet tree.")
+                .comment("Higher values allow deeper traversal but may impact performance.")
+                .defineInRange("search_depth", 5, 0, 100);
 
         spec = builder.build();
     }

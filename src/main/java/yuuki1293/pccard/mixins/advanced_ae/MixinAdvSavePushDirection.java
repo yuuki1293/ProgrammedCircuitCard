@@ -14,14 +14,28 @@ public abstract class MixinAdvSavePushDirection {
     @Unique
     private static Direction pCCard$sendDirection;
 
-    @Inject(method = "pushPattern", at = @At(value = "INVOKE", target = "Lnet/pedroksl/advanced_ae/common/logic/AdvPatternProviderLogic;onPushPatternSuccess(Lappeng/api/crafting/IPatternDetails;)V"), require = 2)
+    @Inject(
+            method = "pushPattern",
+            at =
+                    @At(
+                            value = "INVOKE",
+                            target =
+                                    "Lnet/pedroksl/advanced_ae/common/logic/AdvPatternProviderLogic;onPushPatternSuccess(Lappeng/api/crafting/IPatternDetails;)V"),
+            require = 2)
     private void saveDirection(CallbackInfoReturnable<Boolean> cir, @Local(ordinal = 0) Direction direction) {
         pCCard$sendDirection = direction;
     }
 
-    @Inject(method = "pushInputsDirectionally", at = @At(value = "INVOKE", target = "Lnet/pedroksl/advanced_ae/common/logic/AdvPatternProviderLogic;onPushPatternSuccess(Lappeng/api/crafting/IPatternDetails;)V"), require = 1)
-    private void saveDirectionDirectionally(CallbackInfoReturnable<Boolean> cir, @Local(ordinal = 0) Direction direction) {
+    @Inject(
+            method = "pushInputsDirectionally",
+            at =
+                    @At(
+                            value = "INVOKE",
+                            target =
+                                    "Lnet/pedroksl/advanced_ae/common/logic/AdvPatternProviderLogic;onPushPatternSuccess(Lappeng/api/crafting/IPatternDetails;)V"),
+            require = 1)
+    private void saveDirectionDirectionally(
+            CallbackInfoReturnable<Boolean> cir, @Local(ordinal = 0) Direction direction) {
         pCCard$sendDirection = direction;
     }
 }
-

@@ -1,5 +1,7 @@
 package yuuki1293.pccard.impl;
 
+import static yuuki1293.pccard.NBTs.NBT_CIRCUIT;
+
 import appeng.api.crafting.IPatternDetails;
 import appeng.api.implementations.blockentities.ICraftingMachine;
 import appeng.api.networking.IGrid;
@@ -12,6 +14,11 @@ import com.gregtechceu.gtceu.api.machine.trait.NotifiableItemStackHandler;
 import com.gregtechceu.gtceu.common.data.GTItems;
 import com.gregtechceu.gtceu.common.item.IntCircuitBehaviour;
 import com.mojang.logging.LogUtils;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -19,19 +26,11 @@ import net.minecraft.util.Tuple;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.slf4j.Logger;
-import yuuki1293.pccard.wrapper.IPatternP2PTunnelLogicMixin;
-import yuuki1293.pccard.wrapper.IPatternProviderLogicMixin;
+import yuuki1293.pccard.ConfigCommon;
 import yuuki1293.pccard.TagUtils;
 import yuuki1293.pccard.wrapper.IAEPattern;
-import yuuki1293.pccard.ConfigCommon;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.LinkedList;
-import java.util.HashSet;
-
-import static yuuki1293.pccard.NBTs.NBT_CIRCUIT;
+import yuuki1293.pccard.wrapper.IPatternP2PTunnelLogicMixin;
+import yuuki1293.pccard.wrapper.IPatternProviderLogicMixin;
 
 public class PatternProviderLogicImpl {
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -81,7 +80,8 @@ public class PatternProviderLogicImpl {
         }
     }
 
-    private static void setInvNumber(NotifiableItemStackHandler inv, IAEPattern details) throws IndexOutOfBoundsException {
+    private static void setInvNumber(NotifiableItemStackHandler inv, IAEPattern details)
+            throws IndexOutOfBoundsException {
         var machineStack = GTItems.PROGRAMMED_CIRCUIT.asStack();
 
         var number = details.pCCard$getNumber();

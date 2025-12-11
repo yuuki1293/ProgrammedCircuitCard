@@ -15,9 +15,8 @@ public class ConfigClient {
         builder.comment("* Programmed Circuit Card Client Config *");
         builder.comment("*****************************************");
 
-        JEI_INTEGRATION = builder
-            .comment("Place a Programmed Circuit at the Pattern Encoding Terminal.")
-            .define("jei_integration", true);
+        JEI_INTEGRATION = builder.comment("Place a Programmed Circuit at the Pattern Encoding Terminal.")
+                .define("jei_integration", true);
 
         spec = builder.build();
     }

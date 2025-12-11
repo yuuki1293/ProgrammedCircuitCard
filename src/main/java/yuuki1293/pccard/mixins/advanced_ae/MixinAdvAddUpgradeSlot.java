@@ -4,6 +4,7 @@ import appeng.api.networking.IManagedGridNode;
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.api.upgrades.IUpgradeableObject;
 import appeng.api.upgrades.UpgradeInventories;
+import java.util.List;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogic;
@@ -15,8 +16,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.List;
 
 @Mixin(value = AdvPatternProviderLogic.class, remap = false)
 public abstract class MixinAdvAddUpgradeSlot implements IUpgradeableObject {
@@ -30,9 +29,14 @@ public abstract class MixinAdvAddUpgradeSlot implements IUpgradeableObject {
     @Unique
     private IUpgradeInventory pCCard$upgrades;
 
-    @Inject(method = "<init>(Lappeng/api/networking/IManagedGridNode;Lnet/pedroksl/advanced_ae/common/logic/AdvPatternProviderLogicHost;I)V", at = @At("TAIL"))
-    private void init(IManagedGridNode mainNode, AdvPatternProviderLogicHost host, int patternInventorySize, CallbackInfo ci) {
-        pCCard$upgrades = UpgradeInventories.forMachine(host.getTerminalIcon().getItem(), 1, this::pCCard$upgradesChange);
+    @Inject(
+            method =
+                    "<init>(Lappeng/api/networking/IManagedGridNode;Lnet/pedroksl/advanced_ae/common/logic/AdvPatternProviderLogicHost;I)V",
+            at = @At("TAIL"))
+    private void init(
+            IManagedGridNode mainNode, AdvPatternProviderLogicHost host, int patternInventorySize, CallbackInfo ci) {
+        pCCard$upgrades =
+                UpgradeInventories.forMachine(host.getTerminalIcon().getItem(), 1, this::pCCard$upgradesChange);
     }
 
     @Unique

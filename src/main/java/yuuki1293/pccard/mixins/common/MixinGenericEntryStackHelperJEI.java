@@ -3,6 +3,8 @@ package yuuki1293.pccard.mixins.common;
 import appeng.api.stacks.GenericStack;
 import appeng.integration.modules.jei.GenericEntryStackHelper;
 import com.gregtechceu.gtceu.common.data.GTItems;
+import java.util.List;
+import java.util.stream.Stream;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.RecipeIngredientRole;
@@ -14,9 +16,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import yuuki1293.pccard.ConfigClient;
 import yuuki1293.pccard.PCCard;
-
-import java.util.List;
-import java.util.stream.Stream;
 
 @Mixin(value = GenericEntryStackHelper.class, remap = false)
 public abstract class MixinGenericEntryStackHelperJEI {
@@ -33,11 +32,11 @@ public abstract class MixinGenericEntryStackHelperJEI {
 
         var circuitStack = GTItems.PROGRAMMED_CIRCUIT.asStack();
         var circuit = recipeLayout.getSlotViews(RecipeIngredientRole.CATALYST).stream()
-            .filter(ei -> {
-                var stack = ei.getDisplayedItemStack().orElse(ItemStack.EMPTY);
-                return ItemStack.isSameItem(stack, circuitStack);
-            })
-            .findFirst();
+                .filter(ei -> {
+                    var stack = ei.getDisplayedItemStack().orElse(ItemStack.EMPTY);
+                    return ItemStack.isSameItem(stack, circuitStack);
+                })
+                .findFirst();
 
         if (circuit.isPresent()) {
             var stack = ofSlot(circuit.get());

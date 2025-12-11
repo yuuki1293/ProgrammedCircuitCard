@@ -11,9 +11,15 @@ import yuuki1293.pccard.wrapper.IPatternProviderLogicMixin;
 
 @Mixin(value = PatternProviderLogic.class, remap = false)
 public abstract class MixinSavePushDirection implements IPatternProviderLogicMixin {
-    @Inject(method = "pushPattern", at = @At(value = "INVOKE", target = "Lappeng/helpers/patternprovider/PatternProviderLogic;onPushPatternSuccess(Lappeng/api/crafting/IPatternDetails;)V"), require = 2)
+    @Inject(
+            method = "pushPattern",
+            at =
+                    @At(
+                            value = "INVOKE",
+                            target =
+                                    "Lappeng/helpers/patternprovider/PatternProviderLogic;onPushPatternSuccess(Lappeng/api/crafting/IPatternDetails;)V"),
+            require = 2)
     private void saveDirection(CallbackInfoReturnable<Boolean> cir, @Local(ordinal = 0) Direction direction) {
         pCCard$setSendDirection(direction);
     }
 }
-

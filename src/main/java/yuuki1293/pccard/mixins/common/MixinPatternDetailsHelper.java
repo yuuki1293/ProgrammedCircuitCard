@@ -1,5 +1,7 @@
 package yuuki1293.pccard.mixins.common;
 
+import static yuuki1293.pccard.NBTs.NBT_CIRCUIT;
+
 import appeng.api.crafting.IPatternDetails;
 import appeng.api.crafting.PatternDetailsHelper;
 import appeng.api.stacks.AEItemKey;
@@ -13,20 +15,25 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import yuuki1293.pccard.wrapper.IAEPattern;
 
-import static yuuki1293.pccard.NBTs.NBT_CIRCUIT;
-
 @Mixin(value = PatternDetailsHelper.class, remap = false)
 public class MixinPatternDetailsHelper {
     /**
      * set pc number
      */
-    @Inject(method = "decodePattern(Lappeng/api/stacks/AEItemKey;Lnet/minecraft/world/level/Level;)Lappeng/api/crafting/IPatternDetails;", at = @At(value = "RETURN", ordinal = 0))
+    @Inject(
+            method =
+                    "decodePattern(Lappeng/api/stacks/AEItemKey;Lnet/minecraft/world/level/Level;)Lappeng/api/crafting/IPatternDetails;",
+            at = @At(value = "RETURN", ordinal = 0))
     private static void decodePattern(AEItemKey what, Level level, CallbackInfoReturnable<IPatternDetails> cir) {
         pCCard$decodePattern(what.getTag(), cir);
     }
 
-    @Inject(method = "decodePattern(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;Z)Lappeng/api/crafting/IPatternDetails;", at = @At(value = "RETURN", ordinal = 0))
-    private static void decodePattern(ItemStack stack, Level level, boolean autoRecovery, CallbackInfoReturnable<IPatternDetails> cir){
+    @Inject(
+            method =
+                    "decodePattern(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;Z)Lappeng/api/crafting/IPatternDetails;",
+            at = @At(value = "RETURN", ordinal = 0))
+    private static void decodePattern(
+            ItemStack stack, Level level, boolean autoRecovery, CallbackInfoReturnable<IPatternDetails> cir) {
         pCCard$decodePattern(stack.getTag(), cir);
     }
 

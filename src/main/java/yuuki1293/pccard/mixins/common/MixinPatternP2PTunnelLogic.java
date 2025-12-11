@@ -22,16 +22,29 @@ public abstract class MixinPatternP2PTunnelLogic implements IPatternP2PTunnelLog
     @Unique
     private Direction pCCard$lastDirection;
 
-    @Inject(method = "pushPattern", at = @At(value = "INVOKE", target = "Lappeng/api/implementations/blockentities/ICraftingMachine;pushPattern(Lappeng/api/crafting/IPatternDetails;[Lappeng/api/stacks/KeyCounter;Lnet/minecraft/core/Direction;)Z"))
-    public void pushPattern(CallbackInfoReturnable<Boolean> cir, @Local ICraftingMachine craftingMachine){
-        if(craftingMachine instanceof IPatternP2PTunnelLogicMixin patternP2PTunnelLogicMixin) {
+    @Inject(
+            method = "pushPattern",
+            at =
+                    @At(
+                            value = "INVOKE",
+                            target =
+                                    "Lappeng/api/implementations/blockentities/ICraftingMachine;pushPattern(Lappeng/api/crafting/IPatternDetails;[Lappeng/api/stacks/KeyCounter;Lnet/minecraft/core/Direction;)Z"))
+    public void pushPattern(CallbackInfoReturnable<Boolean> cir, @Local ICraftingMachine craftingMachine) {
+        if (craftingMachine instanceof IPatternP2PTunnelLogicMixin patternP2PTunnelLogicMixin) {
             this.pCCard$lastBlockPos = patternP2PTunnelLogicMixin.pCCard$getLastBlockPos();
             this.pCCard$lastDirection = patternP2PTunnelLogicMixin.pCCard$getLastDirection();
         }
     }
 
-    @Inject(method = "pushPattern", at = @At(value = "INVOKE", target = "Lappeng/api/crafting/IPatternDetails;pushInputsToExternalInventory([Lappeng/api/stacks/KeyCounter;Lappeng/api/crafting/IPatternDetails$PatternInputSink;)V"))
-    public void pushInputsToExternalInventory(CallbackInfoReturnable<Boolean> cir, @Local PatternP2PTunnelLogic.Target output){
+    @Inject(
+            method = "pushPattern",
+            at =
+                    @At(
+                            value = "INVOKE",
+                            target =
+                                    "Lappeng/api/crafting/IPatternDetails;pushInputsToExternalInventory([Lappeng/api/stacks/KeyCounter;Lappeng/api/crafting/IPatternDetails$PatternInputSink;)V"))
+    public void pushInputsToExternalInventory(
+            CallbackInfoReturnable<Boolean> cir, @Local PatternP2PTunnelLogic.Target output) {
         this.pCCard$lastBlockPos = output.pos();
         this.pCCard$lastDirection = output.side();
     }

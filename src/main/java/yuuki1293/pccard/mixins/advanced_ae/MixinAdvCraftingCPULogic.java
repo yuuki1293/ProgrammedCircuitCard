@@ -11,7 +11,13 @@ import yuuki1293.pccard.wrapper.IPatternProviderLogicMixin;
 
 @Mixin(value = AdvCraftingCPULogic.class, remap = false)
 public class MixinAdvCraftingCPULogic {
-    @Redirect(method = "executeCrafting", at = @At(value = "INVOKE", target = "Lappeng/api/networking/crafting/ICraftingProvider;pushPattern(Lappeng/api/crafting/IPatternDetails;[Lappeng/api/stacks/KeyCounter;)Z"))
+    @Redirect(
+            method = "executeCrafting",
+            at =
+                    @At(
+                            value = "INVOKE",
+                            target =
+                                    "Lappeng/api/networking/crafting/ICraftingProvider;pushPattern(Lappeng/api/crafting/IPatternDetails;[Lappeng/api/stacks/KeyCounter;)Z"))
     private boolean pushPattern(ICraftingProvider provider, IPatternDetails patternDetails, KeyCounter[] keyCounters) {
         if (provider.pushPattern(patternDetails, keyCounters)) {
             if (provider instanceof IPatternProviderLogicMixin logicMixin)

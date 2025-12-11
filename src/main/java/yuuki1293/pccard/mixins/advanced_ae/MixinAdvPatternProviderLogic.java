@@ -2,7 +2,7 @@ package yuuki1293.pccard.mixins.advanced_ae;
 
 import appeng.api.crafting.IPatternDetails;
 import appeng.api.upgrades.IUpgradeableObject;
-import com.llamalad7.mixinextras.sugar.Local;
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
@@ -15,14 +15,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import yuuki1293.pccard.wrapper.IPatternProviderLogicMixin;
 import yuuki1293.pccard.PCCard;
 import yuuki1293.pccard.impl.PatternProviderLogicImpl;
-
-import java.util.List;
+import yuuki1293.pccard.wrapper.IPatternProviderLogicMixin;
 
 @Mixin(value = AdvPatternProviderLogic.class, remap = false)
 public abstract class MixinAdvPatternProviderLogic implements IUpgradeableObject, IPatternProviderLogicMixin {
@@ -36,7 +32,13 @@ public abstract class MixinAdvPatternProviderLogic implements IUpgradeableObject
     @Shadow
     private Direction sendDirection;
 
-    @ModifyArg(method = "updatePatterns", at = @At(value = "INVOKE", target = "Lappeng/api/crafting/PatternDetailsHelper;decodePattern(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;)Lappeng/api/crafting/IPatternDetails;"))
+    @ModifyArg(
+            method = "updatePatterns",
+            at =
+                    @At(
+                            value = "INVOKE",
+                            target =
+                                    "Lappeng/api/crafting/PatternDetailsHelper;decodePattern(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;)Lappeng/api/crafting/IPatternDetails;"))
     private ItemStack updatePatterns(ItemStack stack) {
         return PatternProviderLogicImpl.updatePatterns(this, stack);
     }
@@ -53,13 +55,12 @@ public abstract class MixinAdvPatternProviderLogic implements IUpgradeableObject
 
     @Override
     public Direction pCCard$getSendDirection() {
-        if (this.sendDirection == null)
-            return pCCard$sendDirection;
+        if (this.sendDirection == null) return pCCard$sendDirection;
         return this.sendDirection;
     }
 
     @Override
-    public void pCCard$setSendDirection(Direction direction){
+    public void pCCard$setSendDirection(Direction direction) {
         pCCard$sendDirection = direction;
     }
 
@@ -78,4 +79,3 @@ public abstract class MixinAdvPatternProviderLogic implements IUpgradeableObject
         return pCCard$getBlockEntity().getLevel();
     }
 }
-
