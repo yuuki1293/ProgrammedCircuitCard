@@ -418,7 +418,7 @@ publisher {
 
 spotless {
     java {
-        target("src/**/java/**/*.java")
+        target("/src/**/java/**/*.java")
         endWithNewline()
         removeUnusedImports()
         palantirJavaFormat()
