@@ -8,14 +8,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-
 import net.minecraft.world.level.block.entity.BlockEntity;
+
 import org.slf4j.Logger;
 
 import com.gregtechceu.gtceu.api.machine.SimpleTieredMachine;
@@ -35,8 +37,6 @@ import yuuki1293.pccard.ConfigCommon;
 import yuuki1293.pccard.TagUtils;
 import yuuki1293.pccard.wrapper.IAEPattern;
 import yuuki1293.pccard.wrapper.IPatternP2PTunnelLogicMixin;
-
-import javax.annotation.Nullable;
 
 public class PatternProviderLogicImpl {
 
@@ -94,7 +94,7 @@ public class PatternProviderLogicImpl {
      * get BlockPos which ingredient are sent. include subnet.
      * Uses breadth-first search to traverse tree up to configured depth.
      * 
-     * @param be Pattern Provider
+     * @param be        Pattern Provider
      * @param direction Item push direction
      * @return all leaf nodes within configured depth
      */
@@ -149,7 +149,8 @@ public class PatternProviderLogicImpl {
     /**
      * support MAE2 pattern p2p
      */
-    public static Tuple<BlockPos, Direction> getSendPosDirect(@Nullable Level level, BlockEntity be, Direction direction) {
+    public static Tuple<BlockPos, Direction> getSendPosDirect(@Nullable Level level, BlockEntity be,
+        Direction direction) {
         try {
             if (level == null) return new Tuple<>(BlockPos.ZERO, Direction.UP);
 
