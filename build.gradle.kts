@@ -1,13 +1,12 @@
-import com.diffplug.spotless.LineEnding
 import com.hypherionmc.modpublisher.plugin.ModPublisherGradleExtension
 import com.hypherionmc.modpublisher.properties.CurseEnvironment
 import com.hypherionmc.modpublisher.properties.ModLoader
 import com.hypherionmc.modpublisher.properties.ReleaseType
 import org.apache.tools.ant.filters.ReplaceTokens
-import java.text.SimpleDateFormat
-import java.util.*
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.ChangelogPluginExtension
+import java.text.SimpleDateFormat
+import java.util.*
 
 plugins {
     id("java")
@@ -413,25 +412,5 @@ publisher {
         createRelease(true)
         updateRelease(true)
         target("1.20.1")
-    }
-}
-
-spotless {
-    java {
-        target("/src/**/java/**/*.java")
-        endWithNewline()
-        removeUnusedImports()
-        palantirJavaFormat()
-        toggleOffOn()
-        setLineEndings(LineEnding.UNIX)
-
-        bumpThisNumberIfACustomStepChanges(1)
-    }
-
-    json {
-        target("src/**/resources/**/*.json")
-        biome()
-        endWithNewline()
-        setLineEndings(LineEnding.UNIX)
     }
 }
