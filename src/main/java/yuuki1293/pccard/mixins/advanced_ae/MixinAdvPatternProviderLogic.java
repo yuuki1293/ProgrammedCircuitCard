@@ -1,40 +1,29 @@
 package yuuki1293.pccard.mixins.advanced_ae;
 
-import java.util.List;
-
-import net.minecraft.core.BlockPos;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogic;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogicHost;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 import appeng.api.crafting.IPatternDetails;
 import appeng.api.upgrades.IUpgradeableObject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import yuuki1293.pccard.PCCard;
 import yuuki1293.pccard.impl.PatternProviderLogicImpl;
-import yuuki1293.pccard.wrapper.IPatternProviderLogicMixin;
 
 @Mixin(value = AdvPatternProviderLogic.class, remap = false)
-public abstract class MixinAdvPatternProviderLogic implements IUpgradeableObject, IPatternProviderLogicMixin {
-
-    @Unique
-    private static Direction pCCard$sendDirection;
-
+public abstract class MixinAdvPatternProviderLogic implements IUpgradeableObject {
     @Shadow
     @Final
     private AdvPatternProviderLogicHost host;
-
-    @Shadow
-    private Direction sendDirection;
 
     @ModifyArg(
         method = "updatePatterns",
@@ -42,42 +31,22 @@ public abstract class MixinAdvPatternProviderLogic implements IUpgradeableObject
             value = "INVOKE",
             target = "Lappeng/api/crafting/PatternDetailsHelper;decodePattern(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;)Lappeng/api/crafting/IPatternDetails;"))
     private ItemStack updatePatterns(ItemStack stack) {
-        return PatternProviderLogicImpl.updatePatterns(this, stack);
+        if(!isUpgradedWith(PCCard.PROGRAMMED_CIRCUIT_CARD_ITEM.get())) return stack;
+
+        return PatternProviderLogicImpl.updatePatterns(stack);
     }
 
-    @Override
-    public void pCCard$setPCNumber(IPatternDetails patternDetails) {
-        PatternProviderLogicImpl.setPCNumber(this, patternDetails);
-    }
+    @Inject(
+        method = "pushPattern",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/pedroksl/advanced_ae/common/logic/AdvPatternProviderLogic;onPushPatternSuccess(Lappeng/api/crafting/IPatternDetails;)V"),
+        require = 2)
+    private void pushPattern(CallbackInfoReturnable<Boolean> cir, @Local(ordinal = 0, argsOnly = true) IPatternDetails patternDetails, @Local(ordinal = 0) Direction direction) {
+        if(!isUpgradedWith(PCCard.PROGRAMMED_CIRCUIT_CARD_ITEM.get())) return;
 
-    @Override
-    public List<BlockPos> pCCard$getSendPos() {
-        return PatternProviderLogicImpl.getSendPos(pCCard$getLevel(), this);
-    }
-
-    @Override
-    public Direction pCCard$getSendDirection() {
-        if (this.sendDirection == null) return pCCard$sendDirection;
-        return this.sendDirection;
-    }
-
-    @Override
-    public void pCCard$setSendDirection(Direction direction) {
-        pCCard$sendDirection = direction;
-    }
-
-    @Override
-    public boolean pCCard$hasPCCard() {
-        return isUpgradedWith(PCCard.PROGRAMMED_CIRCUIT_CARD_ITEM.get());
-    }
-
-    @Override
-    public BlockEntity pCCard$getBlockEntity() {
-        return this.host.getBlockEntity();
-    }
-
-    @Unique
-    public Level pCCard$getLevel() {
-        return pCCard$getBlockEntity().getLevel();
+        var be = this.host.getBlockEntity();
+        var blockPoses = PatternProviderLogicImpl.getSendPos(be, direction);
+        PatternProviderLogicImpl.setPCNumber(patternDetails, be, blockPoses);
     }
 }

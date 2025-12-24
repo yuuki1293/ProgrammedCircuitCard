@@ -15,6 +15,7 @@ import net.minecraft.util.Tuple;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
+import net.minecraft.world.level.block.entity.BlockEntity;
 import org.slf4j.Logger;
 
 import com.gregtechceu.gtceu.api.machine.SimpleTieredMachine;
@@ -34,42 +35,36 @@ import yuuki1293.pccard.ConfigCommon;
 import yuuki1293.pccard.TagUtils;
 import yuuki1293.pccard.wrapper.IAEPattern;
 import yuuki1293.pccard.wrapper.IPatternP2PTunnelLogicMixin;
-import yuuki1293.pccard.wrapper.IPatternProviderLogicMixin;
+
+import javax.annotation.Nullable;
 
 public class PatternProviderLogicImpl {
 
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public static ItemStack updatePatterns(IPatternProviderLogicMixin self, ItemStack stack) {
-        if (self.pCCard$hasPCCard()) {
-            var newStack = stack.copy();
-            var inputs = TagUtils.getInputsFromPattern(newStack);
-            var tagRoot = newStack.getTag();
-            if (tagRoot == null) { // if null, create new empty tag
-                tagRoot = new CompoundTag();
-            }
-
-            if (inputs.isPresent()) {
-                var number = TagUtils.getCircuitNumber(inputs.get())
-                    .orElse(0);
-                tagRoot.putInt(NBT_CIRCUIT, number);
-                TagUtils.removeCircuit(inputs.get());
-            }
-
-            return newStack;
+    public static ItemStack updatePatterns(ItemStack stack) {
+        var newStack = stack.copy();
+        var inputs = TagUtils.getInputsFromPattern(newStack);
+        var tagRoot = newStack.getTag();
+        if (tagRoot == null) { // if null, create new empty tag
+            tagRoot = new CompoundTag();
         }
 
-        return stack;
+        if (inputs.isPresent()) {
+            var number = TagUtils.getCircuitNumber(inputs.get())
+                .orElse(0);
+            tagRoot.putInt(NBT_CIRCUIT, number);
+            TagUtils.removeCircuit(inputs.get());
+        }
+
+        return newStack;
     }
 
-    public static void setPCNumber(IPatternProviderLogicMixin self, IPatternDetails patternDetails) {
+    public static void setPCNumber(IPatternDetails patternDetails, BlockEntity be, List<BlockPos> blockPoses) {
         try {
-            if (self.pCCard$hasPCCard() && patternDetails instanceof IAEPattern patternDetailsW) {
-                var be = self.pCCard$getBlockEntity();
+            if (patternDetails instanceof IAEPattern patternDetailsW) {
                 var level = be.getLevel();
                 if (level == null) return;
-
-                var blockPoses = self.pCCard$getSendPos();
 
                 for (var blockPos : blockPoses) {
                     var gtMachine = SimpleTieredMachine.getMachine(level, blockPos);
@@ -99,11 +94,13 @@ public class PatternProviderLogicImpl {
      * get BlockPos which ingredient are sent. include subnet.
      * Uses breadth-first search to traverse tree up to configured depth.
      * 
-     * @param self caller
+     * @param be Pattern Provider
+     * @param direction Item push direction
      * @return all leaf nodes within configured depth
      */
-    public static List<BlockPos> getSendPos(Level level, IPatternProviderLogicMixin self) {
-        var rootPosDir = getSendPosDirect(self);
+    public static List<BlockPos> getSendPos(BlockEntity be, Direction direction) {
+        var level = be.getLevel();
+        var rootPosDir = getSendPosDirect(level, be, direction);
         var allLeafNodes = new ArrayList<BlockPos>();
         var visited = new HashSet<Tuple<BlockPos, Direction>>();
         var queue = new LinkedList<Tuple<Tuple<BlockPos, Direction>, Integer>>();
@@ -152,20 +149,17 @@ public class PatternProviderLogicImpl {
     /**
      * support MAE2 pattern p2p
      */
-    public static Tuple<BlockPos, Direction> getSendPosDirect(IPatternProviderLogicMixin self) {
+    public static Tuple<BlockPos, Direction> getSendPosDirect(@Nullable Level level, BlockEntity be, Direction direction) {
         try {
-            var level = self.pCCard$getLevel();
             if (level == null) return new Tuple<>(BlockPos.ZERO, Direction.UP);
 
-            var dir = self.pCCard$getSendDirection();
-            var be = self.pCCard$getBlockEntity();
             var adjPos = be.getBlockPos()
-                .relative(dir);
+                .relative(direction);
 
             // For MAE2
             {
                 var adjBe = level.getBlockEntity(adjPos);
-                var adjBeSide = dir.getOpposite();
+                var adjBeSide = direction.getOpposite();
                 var craftingMachine = ICraftingMachine.of(level, adjPos, adjBeSide, adjBe);
                 if (craftingMachine instanceof IPatternP2PTunnelLogicMixin patternP2P) {
                     var patternP2PPos = patternP2P.pCCard$getLastBlockPos();
@@ -174,7 +168,7 @@ public class PatternProviderLogicImpl {
                 }
             }
 
-            return new Tuple<>(adjPos, dir);
+            return new Tuple<>(adjPos, direction);
         } catch (Exception e) {
             LOGGER.error("Error while getting sendPos", e);
             return new Tuple<>(BlockPos.ZERO, Direction.UP);

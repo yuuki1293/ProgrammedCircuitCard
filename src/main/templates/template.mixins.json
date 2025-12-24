@@ -7,18 +7,15 @@
   "plugin": "yuuki1293.pccard.mixins.PCCardMixinPlugin",
   "mixins": [
     "advanced_ae.MixinAdvAddUpgradeSlot",
-    "advanced_ae.MixinAdvCraftingCPULogic",
     "advanced_ae.MixinAdvPatternProviderLogic",
     "advanced_ae.MixinAdvPatternProviderLogicHost",
     "advanced_ae.MixinAdvPatternProviderMenu",
     "advanced_ae.MixinAdvProcessingPattern",
-    "advanced_ae.MixinAdvSavePushDirection",
     "appflux.MixinAppFluxAddUpgradeSlot",
     "appflux.MixinAppFluxAdvAddUpgradeSlot",
     "common.MixinAddUpgradeSlot",
     "common.MixinAe2PatternTerminalHandler",
     "common.MixinAEProcessingPattern",
-    "common.MixinCraftingCPULogic",
     "common.MixinEmiStackHelper",
     "common.MixinExecutingCraftingJob",
     "common.MixinGenericEntryStackHelperJEI",
@@ -26,8 +23,7 @@
     "common.MixinPatternP2PTunnelLogic",
     "common.MixinPatternProviderLogic",
     "common.MixinPatternProviderLogicHost",
-    "common.MixinPatternProviderMenu",
-    "common.MixinSavePushDirection"
+    "common.MixinPatternProviderMenu"
   ],
   "client": [
     "advanced_ae.MixinAdvPatternProviderScreen",
