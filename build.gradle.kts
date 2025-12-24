@@ -414,3 +414,38 @@ publisher {
         target("1.20.1")
     }
 }
+
+spotless {
+    encoding("UTF-8")
+
+    format("misc") {
+        target(".gitignore")
+
+        trimTrailingWhitespace()
+        indentWithSpaces(4)
+        endWithNewline()
+    }
+    java {
+        target("src/*/java/**/*.java", "src/*/scala/**/*.java")
+
+        toggleOffOn()
+        importOrderFile(file("spotless.importorder"))
+        removeUnusedImports()
+        eclipse("4.19").configFile(file("spotless.eclipseformat.xml"))
+    }
+    kotlin {
+        target("src/*/kotlin/**/*.kt", "src/*/java/**/*.kt")
+
+        toggleOffOn()
+        trimTrailingWhitespace()
+        endWithNewline()
+        ktlint("1.7.1").editorConfigOverride(mapOf(
+            "ktlint_code_style" to "intellij_idea"
+        ))
+    }
+    scala {
+        target("src/*/scala/**/*.scala")
+
+        scalafmt("3.7.15")
+    }
+}

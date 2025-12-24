@@ -1,21 +1,27 @@
 package yuuki1293.pccard;
 
-import com.gregtechceu.gtceu.common.data.GTItems;
 import java.util.Optional;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 
+import com.gregtechceu.gtceu.common.data.GTItems;
+
 public class TagUtils {
-    private static final String circuitResourceId =
-            GTItems.PROGRAMMED_CIRCUIT.getId().toString();
+
+    private static final String circuitResourceId = GTItems.PROGRAMMED_CIRCUIT.getId()
+        .toString();
 
     /**
      * get inputs itemStacks from Pattern. if failed, {@link Optional#empty()}<br>
      * example:<br>
-     * stack.getTag() {@code {in:[{"#":8L,"#c":"ae2:i",id:"minecraft:oak_planks"},{"#":1L,"#c":"ae2:i",id:"gtceu:programmed_circuit",tag:{Configuration:8}}],out:[{"#":1L,"#c":"ae2:i",id:"minecraft:chest"}]}} <br>
-     * return {@code [{"#":8L,"#c":"ae2:i",id:"minecraft:oak_planks"},{"#":1L,"#c":"ae2:i",id:"gtceu:programmed_circuit",tag:{Configuration:8}}]}
+     * stack.getTag()
+     * {@code {in:[{"#":8L,"#c":"ae2:i",id:"minecraft:oak_planks"},{"#":1L,"#c":"ae2:i",id:"gtceu:programmed_circuit",tag:{Configuration:8}}],out:[{"#":1L,"#c":"ae2:i",id:"minecraft:chest"}]}}
+     * <br>
+     * return
+     * {@code [{"#":8L,"#c":"ae2:i",id:"minecraft:oak_planks"},{"#":1L,"#c":"ae2:i",id:"gtceu:programmed_circuit",tag:{Configuration:8}}]}
      */
     public static Optional<ListTag> getInputsFromPattern(ItemStack stack) {
         var tag = stack.getTag();
@@ -29,16 +35,20 @@ public class TagUtils {
     /**
      * get circuit number from listTag. if failed, {@link Optional#empty()}<br>
      * example:<br>
-     * listTag {@code [{"#":8L,"#c":"ae2:i",id:"minecraft:oak_planks"},{"#":1L,"#c":"ae2:i",id:"gtceu:programmed_circuit",tag:{Configuration:8}}]}
+     * listTag
+     * {@code [{"#":8L,"#c":"ae2:i",id:"minecraft:oak_planks"},{"#":1L,"#c":"ae2:i",id:"gtceu:programmed_circuit",tag:{Configuration:8}}]}
      * return 8
+     * 
      * @param listTag is {@link CompoundTag} list
      * @return circuitNumber
      */
     public static Optional<Integer> getCircuitNumber(ListTag listTag) {
         for (Tag tag : listTag) {
-            if (tag instanceof CompoundTag compound
-                    && compound.contains("id")
-                    && compound.getString("id").equals(circuitResourceId)) {
+            if (
+                tag instanceof CompoundTag compound && compound.contains("id")
+                    && compound.getString("id")
+                        .equals(circuitResourceId)
+            ) {
                 return getCircuitNumber(compound);
             }
         }
@@ -50,6 +60,7 @@ public class TagUtils {
      * example:<br>
      * itemTag {@code {"#":1L,"#c":"ae2:i",id:"gtceu:programmed_circuit",tag:{Configuration:8}}}<br>
      * return 8
+     * 
      * @param itemTag must be {@code gtceu:programmed_circuit}
      * @return circuit number
      */
@@ -66,13 +77,15 @@ public class TagUtils {
 
     /**
      * remove circuit in listTag
+     * 
      * @return {@code true} if remove success
      */
     public static boolean removeCircuit(ListTag listTag) {
         if (listTag == null) return false;
 
-        return listTag.removeIf(x -> x instanceof CompoundTag compound
-                && compound.contains("id")
-                && compound.getString("id").equals(circuitResourceId));
+        return listTag.removeIf(
+            x -> x instanceof CompoundTag compound && compound.contains("id")
+                && compound.getString("id")
+                    .equals(circuitResourceId));
     }
 }

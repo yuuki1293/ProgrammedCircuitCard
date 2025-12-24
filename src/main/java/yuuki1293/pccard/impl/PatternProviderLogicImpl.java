@@ -2,30 +2,34 @@ package yuuki1293.pccard.impl;
 
 import static yuuki1293.pccard.NBTs.NBT_CIRCUIT;
 
-import appeng.api.crafting.IPatternDetails;
-import appeng.api.implementations.blockentities.ICraftingMachine;
-import appeng.api.networking.IGrid;
-import appeng.api.networking.security.IActionHost;
-import appeng.api.parts.IPartHost;
-import appeng.parts.storagebus.StorageBusPart;
-import com.gregtechceu.gtceu.api.machine.SimpleTieredMachine;
-import com.gregtechceu.gtceu.api.machine.feature.IHasCircuitSlot;
-import com.gregtechceu.gtceu.api.machine.trait.NotifiableItemStackHandler;
-import com.gregtechceu.gtceu.common.data.GTItems;
-import com.gregtechceu.gtceu.common.item.IntCircuitBehaviour;
-import com.mojang.logging.LogUtils;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+
 import org.slf4j.Logger;
+
+import com.gregtechceu.gtceu.api.machine.SimpleTieredMachine;
+import com.gregtechceu.gtceu.api.machine.feature.IHasCircuitSlot;
+import com.gregtechceu.gtceu.api.machine.trait.NotifiableItemStackHandler;
+import com.gregtechceu.gtceu.common.data.GTItems;
+import com.gregtechceu.gtceu.common.item.IntCircuitBehaviour;
+import com.mojang.logging.LogUtils;
+
+import appeng.api.crafting.IPatternDetails;
+import appeng.api.implementations.blockentities.ICraftingMachine;
+import appeng.api.networking.IGrid;
+import appeng.api.networking.security.IActionHost;
+import appeng.api.parts.IPartHost;
+import appeng.parts.storagebus.StorageBusPart;
 import yuuki1293.pccard.ConfigCommon;
 import yuuki1293.pccard.TagUtils;
 import yuuki1293.pccard.wrapper.IAEPattern;
@@ -33,6 +37,7 @@ import yuuki1293.pccard.wrapper.IPatternP2PTunnelLogicMixin;
 import yuuki1293.pccard.wrapper.IPatternProviderLogicMixin;
 
 public class PatternProviderLogicImpl {
+
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public static ItemStack updatePatterns(IPatternProviderLogicMixin self, ItemStack stack) {
@@ -45,7 +50,8 @@ public class PatternProviderLogicImpl {
             }
 
             if (inputs.isPresent()) {
-                var number = TagUtils.getCircuitNumber(inputs.get()).orElse(0);
+                var number = TagUtils.getCircuitNumber(inputs.get())
+                    .orElse(0);
                 tagRoot.putInt(NBT_CIRCUIT, number);
                 TagUtils.removeCircuit(inputs.get());
             }
@@ -81,7 +87,7 @@ public class PatternProviderLogicImpl {
     }
 
     private static void setInvNumber(NotifiableItemStackHandler inv, IAEPattern details)
-            throws IndexOutOfBoundsException {
+        throws IndexOutOfBoundsException {
         var machineStack = GTItems.PROGRAMMED_CIRCUIT.asStack();
 
         var number = details.pCCard$getNumber();
@@ -92,6 +98,7 @@ public class PatternProviderLogicImpl {
     /**
      * get BlockPos which ingredient are sent. include subnet.
      * Uses breadth-first search to traverse tree up to configured depth.
+     * 
      * @param self caller
      * @return all leaf nodes within configured depth
      */
@@ -117,7 +124,11 @@ public class PatternProviderLogicImpl {
             visited.add(posDir);
 
             // Get children nodes from subnet
-            var children = getSendPosSubnet(level, posDir.getA(), posDir.getB().getOpposite());
+            var children = getSendPosSubnet(
+                level,
+                posDir.getA(),
+                posDir.getB()
+                    .getOpposite());
 
             if (children.isEmpty()) {
                 // This is a leaf node, add to results
@@ -148,7 +159,8 @@ public class PatternProviderLogicImpl {
 
             var dir = self.pCCard$getSendDirection();
             var be = self.pCCard$getBlockEntity();
-            var adjPos = be.getBlockPos().relative(dir);
+            var adjPos = be.getBlockPos()
+                .relative(dir);
 
             // For MAE2
             {
@@ -171,9 +183,10 @@ public class PatternProviderLogicImpl {
 
     /**
      * get BlockPos which ingredient are sent in subnet.
+     * 
      * @param level level
-     * @param pos interface pos
-     * @param side interface side
+     * @param pos   interface pos
+     * @param side  interface side
      * @return storage bus dest
      */
     public static List<Tuple<BlockPos, Direction>> getSendPosSubnet(Level level, BlockPos pos, Direction side) {
@@ -230,7 +243,8 @@ public class PatternProviderLogicImpl {
         var poses = new ArrayList<Tuple<BlockPos, Direction>>();
 
         for (var part : parts) {
-            var pos = part.getBlockEntity().getBlockPos();
+            var pos = part.getBlockEntity()
+                .getBlockPos();
             var side = part.getSide();
             var machinePos = pos.relative(side);
             poses.add(new Tuple<>(machinePos, side.getOpposite()));

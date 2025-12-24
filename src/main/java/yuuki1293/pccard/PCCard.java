@@ -1,11 +1,5 @@
 package yuuki1293.pccard;
 
-import appeng.api.ids.AECreativeTabIds;
-import appeng.api.upgrades.Upgrades;
-import appeng.core.definitions.AEBlocks;
-import appeng.core.definitions.AEParts;
-import appeng.core.localization.GuiText;
-import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.MinecraftForge;
@@ -19,16 +13,26 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
 import org.slf4j.Logger;
+
+import com.mojang.logging.LogUtils;
+
+import appeng.api.ids.AECreativeTabIds;
+import appeng.api.upgrades.Upgrades;
+import appeng.core.definitions.AEBlocks;
+import appeng.core.definitions.AEParts;
+import appeng.core.localization.GuiText;
 
 @Mod(PCCard.MODID)
 public class PCCard {
+
     public static final String MODID = "pccard";
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
 
-    public static final RegistryObject<Item> PROGRAMMED_CIRCUIT_CARD_ITEM =
-            ITEMS.register("card_programmed_circuit", () -> Upgrades.createUpgradeCardItem(new Item.Properties()));
+    public static final RegistryObject<Item> PROGRAMMED_CIRCUIT_CARD_ITEM = ITEMS
+        .register("card_programmed_circuit", () -> Upgrades.createUpgradeCardItem(new Item.Properties()));
 
     public PCCard(FMLJavaModLoadingContext context) {
         IEventBus modEventBus = context.getModEventBus();
@@ -42,11 +46,12 @@ public class PCCard {
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
-        event.enqueueWork(this::postRegistrationInitialization).whenComplete((res, err) -> {
-            if (err != null) {
-                LOGGER.warn(err.getMessage());
-            }
-        });
+        event.enqueueWork(this::postRegistrationInitialization)
+            .whenComplete((res, err) -> {
+                if (err != null) {
+                    LOGGER.warn(err.getMessage());
+                }
+            });
     }
 
     public void postRegistrationInitialization() {
@@ -80,10 +85,11 @@ public class PCCard {
             var patternProviderAdPart = ForgeRegistries.ITEMS.getValue(resourceAdPart);
             var patternProviderAdExBE = ForgeRegistries.BLOCKS.getValue(resourceAdExBE);
             var patternProviderAdExPart = ForgeRegistries.ITEMS.getValue(resourceAdExPart);
-            if (patternProviderAdBE != null
-                    && patternProviderAdPart != null
+            if (
+                patternProviderAdBE != null && patternProviderAdPart != null
                     && patternProviderAdExBE != null
-                    && patternProviderAdExPart != null) {
+                    && patternProviderAdExPart != null
+            ) {
                 Upgrades.add(item, patternProviderAdBE, 1, adPatternProviderGroup);
                 Upgrades.add(item, patternProviderAdPart, 1, adPatternProviderGroup);
                 Upgrades.add(item, patternProviderAdExBE, 1, adPatternProviderGroup);
@@ -122,7 +128,10 @@ public class PCCard {
 
     @SubscribeEvent
     public void onBuildCreativeModeTabContentsEvent(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey().equals(AECreativeTabIds.MAIN)) {
+        if (
+            event.getTabKey()
+                .equals(AECreativeTabIds.MAIN)
+        ) {
             event.accept(PROGRAMMED_CIRCUIT_CARD_ITEM);
             LOGGER.debug("Add Programmed Circuit Card in AE2 creative tab");
         }

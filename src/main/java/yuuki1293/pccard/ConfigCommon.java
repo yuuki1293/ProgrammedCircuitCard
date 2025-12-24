@@ -5,6 +5,7 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = PCCard.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ConfigCommon {
+
     private static final ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
     static final ForgeConfigSpec spec;
 
@@ -16,8 +17,8 @@ public class ConfigCommon {
         builder.comment("*****************************************");
 
         SEARCH_DEPTH = builder.comment("Maximum depth for searching connected machines in subnet tree.")
-                .comment("Higher values allow deeper traversal but may impact performance.")
-                .defineInRange("search_depth", 5, 0, 100);
+            .comment("Higher values allow deeper traversal but may impact performance.")
+            .defineInRange("search_depth", 5, 0, 100);
 
         spec = builder.build();
     }

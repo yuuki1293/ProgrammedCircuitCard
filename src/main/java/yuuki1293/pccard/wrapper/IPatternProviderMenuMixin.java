@@ -1,11 +1,13 @@
 package yuuki1293.pccard.wrapper;
 
+import org.spongepowered.asm.mixin.Unique;
+
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.api.upgrades.IUpgradeableObject;
 import appeng.menu.ToolboxMenu;
-import org.spongepowered.asm.mixin.Unique;
 
 public interface IPatternProviderMenuMixin {
+
     @Unique
     void pCCard$setupUpgrades();
 

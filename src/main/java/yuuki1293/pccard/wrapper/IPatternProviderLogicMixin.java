@@ -1,15 +1,18 @@
 package yuuki1293.pccard.wrapper;
 
-import appeng.api.crafting.IPatternDetails;
 import java.util.List;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
+import appeng.api.crafting.IPatternDetails;
+
 public interface IPatternProviderLogicMixin {
+
     /**
-     *  NOTE: call after {@code pushPattern}
+     * NOTE: call after {@code pushPattern}
      */
     void pCCard$setPCNumber(IPatternDetails patternDetails);
 
