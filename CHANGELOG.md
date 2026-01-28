@@ -1,6 +1,10 @@
 # 1.20.1 Changelog
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
+## [Unreleased]
+### Fixed
+ - Explicit Forge version range.
+
 ## [1.2.6] - 2025-12-24
 ### Fixed
  - Changed some code handling. Maybe the bug that didn't work properly has been fixed?
