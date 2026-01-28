@@ -24,6 +24,7 @@ plugins {
 val modId = Constants.Mod.id
 val mcVersion: String = libs.versions.minecraft.get()
 val forgeVersion: String = libs.versions.forge.get()
+val forgeVersionRange: String = libs.versions.forgeRange.get()
 val jdkVersion = 17
 
 val exportMixin = true
@@ -225,12 +226,12 @@ dependencies {
 }
 
 val modDependencies = listOf(
-    ModDep("forge", extractVersionSegments(forgeVersion)),
+    ModDep("forge", extractVersionSegments(forgeVersion), forgeVersionRange),
     ModDep("minecraft", mcVersion),
-    ModDep("gtceu", libs.versions.gtm.range.get()),
-    ModDep("ae2", libs.versions.ae2.range.get()),
-    ModDep("guideme", libs.versions.guideme.range.get()),
-    ModDep("expandedae", libs.versions.expandedae.range.get(), mandatory = false)
+    ModDep("gtceu", libs.versions.gtmRange.get()),
+    ModDep("ae2", libs.versions.ae2Range.get()),
+    ModDep("guideme", libs.versions.guidemeRange.get()),
+    ModDep("expandedae", libs.versions.expandedaeRange.get(), mandatory = false)
 )
 
 val generateModMetadata by tasks.registering(ProcessResources::class) {

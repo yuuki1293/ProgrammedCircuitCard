@@ -12,17 +12,17 @@ enum class Side {
 }
 
 data class ModDep(
-    val id: String, val version: String, val mandatory: Boolean = true, val ordering: Order = Order.NONE, val side: Side = Side.BOTH
+    val id: String, val version: String, val versionRange: String = "[$version,)", val mandatory: Boolean = true, val ordering: Order = Order.NONE, val side: Side = Side.BOTH
 )
 
 fun buildDeps(
     vararg deps: ModDep
 ): String {
-    return deps.joinToString(separator = "\n") { (id, version, mandatory, ordering, side) ->
+    return deps.joinToString(separator = "\n") { (id, version, versionRange, mandatory, ordering, side) ->
         """
             [[dependencies.${Constants.Mod.id}]]
             modId = "$id"
-            versionRange = "[$version,)"
+            versionRange = "$versionRange"
             mandatory = $mandatory
             ordering = "$ordering"
             side = "$side"
