@@ -1,7 +1,7 @@
 # 1.20.1 Changelog
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
-## [Unreleased]
+## [1.2.7] - 2025-02-02
 ### Fixed
  - Explicit Forge version range.
  - PC is not set when Storage Bus face non GT machine.
