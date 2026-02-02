@@ -100,7 +100,7 @@ public class PatternProviderLogicImpl {
      */
     public static List<BlockPos> getSendPos(BlockEntity be, Direction direction) {
         var level = be.getLevel();
-        if(level == null) return List.of();
+        if (level == null) return List.of();
 
         var rootPosDir = getSendPosDirect(level, be, direction);
         var allLeafNodes = new ArrayList<BlockPos>();
