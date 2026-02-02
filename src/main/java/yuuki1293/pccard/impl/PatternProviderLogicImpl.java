@@ -68,7 +68,7 @@ public class PatternProviderLogicImpl {
 
                 for (var blockPos : blockPoses) {
                     var gtMachine = SimpleTieredMachine.getMachine(level, blockPos);
-                    if (gtMachine == null) return; // filter gtMachine
+                    if (gtMachine == null) continue; // filter gtMachine
 
                     if (gtMachine instanceof IHasCircuitSlot machine) {
                         var inv = machine.getCircuitInventory();
@@ -100,6 +100,8 @@ public class PatternProviderLogicImpl {
      */
     public static List<BlockPos> getSendPos(BlockEntity be, Direction direction) {
         var level = be.getLevel();
+        if(level == null) return List.of();
+
         var rootPosDir = getSendPosDirect(level, be, direction);
         var allLeafNodes = new ArrayList<BlockPos>();
         var visited = new HashSet<Tuple<BlockPos, Direction>>();
