@@ -31,8 +31,6 @@ import appeng.core.definitions.AEBlocks;
 import appeng.core.definitions.AEParts;
 import appeng.core.localization.GuiText;
 
-import java.util.Optional;
-
 @Mod(PCCard.MODID)
 public class PCCard {
 
@@ -151,7 +149,10 @@ public class PCCard {
     public void onAddPackFindersEvent(AddPackFindersEvent event) {
         if (event.getPackType() != PackType.CLIENT_RESOURCES) return;
 
-        var resourcePath = ModList.get().getModFileById(MODID).getFile().findResource("resourcepacks/pccard_modern");
+        var resourcePath = ModList.get()
+            .getModFileById(MODID)
+            .getFile()
+            .findResource("resourcepacks/pccard_modern");
         var pack = Pack.readMetaAndCreate(
             "builtin/pccard_modern",
             Component.literal("Modern Texture"),
