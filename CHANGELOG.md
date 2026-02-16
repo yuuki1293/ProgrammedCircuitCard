@@ -1,6 +1,11 @@
 # 1.20.1 Changelog
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
+## [1.2.8] 2025-02-16
+### Added
+ - Add 1.21 style texture. Can be applied from resource packs. (by @xiaoleng5261).
+ - New lang zn_cn (by @xiaoleng5261).
+
 ## [1.2.7] - 2025-02-02
 ### Fixed
  - Explicit Forge version range.
