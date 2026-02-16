@@ -1,11 +1,18 @@
 package yuuki1293.pccard;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.PathPackResources;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -24,6 +31,8 @@ import appeng.core.definitions.AEBlocks;
 import appeng.core.definitions.AEParts;
 import appeng.core.localization.GuiText;
 
+import java.util.Optional;
+
 @Mod(PCCard.MODID)
 public class PCCard {
 
@@ -37,6 +46,7 @@ public class PCCard {
     public PCCard(FMLJavaModLoadingContext context) {
         IEventBus modEventBus = context.getModEventBus();
         modEventBus.addListener(this::onBuildCreativeModeTabContentsEvent);
+        modEventBus.addListener(this::onAddPackFindersEvent);
         modEventBus.addListener(this::commonSetup);
 
         ITEMS.register(modEventBus);
@@ -135,5 +145,21 @@ public class PCCard {
             event.accept(PROGRAMMED_CIRCUIT_CARD_ITEM);
             LOGGER.debug("Add Programmed Circuit Card in AE2 creative tab");
         }
+    }
+
+    @SubscribeEvent
+    public void onAddPackFindersEvent(AddPackFindersEvent event) {
+        if (event.getPackType() != PackType.CLIENT_RESOURCES) return;
+
+        var resourcePath = ModList.get().getModFileById(MODID).getFile().findResource("resourcepacks/pccard_modern");
+        var pack = Pack.readMetaAndCreate(
+            "builtin/pccard_modern",
+            Component.literal("Modern Texture"),
+            false,
+            (path) -> new PathPackResources(path, resourcePath, true),
+            PackType.CLIENT_RESOURCES,
+            Pack.Position.TOP,
+            PackSource.BUILT_IN);
+        event.addRepositorySource((packConsumer) -> packConsumer.accept(pack));
     }
 }
