@@ -44,7 +44,8 @@ public class PCCardMixinPlugin implements IMixinConfigPlugin {
                 "yuuki1293.pccard.mixins.advanced_ae.MixinAdvAddUpgradeSlot",
                 "yuuki1293.pccard.mixins.advanced_ae.MixinSmallAdvPatternProviderScreen",
                 "yuuki1293.pccard.mixins.advanced_ae.MixinAdvPatternProviderMenu",
-                "yuuki1293.pccard.mixins.advanced_ae.MixinAdvPatternProviderLogicHost"));
+                "yuuki1293.pccard.mixins.advanced_ae.MixinAdvPatternProviderLogicHost",
+                "yuuki1293.pccard.mixins.advanced_ae.MixinAdvPatternProviderScreen"));
 
         LOAD_WHEN_MOD_PRESENT.put(
             "advanced_ae",
