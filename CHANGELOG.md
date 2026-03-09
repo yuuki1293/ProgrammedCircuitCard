@@ -1,6 +1,13 @@
 # 1.20.1 Changelog
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
+## [1.2.9]
+### Fixed
+ - card_programmed_circuit causes the GUI interface of adv_pattern_provider to not open [#48](https://github.com/yuuki1293/ProgrammedCircuitCard/issues/48)
+
+### Changed
+ - Specify the version range of mae2.
+
 ## [1.2.8] 2025-02-16
 ### Added
  - Add 1.21 style texture. Can be applied from resource packs. (by @xiaoleng5261).
