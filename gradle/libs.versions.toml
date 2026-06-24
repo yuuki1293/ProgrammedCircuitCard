@@ -11,13 +11,23 @@ forgeRange = "[47.4.0,)"
 parchmentmc = "2023.09.03"
 mixin = "0.8.5"
 mixinExtras = "0.4.1"
-mixinSquared = "0.3.5-beta.2"
+mixinSquared = "0.3.7-beta.2"
 
-gtm = "7.1.4"
+gtm = "7.5.3"
 gtmRange = "1.6"
 ae2 = "15.4.10"
 ae2Range = "15"
-jei = "15.20.0.112"
+ae2cosmo = "15.4.10-cosmolite.36"
+monilabs = "0.21.7"
+kubejs = "8020595"
+rhino = "6186971"
+oculus = "6020952"
+chloride = "8064899"
+embeddium = "5681725"
+fancymenu = "8094800"
+melody = "5109692"
+konkrete = "5028413"
+jei = "15.20.0.115"
 emi = "1.1.22+1.20.1"
 registrate = "MC1.20-1.3.3"
 ldlib = "1.0.31"
@@ -26,7 +36,7 @@ geckolib = "6789487"
 exae = "6870350"
 glodium = "5226922"
 appflux = "6755986"
-mae2 = "6827727"
+mae2 = "7741255"
 mae2Range = "2.0.0"
 jade = "6855440"
 guideme = "20.1.11"
@@ -48,6 +58,16 @@ mixinSquaredForge = { module = "com.github.bawnorton.mixinsquared:mixinsquared-f
 
 gtm = { module = "com.gregtechceu.gtceu:gtceu-1.20.1", version.ref = "gtm" }
 ae2 = { module = "appeng:appliedenergistics2-forge", version.ref = "ae2" }
+ae2cosmo = { module = "appeng:appliedenergistics2-forge", version.ref = "ae2cosmo" }
+monilabs = { module = "net.neganote.monilabs:monilabs", version.ref = "monilabs" }
+kubejs = { module = "curse.maven:kubejs-238086", version.ref = "kubejs" }
+rhino = { module = "curse.maven:rhino-416294", version.ref = "rhino" }
+oculus = { module = "curse.maven:oculus-581495", version.ref = "oculus" }
+chloride = { module = "curse.maven:chloride-931925", version.ref = "chloride" }
+embeddium = { module = "curse.maven:embeddium-908741", version.ref = "embeddium" }
+fancymenu = { module = "curse.maven:fancymenu-367706", version.ref = "fancymenu" }
+melody = { module = "curse.maven:melody-938643", version.ref = "melody" }
+konkrete = { module = "curse.maven:konkrete-410295", version.ref = "konkrete" }
 jei = { module = "mezz.jei:jei-1.20.1-forge", version.ref = "jei" }
 emi = { module = "dev.emi:emi-forge", version.ref = "emi" }
 registrate = { module = "com.tterrag.registrate:Registrate", version.ref = "registrate" }

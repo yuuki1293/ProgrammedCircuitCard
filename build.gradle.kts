@@ -69,6 +69,14 @@ legacyForge {
             jvmArgument("-Dmixin.debug.export=$exportMixin")
         }
 
+        register("client-disableSlot") {
+            client()
+            gameDirectory.set(file("run"))
+            systemProperty("forge.enabledGameTestNamespaces", modId)
+            jvmArgument("-Dmixin.debug.export=$exportMixin")
+            jvmArgument("-Dpccard.disableSlot")
+        }
+
         register("server") {
             server()
             gameDirectory.set(file("run-server"))
@@ -121,6 +129,7 @@ repositories {
         url = uri("https://maven.gtceu.com")
         content {
             includeGroup ("com.gregtechceu.gtceu")
+            includeGroup ("appeng")
         }
     }
     maven {
@@ -165,29 +174,43 @@ repositories {
         url = uri("https://maven.theillusivec4.top/")
     }
     maven { url = uri("https://maven.bawnorton.com/releases") }
+    mavenLocal()
 }
 
 dependencies {
     modImplementation (libs.gtm) { isTransitive = false } // GregTech CEu: Modern
     modImplementation (libs.ae2) // AE2
+
+    /* Those compete with AE2 */
+//    modCompileOnly (libs.ae2cosmo) // AE2 cosmolite
+//    modImplementation (libs.monilabs) // AE2 monilabs
+//    modRuntimeOnly (libs.kubejs) // depended by monilabs
+//    modRuntimeOnly (libs.rhino) // depended by KubeJS
+//    modRuntimeOnly (libs.oculus) // depended by monilabs
+//    modRuntimeOnly (libs.chloride) // depended by monilabs
+//    modRuntimeOnly (libs.embeddium) // depended by monilabs
+//    modRuntimeOnly (libs.fancymenu) // depended by monilabs
+//    modRuntimeOnly (libs.melody) // depended by FancyMenu
+//    modRuntimeOnly (libs.konkrete) // depended by FancyMenu
+
     modImplementation (libs.jei) // JEI
     modCompileOnly (variantOf(libs.emi, "api")) // EMI
     modRuntimeOnly (libs.emi) // EMI
     modCompileOnly (libs.registrate) // Registrate
     modCompileOnly (libs.ldlib) { isTransitive = false } // ldlib
     modCompileOnly (libs.adae) // Advanced AE
-    modRuntimeOnly (libs.adae) // Advanced AE
+//    modRuntimeOnly (libs.adae) // Advanced AE
     modRuntimeOnly (libs.geckolib)
     modCompileOnly (libs.exae) // Extended AE
     modRuntimeOnly (libs.exae)
     modRuntimeOnly (libs.glodium)
-    modRuntimeOnly (libs.appflux) // Applied Flux
+//    modRuntimeOnly (libs.appflux) // Applied Flux
     modImplementation (libs.mae2) // MAE2
     modRuntimeOnly (libs.jade) // Jade
     modCompileOnly (variantOf(libs.guideme, "api")) // GuideME
     modRuntimeOnly (libs.guideme)
     modCompileOnly (libs.expandedae) // Expanded AE
-    modRuntimeOnly (libs.expandedae)
+//    modRuntimeOnly (libs.expandedae)
     modRuntimeOnly (libs.megacells) // Mega Cells
     modRuntimeOnly (libs.cloth.config) // Mega Cells
     modRuntimeOnly (libs.wirelessterminals) // AE2 Wireless Terminals
@@ -229,7 +252,7 @@ val modDependencies = listOf(
     ModDep("forge", extractVersionSegments(forgeVersion), forgeVersionRange),
     ModDep("minecraft", mcVersion),
     ModDep("gtceu", libs.versions.gtmRange.get()),
-    ModDep("ae2", libs.versions.ae2Range.get()),
+    ModDep("ae2", libs.versions.ae2Range.get()), // comment out when use monilabs
     ModDep("guideme", libs.versions.guidemeRange.get()),
     ModDep("expandedae", libs.versions.expandedaeRange.get(), mandatory = false)
 )

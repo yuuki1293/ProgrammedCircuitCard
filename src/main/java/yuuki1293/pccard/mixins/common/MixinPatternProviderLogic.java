@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.llamalad7.mixinextras.sugar.Local;
@@ -24,6 +25,9 @@ public abstract class MixinPatternProviderLogic implements IUpgradeableObject {
     @Shadow
     @Final
     private PatternProviderLogicHost host;
+
+    @Shadow
+    public abstract void updatePatterns();
 
     @ModifyArg(
         method = "updatePatterns",
@@ -49,5 +53,17 @@ public abstract class MixinPatternProviderLogic implements IUpgradeableObject {
         var be = this.host.getBlockEntity();
         var blockPoses = PatternProviderLogicImpl.getSendPos(be, direction);
         PatternProviderLogicImpl.setPCNumber(patternDetails, be, blockPoses);
+    }
+
+    /**
+     * For AE2-fork by Cosmic-Frontier
+     */
+    @Inject(
+        method = "onUpgradesChanged",
+        at = @At(value = "HEAD"),
+        require = 0
+    )
+    private void onUpgradesChanged(CallbackInfo ci){
+        this.updatePatterns();
     }
 }

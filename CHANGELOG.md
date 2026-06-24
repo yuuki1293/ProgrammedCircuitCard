@@ -1,6 +1,10 @@
 # 1.20.1 Changelog
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
+## [Unreleased]
+### Fixed
+ - Fixed an issue where the card would behave as though it was not inserted when the pccard.disableSlot flag was enabled.
+
 ## [1.2.9]
 ### Fixed
  - card_programmed_circuit causes the GUI interface of adv_pattern_provider to not open [#48](https://github.com/yuuki1293/ProgrammedCircuitCard/issues/48)
