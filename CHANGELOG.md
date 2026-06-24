@@ -2,6 +2,9 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
 ## [Unreleased]
+### Added
+ - Supports Giga Pattern Provider (Expanded AE).
+
 ### Fixed
  - Fixed an issue where the card would behave as though it was not inserted when the pccard.disableSlot flag was enabled.
 

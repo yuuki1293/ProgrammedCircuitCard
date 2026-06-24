@@ -210,7 +210,7 @@ dependencies {
     modCompileOnly (variantOf(libs.guideme, "api")) // GuideME
     modRuntimeOnly (libs.guideme)
     modCompileOnly (libs.expandedae) // Expanded AE
-//    modRuntimeOnly (libs.expandedae)
+    modRuntimeOnly (libs.expandedae)
     modRuntimeOnly (libs.megacells) // Mega Cells
     modRuntimeOnly (libs.cloth.config) // Mega Cells
     modRuntimeOnly (libs.wirelessterminals) // AE2 Wireless Terminals

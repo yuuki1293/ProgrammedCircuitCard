@@ -119,6 +119,20 @@ public class PCCard {
             }
         }
 
+        // Expanded AE Giga Pattern Provider
+        {
+            var gigaPatternProviderGroup = "gui.expandedae.giga_pattern_provider";
+            var namespaceGiga = "expandedae";
+            var resourceGigaBE = ResourceLocation.fromNamespaceAndPath(namespaceGiga, "giga_pattern_provider");
+            var resourceGigaPart = ResourceLocation.fromNamespaceAndPath(namespaceGiga, "giga_pattern_provider_part");
+            var patternProviderGigaBE = ForgeRegistries.BLOCKS.getValue(resourceGigaBE);
+            var patternProviderGigaPart = ForgeRegistries.ITEMS.getValue(resourceGigaPart);
+            if (patternProviderGigaBE != null && patternProviderGigaPart != null) {
+                Upgrades.add(item, patternProviderGigaBE, 1, gigaPatternProviderGroup);
+                Upgrades.add(item, patternProviderGigaPart, 1, gigaPatternProviderGroup);
+            }
+        }
+
         // Mega Cells Pattern Provider
         {
             var megaPatternProviderGroup = "block.megacells.mega_pattern_provider";
