@@ -1,7 +1,7 @@
 [versions]
 plugin_kotlin = "1.9.25"
 plugin_moddev = "2.0.119"
-plugin_modPublisher = "2.1.+"
+plugin_modPublisher = "2.2.+"
 plugin_changelog = "2.2.1"
 plugin_spotless = "8.1.0"
 
