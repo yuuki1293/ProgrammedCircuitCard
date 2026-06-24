@@ -58,12 +58,8 @@ public abstract class MixinPatternProviderLogic implements IUpgradeableObject {
     /**
      * For AE2-fork by Cosmic-Frontier
      */
-    @Inject(
-        method = "onUpgradesChanged",
-        at = @At(value = "HEAD"),
-        require = 0
-    )
-    private void onUpgradesChanged(CallbackInfo ci){
+    @Inject(method = "onUpgradesChanged", at = @At(value = "HEAD"), require = 0)
+    private void onUpgradesChanged(CallbackInfo ci) {
         this.updatePatterns();
     }
 }
