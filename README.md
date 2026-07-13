@@ -45,6 +45,7 @@ gradlew copyResourcePacks
 ## Other
 
 ### Disable adding upgrade slots
+If you can't open Pattern Provider GUI,
 Add the following to the JVM arguments.
 ```
 -Dpccard.disableSlot
