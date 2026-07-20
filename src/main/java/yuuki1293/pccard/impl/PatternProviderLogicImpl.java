@@ -32,6 +32,7 @@ import appeng.api.implementations.blockentities.ICraftingMachine;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.parts.IPartHost;
+import appeng.api.stacks.AEItemKey;
 import appeng.parts.storagebus.StorageBusPart;
 import yuuki1293.pccard.ConfigCommon;
 import yuuki1293.pccard.TagUtils;
@@ -58,6 +59,14 @@ public class PatternProviderLogicImpl {
         }
 
         return newStack;
+    }
+
+    public static void addCircuitToPatternInputs(IPatternDetails patternDetails, Set<appeng.api.stacks.AEKey> inputs) {
+        var definitionTag = patternDetails.getDefinition()
+            .getTag();
+        if (definitionTag != null && definitionTag.contains(NBT_CIRCUIT)) {
+            inputs.add(AEItemKey.of(IntCircuitBehaviour.stack(definitionTag.getInt(NBT_CIRCUIT))));
+        }
     }
 
     public static void setPCNumber(IPatternDetails patternDetails, BlockEntity be, List<BlockPos> blockPoses) {
