@@ -141,10 +141,10 @@ repositories {
         }
     }
     maven {
-        name = "TerraformersMC"
-        url = uri("https://maven.terraformersmc.com/")
+        name = "Modrinth"
+        url = uri("https://api.modrinth.com/maven")
         content {
-            includeGroup ("dev.emi")
+            includeGroup ("maven.modrinth")
         }
     }
     maven {
@@ -194,7 +194,7 @@ dependencies {
 //    modRuntimeOnly (libs.konkrete) // depended by FancyMenu
 
     modImplementation (libs.jei) // JEI
-    modCompileOnly (variantOf(libs.emi, "api")) // EMI
+    modCompileOnly (libs.emi) // EMI
     modRuntimeOnly (libs.emi) // EMI
     modCompileOnly (libs.registrate) // Registrate
     modCompileOnly (libs.ldlib) { isTransitive = false } // ldlib
