@@ -28,7 +28,7 @@ fancymenu = "8094800"
 melody = "5109692"
 konkrete = "5028413"
 jei = "15.20.0.115"
-emi = "1.1.22+1.20.1+forge"
+emi = "1.1.22+1.20.1"
 registrate = "MC1.20-1.3.3"
 ldlib = "1.0.31"
 adae = "6757852"
@@ -69,7 +69,7 @@ fancymenu = { module = "curse.maven:fancymenu-367706", version.ref = "fancymenu"
 melody = { module = "curse.maven:melody-938643", version.ref = "melody" }
 konkrete = { module = "curse.maven:konkrete-410295", version.ref = "konkrete" }
 jei = { module = "mezz.jei:jei-1.20.1-forge", version.ref = "jei" }
-emi = { module = "maven.modrinth:emi", version.ref = "emi" }
+emi = { module = "dev.emi:emi-forge", version.ref = "emi" }
 registrate = { module = "com.tterrag.registrate:Registrate", version.ref = "registrate" }
 ldlib = { module = "com.lowdragmc.ldlib:ldlib-forge-1.20.1", version.ref = "ldlib" }
 adae = { module = "curse.maven:advancedae-1084104", version.ref = "adae" }

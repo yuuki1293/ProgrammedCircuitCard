@@ -141,10 +141,17 @@ repositories {
         }
     }
     maven {
-        name = "Modrinth"
-        url = uri("https://api.modrinth.com/maven")
+        name = "Gnomecraft"
+        url = uri("https://maven.gnomecraft.net/releases/")
         content {
-            includeGroup ("maven.modrinth")
+            includeGroup ("dev.emi")
+        }
+    }
+    maven {
+        name = "TerraformersMC"
+        url = uri("https://maven.terraformersmc.com/")
+        content {
+            includeGroup ("dev.emi")
         }
     }
     maven {
@@ -194,7 +201,7 @@ dependencies {
 //    modRuntimeOnly (libs.konkrete) // depended by FancyMenu
 
     modImplementation (libs.jei) // JEI
-    modCompileOnly (libs.emi) // EMI
+    modCompileOnly (variantOf(libs.emi, "api")) // EMI
     modRuntimeOnly (libs.emi) // EMI
     modCompileOnly (libs.registrate) // Registrate
     modCompileOnly (libs.ldlib) { isTransitive = false } // ldlib
