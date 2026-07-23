@@ -23,7 +23,9 @@
     "common.MixinPatternP2PTunnelLogic",
     "common.MixinPatternProviderLogic",
     "common.MixinPatternProviderLogicHost",
-    "common.MixinPatternProviderMenu"
+    "common.MixinPatternProviderMenu",
+    "expandedae.AccessorExpandedPatternProviderTargetCache",
+    "expandedae.MixinExpandedPatternProviderTarget"
   ],
   "client": [
     "advanced_ae.MixinAdvPatternProviderScreen",
