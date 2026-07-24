@@ -47,6 +47,12 @@ fun parserChangelog(): String {
     return parsedChangelog
 }
 
+val serverKey = "${modId}.server"
+val isServer = objects.property<String>().convention(
+    providers.environmentVariable(serverKey)
+        .orElse("")
+)
+
 base {
     archivesName = "${project.name}-$mcVersion"
     version = Constants.Mod.version
@@ -83,6 +89,7 @@ legacyForge {
             programArgument("--nogui")
             systemProperty("forge.enabledGameTestNamespaces", modId)
             jvmArgument("-Dmixin.debug.export=$exportMixin")
+            environment(serverKey, "1")
         }
 
         register("data") {
@@ -186,10 +193,6 @@ dependencies {
 //    modImplementation (libs.monilabs) // AE2 monilabs
 //    modRuntimeOnly (libs.kubejs) // depended by monilabs
 //    modRuntimeOnly (libs.rhino) // depended by KubeJS
-//    modRuntimeOnly (libs.oculus) // depended by monilabs
-//    modRuntimeOnly (libs.chloride) // depended by monilabs
-//    modRuntimeOnly (libs.embeddium) // depended by monilabs
-//    modRuntimeOnly (libs.fancymenu) // depended by monilabs
 //    modRuntimeOnly (libs.melody) // depended by FancyMenu
 //    modRuntimeOnly (libs.konkrete) // depended by FancyMenu
 
@@ -206,16 +209,23 @@ dependencies {
     modRuntimeOnly (libs.glodium)
 //    modRuntimeOnly (libs.appflux) // Applied Flux
     modImplementation (libs.mae2) // MAE2
-    modRuntimeOnly (libs.jade) // Jade
     modCompileOnly (variantOf(libs.guideme, "api")) // GuideME
     modRuntimeOnly (libs.guideme)
     modCompileOnly (libs.expandedae) // Expanded AE
-    modRuntimeOnly (libs.expandedae)
-    modRuntimeOnly (libs.megacells) // Mega Cells
+//    modRuntimeOnly (libs.expandedae)
+//    modRuntimeOnly (libs.megacells) // Mega Cells
     modRuntimeOnly (libs.cloth.config) // Mega Cells
     modRuntimeOnly (libs.wirelessterminals) // AE2 Wireless Terminals
     modRuntimeOnly (libs.curios)
     modRuntimeOnly (libs.architectury.api)
+
+    if (isServer.get() != "1") {
+//        modRuntimeOnly (libs.chloride) // depended by monilabs
+//        modRuntimeOnly (libs.embeddium) // depended by monilabs
+//        modRuntimeOnly (libs.fancymenu) // depended by monilabs
+//        modRuntimeOnly (libs.oculus) // depended by monilabs
+        modRuntimeOnly (libs.jade) // Jade
+    }
 
     annotationProcessor(variantOf(libs.mixin, "processor"))
     libs.mixinExtrasCommon.let {
