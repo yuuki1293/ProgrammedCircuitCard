@@ -148,6 +148,13 @@ repositories {
         }
     }
     maven {
+        name = "Gnomecraft"
+        url = uri("https://maven.gnomecraft.net/releases/")
+        content {
+            includeGroup ("dev.emi")
+        }
+    }
+    maven {
         name = "TerraformersMC"
         url = uri("https://maven.terraformersmc.com/")
         content {

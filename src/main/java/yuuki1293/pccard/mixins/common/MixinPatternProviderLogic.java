@@ -1,5 +1,8 @@
 package yuuki1293.pccard.mixins.common;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 
@@ -13,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.llamalad7.mixinextras.sugar.Local;
 
 import appeng.api.crafting.IPatternDetails;
+import appeng.api.stacks.AEKey;
 import appeng.api.upgrades.IUpgradeableObject;
 import appeng.helpers.patternprovider.PatternProviderLogic;
 import appeng.helpers.patternprovider.PatternProviderLogicHost;
@@ -38,6 +42,18 @@ public abstract class MixinPatternProviderLogic implements IUpgradeableObject {
         if (!isUpgradedWith(PCCard.PROGRAMMED_CIRCUIT_CARD_ITEM.get())) return stack;
 
         return PatternProviderLogicImpl.updatePatterns(stack);
+    }
+
+    @ModifyArg(
+        method = "pushPattern",
+        at = @At(
+            value = "INVOKE",
+            target = "Lappeng/helpers/patternprovider/PatternProviderTarget;containsPatternInput(Ljava/util/Set;)Z"))
+    private Set<AEKey> includeProgrammedCircuit(Set<AEKey> patternInputs,
+        @Local(ordinal = 0, argsOnly = true) IPatternDetails patternDetails) {
+        var result = new HashSet<>(patternInputs);
+        PatternProviderLogicImpl.addCircuitToPatternInputs(patternDetails, result);
+        return result;
     }
 
     @Inject(
