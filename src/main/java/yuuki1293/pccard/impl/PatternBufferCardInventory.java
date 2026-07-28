@@ -1,5 +1,7 @@
 package yuuki1293.pccard.impl;
 
+import java.util.function.BooleanSupplier;
+
 import net.minecraft.world.item.ItemStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -7,16 +9,17 @@ import org.jetbrains.annotations.NotNull;
 import com.gregtechceu.gtceu.api.transfer.item.CustomItemStackHandler;
 
 import yuuki1293.pccard.PCCard;
-import yuuki1293.pccard.wrapper.IPatternBufferPCC;
 
 public final class PatternBufferCardInventory extends CustomItemStackHandler {
 
-    private final IPatternBufferPCC owner;
+    private final BooleanSupplier canChangeCard;
+    private final Runnable onCardChanged;
     private boolean cardInstalled;
 
-    public PatternBufferCardInventory(IPatternBufferPCC owner) {
+    public PatternBufferCardInventory(BooleanSupplier canChangeCard, Runnable onCardChanged) {
         super(1);
-        this.owner = owner;
+        this.canChangeCard = canChangeCard;
+        this.onCardChanged = onCardChanged;
         setFilter(stack -> stack.is(PCCard.PROGRAMMED_CIRCUIT_CARD_ITEM.get()));
     }
 
@@ -31,26 +34,26 @@ public final class PatternBufferCardInventory extends CustomItemStackHandler {
 
     @Override
     public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-        return owner.pCCard$canChangePatternBufferCard() && super.isItemValid(slot, stack);
+        return canChangeCard.getAsBoolean() && super.isItemValid(slot, stack);
     }
 
     @Override
     public void setStackInSlot(int slot, @NotNull ItemStack stack) {
         var current = getStackInSlot(slot);
         var changesCard = !(current.isEmpty() && stack.isEmpty()) && !ItemStack.isSameItemSameTags(current, stack);
-        if (changesCard && !owner.pCCard$canChangePatternBufferCard()) return;
+        if (changesCard && !canChangeCard.getAsBoolean()) return;
         super.setStackInSlot(slot, stack);
     }
 
     @Override
     public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
-        if (!owner.pCCard$canChangePatternBufferCard()) return stack;
+        if (!canChangeCard.getAsBoolean()) return stack;
         return super.insertItem(slot, stack, simulate);
     }
 
     @Override
     public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
-        if (!owner.pCCard$canChangePatternBufferCard()) return ItemStack.EMPTY;
+        if (!canChangeCard.getAsBoolean()) return ItemStack.EMPTY;
         return super.extractItem(slot, amount, simulate);
     }
 
@@ -60,7 +63,7 @@ public final class PatternBufferCardInventory extends CustomItemStackHandler {
         var cardInstalledNow = !getStackInSlot(0).isEmpty();
         if (cardInstalled != cardInstalledNow) {
             cardInstalled = cardInstalledNow;
-            owner.pCCard$onPatternBufferCardChanged();
+            onCardChanged.run();
         }
     }
 }

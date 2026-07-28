@@ -9,6 +9,6 @@
   "gui.pccard.pattern_buffer.blocking_mode.smart": "Smart",
   "gui.pccard.pattern_buffer.blocking_mode.smart.description": "Allows compatible repeated pushes, but blocks unrelated buffered inputs.",
   "gui.pccard.pattern_buffer.card": "Programmed Circuit Card",
-  "gui.pccard.pattern_buffer.card.tooltip": "Install one card to decode circuit inputs and safely control the Pattern Buffer's shared circuit.",
+  "gui.pccard.pattern_buffer.card.tooltip": "Install one card. The card controls the shared Pattern Buffer circuit.",
   "item.pccard.card_programmed_circuit": "Programmed Circuit Card"
 }

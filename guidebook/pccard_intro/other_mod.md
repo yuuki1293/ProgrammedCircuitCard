@@ -27,9 +27,14 @@ navigation:
 * Integration of the upgrade slot.
 
 ## GTCEu
-* ME Pattern Buffers always provide a blocking toggle and a Normal/Smart/Full mode selector. Normal follows AE2's aggregate-input blocking, Smart permits compatible repeated pushes, and Full waits for every non-circuit buffered input to clear.
-* A dedicated one-card slot enables Programmed Circuit Card support. With a card installed, the buffer removes the circuit from decoded pattern inputs and applies that circuit to its shared GTCEu circuit slot.
-* A different PCC circuit waits until earlier buffered inputs are consumed or refunded, even when general blocking is disabled. The card can only be inserted or removed while no non-circuit pushed inputs remain.
+* The ME Pattern Buffer shows a blocking control. You can select Normal, Smart, or Full mode.
+* Normal mode blocks inputs that match an installed pattern.
+* Smart mode accepts repeated inputs for the active pattern. It blocks unrelated inputs.
+* Full mode blocks all new inputs until the buffer is empty.
+* Install one Programmed Circuit Card in the card slot. The card removes the circuit from the decoded pattern inputs.
+* The card sets the circuit number in the shared GTCEu circuit slot.
+* The buffer does not change to a different circuit while earlier inputs remain.
+* You can insert or remove the card only when no non-circuit input remains.
 
 ## JEI/EMI
 * Modified behavior to include the programmed circuit when registering recipes.
