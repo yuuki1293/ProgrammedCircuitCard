@@ -1,6 +1,10 @@
 # 1.20.1 Changelog
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
+## [1.2.12]
+### Added
+ - Support GTCEu Pattern Buffers with Programmed Circuit Card controls, blocking modes, and extension hooks. [#28](https://github.com/yuuki1293/ProgrammedCircuitCard/issues/28)
+
 ## [1.2.11]
 ### Added
  - Expanded AE's Smart Blocking takes into account differences in Programmed Circuits. (by @Zatone0) [#56](https://github.com/yuuki1293/ProgrammedCircuitCard/issues/56)
