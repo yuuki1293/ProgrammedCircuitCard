@@ -95,7 +95,7 @@ public abstract class MixinMEPatternBufferPartMachine extends MEBusPartMachine i
             target = "Lappeng/api/crafting/PatternDetailsHelper;decodePattern(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;)Lappeng/api/crafting/IPatternDetails;"),
         index = 0)
     private ItemStack pCCard$updateChangedPattern(ItemStack stack) {
-        return pCCard$canTransformPatterns() ? PatternProviderLogicImpl.updatePatterns(stack) : stack;
+        return pCCard$transformPatternBufferPattern(stack);
     }
 
     @ModifyArg(
@@ -106,7 +106,7 @@ public abstract class MixinMEPatternBufferPartMachine extends MEBusPartMachine i
         index = 0,
         require = 1)
     private ItemStack pCCard$updateLoadedPattern(ItemStack stack) {
-        return pCCard$canTransformPatterns() ? PatternProviderLogicImpl.updatePatterns(stack) : stack;
+        return pCCard$transformPatternBufferPattern(stack);
     }
 
     @Inject(method = "onLoad", at = @At("TAIL"))
@@ -134,6 +134,11 @@ public abstract class MixinMEPatternBufferPartMachine extends MEBusPartMachine i
 
     @Inject(method = "attachConfigurators", at = @At("TAIL"))
     private void pCCard$attachConfigurators(ConfiguratorPanel configuratorPanel, CallbackInfo ci) {
+        pCCard$attachPatternBufferConfigurators(configuratorPanel);
+    }
+
+    @Override
+    public void pCCard$attachPatternBufferConfigurators(ConfiguratorPanel configuratorPanel) {
         var cardConfigurator = new PatternBufferCardConfigurator(
             pCCard$cardInventory,
             Component.translatable("gui.pccard.pattern_buffer.card"))
@@ -170,24 +175,28 @@ public abstract class MixinMEPatternBufferPartMachine extends MEBusPartMachine i
         cancellable = true)
     private void pCCard$preflightPush(IPatternDetails patternDetails, KeyCounter[] inputHolder,
         CallbackInfoReturnable<Boolean> cir) {
+        if (!pCCard$preflightPatternBufferPush(patternDetails, inputHolder)) {
+            cir.setReturnValue(false);
+        }
+    }
+
+    @Override
+    public boolean pCCard$preflightPatternBufferPush(IPatternDetails patternDetails, KeyCounter[] inputHolder) {
         var bufferedKeys = pCCard$getBufferedKeys();
         if (pCCard$blockingEnabled && pCCard$isBlocked(patternDetails, bufferedKeys)) {
-            cir.setReturnValue(false);
-            return;
+            return false;
         }
 
         var circuitNumber = PatternProviderLogicImpl.getCircuitNumber(patternDetails);
-        if (circuitNumber.isEmpty()) return;
+        if (circuitNumber.isEmpty()) return true;
 
         if (!pCCard$canTransformPatterns() || !pCCard$hasIncomingPayload(inputHolder)) {
-            cir.setReturnValue(false);
-            return;
+            return false;
         }
 
         var wantedCircuit = circuitNumber.get();
         if (PatternBufferBlockingPolicy.circuitConflict(!bufferedKeys.isEmpty(), pCCard$activeCircuit, wantedCircuit)) {
-            cir.setReturnValue(false);
-            return;
+            return false;
         }
 
         if (bufferedKeys.isEmpty()) {
@@ -196,6 +205,7 @@ public abstract class MixinMEPatternBufferPartMachine extends MEBusPartMachine i
 
         var patternBuffer = (MEPatternBufferPartMachine) (Object) this;
         PatternProviderLogicImpl.setPCNumber(patternBuffer.getCircuitInventory(), wantedCircuit);
+        return true;
     }
 
     @Inject(method = "onMachineRemoved", at = @At("HEAD"))
@@ -219,6 +229,11 @@ public abstract class MixinMEPatternBufferPartMachine extends MEBusPartMachine i
         pCCard$setActiveCircuit(PCCARD$CIRCUIT_IDLE);
         pCCard$refreshPatterns();
         markDirty();
+    }
+
+    @Override
+    public ItemStack pCCard$transformPatternBufferPattern(ItemStack stack) {
+        return pCCard$canTransformPatterns() ? PatternProviderLogicImpl.updatePatterns(stack) : stack;
     }
 
     @Unique
