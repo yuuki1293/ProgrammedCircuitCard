@@ -1,3 +1,14 @@
 {
-	"item.pccard.card_programmed_circuit": "Programmed Circuit Card"
+  "gui.pccard.pattern_buffer.blocking.disabled": "Pattern Buffer Blocking: Disabled",
+  "gui.pccard.pattern_buffer.blocking.enabled": "Pattern Buffer Blocking: Enabled",
+  "gui.pccard.pattern_buffer.blocking_mode": "Blocking Mode: %s",
+  "gui.pccard.pattern_buffer.blocking_mode.full": "Full",
+  "gui.pccard.pattern_buffer.blocking_mode.full.description": "Blocks while any non-circuit input remains in the buffer.",
+  "gui.pccard.pattern_buffer.blocking_mode.normal": "Normal",
+  "gui.pccard.pattern_buffer.blocking_mode.normal.description": "Blocks when buffered contents match an input used by any installed pattern.",
+  "gui.pccard.pattern_buffer.blocking_mode.smart": "Smart",
+  "gui.pccard.pattern_buffer.blocking_mode.smart.description": "Allows compatible repeated pushes, but blocks unrelated buffered inputs.",
+  "gui.pccard.pattern_buffer.card": "Programmed Circuit Card",
+  "gui.pccard.pattern_buffer.card.tooltip": "Install one card to decode circuit inputs and safely control the Pattern Buffer's shared circuit.",
+  "item.pccard.card_programmed_circuit": "Programmed Circuit Card"
 }

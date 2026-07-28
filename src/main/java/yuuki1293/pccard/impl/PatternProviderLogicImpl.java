@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.annotation.Nullable;
@@ -13,6 +14,7 @@ import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -52,21 +54,63 @@ public class PatternProviderLogicImpl {
         }
 
         if (inputs.isPresent()) {
-            var number = TagUtils.getCircuitNumber(inputs.get())
-                .orElse(0);
+            var number = getCircuitNumber(newStack).orElse(0);
             tagRoot.putInt(NBT_CIRCUIT, number);
             TagUtils.removeCircuit(inputs.get());
+            newStack.setTag(tagRoot);
         }
 
         return newStack;
     }
 
     public static void addCircuitToPatternInputs(IPatternDetails patternDetails, Set<appeng.api.stacks.AEKey> inputs) {
+        getCircuitNumber(patternDetails).map(IntCircuitBehaviour::stack)
+            .map(AEItemKey::of)
+            .ifPresent(inputs::add);
+    }
+
+    public static boolean isProgrammedCircuit(appeng.api.stacks.AEKey key) {
+        return key != null && key.getId()
+            .equals(GTItems.PROGRAMMED_CIRCUIT.getId());
+    }
+
+    /**
+     * Gets a circuit number from either a PCC-transformed pattern or an encoded pattern's original inputs.
+     */
+    public static Optional<Integer> getCircuitNumber(ItemStack stack) {
+        var tagRoot = stack.getTag();
+        if (tagRoot != null && tagRoot.contains(NBT_CIRCUIT, Tag.TAG_INT)) {
+            return validateCircuitNumber(tagRoot.getInt(NBT_CIRCUIT));
+        }
+
+        return TagUtils.getInputsFromPattern(stack)
+            .flatMap(TagUtils::getCircuitNumber)
+            .flatMap(PatternProviderLogicImpl::validateCircuitNumber);
+    }
+
+    /**
+     * Gets a circuit number only when the pattern was transformed by PCC.
+     */
+    public static Optional<Integer> getCircuitNumber(IPatternDetails patternDetails) {
         var definitionTag = patternDetails.getDefinition()
             .getTag();
-        if (definitionTag != null && definitionTag.contains(NBT_CIRCUIT)) {
-            inputs.add(AEItemKey.of(IntCircuitBehaviour.stack(definitionTag.getInt(NBT_CIRCUIT))));
+        if (definitionTag != null && definitionTag.contains(NBT_CIRCUIT, Tag.TAG_INT)) {
+            return validateCircuitNumber(definitionTag.getInt(NBT_CIRCUIT));
         }
+
+        return Optional.empty();
+    }
+
+    private static Optional<Integer> validateCircuitNumber(int number) {
+        return number >= 0 && number <= IntCircuitBehaviour.CIRCUIT_MAX ? Optional.of(number) : Optional.empty();
+    }
+
+    public static void setPCNumber(NotifiableItemStackHandler inv, int number) {
+        if (inv.getSlots() == 0) return;
+
+        var machineStack = GTItems.PROGRAMMED_CIRCUIT.asStack();
+        IntCircuitBehaviour.setCircuitConfiguration(machineStack, number);
+        inv.setStackInSlot(0, machineStack);
     }
 
     public static void setPCNumber(IPatternDetails patternDetails, BlockEntity be, List<BlockPos> blockPoses) {
@@ -92,11 +136,7 @@ public class PatternProviderLogicImpl {
 
     private static void setInvNumber(NotifiableItemStackHandler inv, IAEPattern details)
         throws IndexOutOfBoundsException {
-        var machineStack = GTItems.PROGRAMMED_CIRCUIT.asStack();
-
-        var number = details.pCCard$getNumber();
-        IntCircuitBehaviour.setCircuitConfiguration(machineStack, number);
-        inv.setStackInSlot(0, machineStack);
+        setPCNumber(inv, details.pCCard$getNumber());
     }
 
     /**

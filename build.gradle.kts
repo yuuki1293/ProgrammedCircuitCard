@@ -490,3 +490,13 @@ spotless {
         scalafmt("3.7.15")
     }
 }
+
+val patternBufferPolicySelfCheck = tasks.register<JavaExec>("patternBufferPolicySelfCheck") {
+    dependsOn(tasks.named("testClasses"))
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass = "yuuki1293.pccard.impl.PatternBufferBlockingPolicySelfCheck"
+}
+
+tasks.named("check") {
+    dependsOn(patternBufferPolicySelfCheck)
+}

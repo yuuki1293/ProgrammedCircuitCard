@@ -1,3 +1,14 @@
 {
+	"gui.pccard.pattern_buffer.blocking.disabled": "パターンバッファーのブロッキング：無効",
+	"gui.pccard.pattern_buffer.blocking.enabled": "パターンバッファーのブロッキング：有効",
+	"gui.pccard.pattern_buffer.blocking_mode": "ブロッキングモード：%s",
+	"gui.pccard.pattern_buffer.blocking_mode.full": "フル",
+	"gui.pccard.pattern_buffer.blocking_mode.full.description": "回路以外の入力がバッファーに残っている間は、新しい入力をブロックします。",
+	"gui.pccard.pattern_buffer.blocking_mode.normal": "ノーマル",
+	"gui.pccard.pattern_buffer.blocking_mode.normal.description": "バッファー内の内容が、登録済みパターンの入力と一致する場合にブロックします。",
+	"gui.pccard.pattern_buffer.blocking_mode.smart": "スマート",
+	"gui.pccard.pattern_buffer.blocking_mode.smart.description": "互換性のある同一入力は許可し、無関係な入力が残っている場合はブロックします。",
+	"gui.pccard.pattern_buffer.card": "プログラム回路カード",
+	"gui.pccard.pattern_buffer.card.tooltip": "カードを1枚入れると、回路入力を読み取り、パターンバッファーの共有回路を安全に切り替えます。",
 	"item.pccard.card_programmed_circuit": "プログラム回路カード"
 }

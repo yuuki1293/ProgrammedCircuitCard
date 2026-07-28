@@ -63,6 +63,8 @@ public class PCCardMixinPlugin implements IMixinConfigPlugin {
             Set.of(
                 "yuuki1293.pccard.mixins.expandedae.AccessorExpandedPatternProviderTargetCache",
                 "yuuki1293.pccard.mixins.expandedae.MixinExpandedPatternProviderTarget"));
+
+        LOAD_WHEN_MOD_PRESENT.put("gtceu", Set.of("yuuki1293.pccard.mixins.gtceu.MixinMEPatternBufferPartMachine"));
     }
 
     @Override
