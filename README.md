@@ -28,12 +28,12 @@ Programmed Circuit Card can be inserted into Pattern Provider. When pushing a re
 1. Run minecraft with `Client`.
 
 ### Test with Monilabs
-Comment out this line.
+1. Comment out this line.
 ```
 modImplementation (libs.ae2) // AE2
 ```
 
-Uncomment those lines.
+2. Uncomment those lines.
 ```
 modCompileOnly (libs.ae2cosmo) // AE2 cosmolite
 modImplementation (libs.monilabs) // AE2 monilabs
@@ -47,6 +47,8 @@ modRuntimeOnly (libs.embeddium) // depended by monilabs
 modRuntimeOnly (libs.fancymenu) // depended by monilabs
 modRuntimeOnly (libs.oculus) // depended by monilabs
 ```
+
+3. Run `Client-disableSlot`.
 
 ### Make release
 1. Update version in [Constants.kt](buildSrc/src/main/kotlin/Constants.kt).
