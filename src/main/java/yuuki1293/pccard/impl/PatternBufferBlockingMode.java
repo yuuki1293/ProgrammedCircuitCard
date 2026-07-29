@@ -1,14 +1,14 @@
 package yuuki1293.pccard.impl;
 
-import com.gregtechceu.gtceu.api.gui.GuiTextures;
 import com.gregtechceu.gtceu.api.gui.widget.EnumSelectorWidget;
 import com.lowdragmc.lowdraglib.gui.texture.IGuiTexture;
+import com.lowdragmc.lowdraglib.gui.texture.ResourceTexture;
 
 public enum PatternBufferBlockingMode implements EnumSelectorWidget.SelectableEnum {
 
-    NORMAL("normal", 0),
-    SMART("smart", 1),
-    FULL("full", 2);
+    NORMAL("normal", 80, 16),
+    SMART("smart", 64, 16),
+    FULL("full", 96, 0);
 
     public static final PatternBufferBlockingMode[] VALUES = values();
 
@@ -16,10 +16,15 @@ public enum PatternBufferBlockingMode implements EnumSelectorWidget.SelectableEn
     private final String descriptionKey;
     private final IGuiTexture icon;
 
-    PatternBufferBlockingMode(String name, int textureIndex) {
+    PatternBufferBlockingMode(String name, int textureX, int textureY) {
         this.translationKey = "gui.pccard.pattern_buffer.blocking_mode." + name;
         this.descriptionKey = this.translationKey + ".description";
-        this.icon = GuiTextures.DISTRIBUTION_MODE.getSubTexture(0, textureIndex / 3.0f, 1, 1.0f / 3.0f);
+        this.icon = ae2Icon(textureX, textureY);
+    }
+
+    private static IGuiTexture ae2Icon(int x, int y) {
+        return new ResourceTexture("ae2:textures/guis/states.png")
+            .getSubTexture(x / 256.0f, y / 256.0f, 16 / 256.0f, 16 / 256.0f);
     }
 
     public String translationKey() {

@@ -70,6 +70,11 @@ public class PatternProviderLogicImpl {
         }
     }
 
+    public static boolean isProgrammedCircuit(appeng.api.stacks.AEKey key) {
+        return key != null && key.getId()
+            .equals(GTItems.PROGRAMMED_CIRCUIT.getId());
+    }
+
     public static Optional<Integer> getCircuitNumber(IPatternDetails patternDetails) {
         var definitionTag = patternDetails.getDefinition()
             .getTag();

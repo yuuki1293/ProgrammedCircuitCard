@@ -1,14 +1,17 @@
 {
 	"gui.pccard.pattern_buffer.blocking.disabled": "样板缓存器阻挡：已禁用",
+	"gui.pccard.pattern_buffer.blocking.disabled.description": "样板推送会绕过常规缓存阻挡，但电路编号冲突保护仍然有效。",
 	"gui.pccard.pattern_buffer.blocking.enabled": "样板缓存器阻挡：已启用",
+	"gui.pccard.pattern_buffer.blocking.enabled.description": "每次接受样板推送前，都会按所选模式进行检查。",
 	"gui.pccard.pattern_buffer.blocking_mode": "阻挡模式：%s",
 	"gui.pccard.pattern_buffer.blocking_mode.full": "完全",
-	"gui.pccard.pattern_buffer.blocking_mode.full.description": "只要缓存器中仍有非电路输入，就阻挡新的输入。",
+	"gui.pccard.pattern_buffer.blocking_mode.full.description": "等待所有已缓存的非电路输入清空后，才接受下一个样板。",
 	"gui.pccard.pattern_buffer.blocking_mode.normal": "普通",
-	"gui.pccard.pattern_buffer.blocking_mode.normal.description": "当缓存内容与任一已安装样板的输入匹配时阻挡。",
+	"gui.pccard.pattern_buffer.blocking_mode.normal.description": "标准阻挡：当缓存内容与任一已安装样板的输入匹配时等待。",
 	"gui.pccard.pattern_buffer.blocking_mode.smart": "智能",
-	"gui.pccard.pattern_buffer.blocking_mode.smart.description": "允许兼容的重复推送，但会阻挡与当前样板无关的缓存输入。",
+	"gui.pccard.pattern_buffer.blocking_mode.smart.description": "允许再次推送与当前输入兼容的样板，但会阻挡含有无关材料的推送。",
 	"gui.pccard.pattern_buffer.card": "编程电路卡",
-	"gui.pccard.pattern_buffer.card.tooltip": "放入一张卡以解析电路输入，并安全控制样板缓存器的共享电路。",
+	"gui.pccard.pattern_buffer.card.tooltip": "可放入一张编程电路卡，用于解析电路输入并控制 GTCEu 的共享电路槽。",
+	"gui.pccard.pattern_buffer.card.locked": "存在已缓存的非电路输入时，无法更换卡片。",
 	"item.pccard.card_programmed_circuit": "编程电路卡"
 }

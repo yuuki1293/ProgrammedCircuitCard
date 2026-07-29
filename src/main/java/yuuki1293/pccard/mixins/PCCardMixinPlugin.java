@@ -58,11 +58,8 @@ public class PCCardMixinPlugin implements IMixinConfigPlugin {
                 "yuuki1293.pccard.mixins.advanced_ae.MixinAdvProcessingPattern",
                 "yuuki1293.pccard.mixins.advanced_ae.MixinSmallAdvPatternProviderScreen"));
 
-        LOAD_WHEN_MOD_PRESENT.put(
-            "expandedae",
-            Set.of(
-                "yuuki1293.pccard.mixins.expandedae.AccessorExpandedPatternProviderTargetCache",
-                "yuuki1293.pccard.mixins.expandedae.MixinExpandedPatternProviderTarget"));
+        LOAD_WHEN_MOD_PRESENT
+            .put("expandedae", Set.of("yuuki1293.pccard.mixins.expandedae.MixinExpandedPatternProviderTargetCache"));
 
         LOAD_WHEN_MOD_PRESENT.put("gtceu", Set.of("yuuki1293.pccard.mixins.gtceu.MixinMEPatternBufferPartMachine"));
     }

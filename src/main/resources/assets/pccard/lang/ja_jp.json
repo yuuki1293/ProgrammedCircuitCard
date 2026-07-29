@@ -1,14 +1,17 @@
 {
 	"gui.pccard.pattern_buffer.blocking.disabled": "パターンバッファーのブロッキング：無効",
+	"gui.pccard.pattern_buffer.blocking.disabled.description": "通常のバッファーブロッキングを迂回しますが、回路番号の競合防止は引き続き有効です。",
 	"gui.pccard.pattern_buffer.blocking.enabled": "パターンバッファーのブロッキング：有効",
+	"gui.pccard.pattern_buffer.blocking.enabled.description": "各パターンの投入前に、選択したモードで受け入れ可否を判定します。",
 	"gui.pccard.pattern_buffer.blocking_mode": "ブロッキングモード：%s",
 	"gui.pccard.pattern_buffer.blocking_mode.full": "フル",
-	"gui.pccard.pattern_buffer.blocking_mode.full.description": "回路以外の入力がバッファーに残っている間は、新しい入力をブロックします。",
+	"gui.pccard.pattern_buffer.blocking_mode.full.description": "回路以外の投入済み材料がすべてなくなるまで、次のパターンを待機させます。",
 	"gui.pccard.pattern_buffer.blocking_mode.normal": "ノーマル",
-	"gui.pccard.pattern_buffer.blocking_mode.normal.description": "バッファー内の内容が、登録済みパターンの入力と一致する場合にブロックします。",
+	"gui.pccard.pattern_buffer.blocking_mode.normal.description": "標準ブロッキング：投入済み材料が登録済みパターンの入力と一致する場合に待機します。",
 	"gui.pccard.pattern_buffer.blocking_mode.smart": "スマート",
-	"gui.pccard.pattern_buffer.blocking_mode.smart.description": "互換性のある同一入力は許可し、無関係な入力が残っている場合はブロックします。",
+	"gui.pccard.pattern_buffer.blocking_mode.smart.description": "投入中のパターンと互換性がある追加投入を許可し、無関係な材料が残っている場合は待機します。",
 	"gui.pccard.pattern_buffer.card": "プログラム回路カード",
-	"gui.pccard.pattern_buffer.card.tooltip": "カードを1枚入れると、回路入力を読み取り、パターンバッファーの共有回路を安全に切り替えます。",
+	"gui.pccard.pattern_buffer.card.tooltip": "プログラム回路カードを1枚入れると、回路入力を読み取り、GTCEuの共有回路スロットを制御します。",
+	"gui.pccard.pattern_buffer.card.locked": "回路以外の投入済み材料が残っている間は、カードを変更できません。",
 	"item.pccard.card_programmed_circuit": "プログラム回路カード"
 }

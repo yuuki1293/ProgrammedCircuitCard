@@ -22,10 +22,12 @@ import com.gregtechceu.gtceu.api.gui.fancy.IFancyConfiguratorButton;
 import com.gregtechceu.gtceu.api.machine.IMachineBlockEntity;
 import com.gregtechceu.gtceu.api.machine.fancyconfigurator.FancySelectorConfigurator;
 import com.gregtechceu.gtceu.api.transfer.item.CustomItemStackHandler;
-import com.gregtechceu.gtceu.common.data.GTItems;
 import com.gregtechceu.gtceu.common.item.IntCircuitBehaviour;
 import com.gregtechceu.gtceu.integration.ae2.machine.MEBusPartMachine;
 import com.gregtechceu.gtceu.integration.ae2.machine.MEPatternBufferPartMachine;
+import com.lowdragmc.lowdraglib.gui.texture.GuiTextureGroup;
+import com.lowdragmc.lowdraglib.gui.widget.Widget;
+import com.lowdragmc.lowdraglib.gui.widget.WidgetGroup;
 import com.lowdragmc.lowdraglib.syncdata.annotation.DescSynced;
 import com.lowdragmc.lowdraglib.syncdata.annotation.Persisted;
 
@@ -136,20 +138,18 @@ public abstract class MixinMEPatternBufferPartMachine extends MEBusPartMachine {
 
     @Inject(method = "attachConfigurators", at = @At("TAIL"))
     private void pCCard$attachConfigurators(ConfiguratorPanel configuratorPanel, CallbackInfo ci) {
-        var cardConfigurator = new PatternBufferCardConfigurator(
-            pCCard$cardInventory,
-            Component.translatable("gui.pccard.pattern_buffer.card"))
-                .setTooltips(List.of(Component.translatable("gui.pccard.pattern_buffer.card.tooltip")));
-
         var blockingConfigurator = new IFancyConfiguratorButton.Toggle(
-            GuiTextures.BLOCKS_INPUT.getSubTexture(0, 0, 1, 0.5f),
-            GuiTextures.BLOCKS_INPUT.getSubTexture(0, 0.5f, 1, 0.5f),
+            new GuiTextureGroup(GuiTextures.BUTTON, PatternBufferBlockingMode.SMART.getIcon()),
+            new GuiTextureGroup(GuiTextures.BUTTON, PatternBufferBlockingMode.NORMAL.getIcon()),
             () -> pCCard$blockingEnabled,
             (clickData, enabled) -> pCCard$setBlockingEnabled(enabled)).setTooltipsSupplier(
                 enabled -> List.of(
                     Component.translatable(
                         enabled ? "gui.pccard.pattern_buffer.blocking.enabled"
-                            : "gui.pccard.pattern_buffer.blocking.disabled")));
+                            : "gui.pccard.pattern_buffer.blocking.disabled"),
+                    Component.translatable(
+                        enabled ? "gui.pccard.pattern_buffer.blocking.enabled.description"
+                            : "gui.pccard.pattern_buffer.blocking.disabled.description")));
 
         var modeConfigurator = new FancySelectorConfigurator<>(
             PatternBufferBlockingMode.VALUES,
@@ -161,7 +161,14 @@ public abstract class MixinMEPatternBufferPartMachine extends MEBusPartMachine {
                         Component.translatable(mode.translationKey())),
                     Component.translatable(mode.descriptionKey())));
 
-        configuratorPanel.attachConfigurators(cardConfigurator, blockingConfigurator, modeConfigurator);
+        configuratorPanel.attachConfigurators(blockingConfigurator, modeConfigurator);
+    }
+
+    @Inject(method = "createUIWidget", at = @At("RETURN"), require = 1)
+    private void pCCard$attachUpgradePanel(CallbackInfoReturnable<Widget> cir) {
+        if (cir.getReturnValue() instanceof WidgetGroup root) {
+            PatternBufferCardConfigurator.attachUpgradePanel(root, pCCard$cardInventory);
+        }
     }
 
     @Inject(
@@ -309,7 +316,7 @@ public abstract class MixinMEPatternBufferPartMachine extends MEBusPartMachine {
         for (var internalSlot : internalInventory) {
             for (var stack : internalSlot.getItems()) {
                 var key = AEItemKey.of(stack);
-                if (key != null && !pCCard$isProgrammedCircuit(key)) {
+                if (key != null && !PatternProviderLogicImpl.isProgrammedCircuit(key)) {
                     keys.add(key.dropSecondary());
                 }
             }
@@ -328,7 +335,7 @@ public abstract class MixinMEPatternBufferPartMachine extends MEBusPartMachine {
             if (!internalSlot.isFluidEmpty()) return true;
             for (var stack : internalSlot.getItems()) {
                 var key = AEItemKey.of(stack);
-                if (key != null && !pCCard$isProgrammedCircuit(key)) return true;
+                if (key != null && !PatternProviderLogicImpl.isProgrammedCircuit(key)) return true;
             }
         }
         return false;
@@ -338,7 +345,7 @@ public abstract class MixinMEPatternBufferPartMachine extends MEBusPartMachine {
     private boolean pCCard$hasIncomingPayload(KeyCounter[] inputHolder) {
         for (var inputs : inputHolder) {
             for (var input : inputs) {
-                if (input.getLongValue() > 0 && !pCCard$isProgrammedCircuit(input.getKey())) {
+                if (input.getLongValue() > 0 && !PatternProviderLogicImpl.isProgrammedCircuit(input.getKey())) {
                     return true;
                 }
             }
@@ -371,12 +378,6 @@ public abstract class MixinMEPatternBufferPartMachine extends MEBusPartMachine {
         ) {
             PatternProviderLogicImpl.setPCNumber(circuitInventory, pCCard$activeCircuit);
         }
-    }
-
-    @Unique
-    private boolean pCCard$isProgrammedCircuit(AEKey key) {
-        return key != null && key.getId()
-            .equals(GTItems.PROGRAMMED_CIRCUIT.getId());
     }
 
     @Unique
