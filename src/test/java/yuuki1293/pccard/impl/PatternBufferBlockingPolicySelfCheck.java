@@ -12,10 +12,10 @@ public final class PatternBufferBlockingPolicySelfCheck {
 
         require(
             PatternBufferBlockingPolicy.normal(Set.of("iron"), Set.of("iron", "copper")),
-            "Normal mode must block advertised buffered input");
+            "Default mode must block an input used by the incoming pattern");
         require(
             !PatternBufferBlockingPolicy.normal(Set.of("gold"), Set.of("iron", "copper")),
-            "Normal mode must ignore input no installed pattern advertises");
+            "Default mode must ignore buffered input unrelated to the incoming pattern");
 
         require(
             !PatternBufferBlockingPolicy.smart(Set.of("iron"), Set.of("iron", "copper")),

@@ -1,17 +1,3 @@
 {
-  "gui.pccard.pattern_buffer.blocking.disabled": "Pattern Buffer Blocking: Disabled",
-  "gui.pccard.pattern_buffer.blocking.disabled.description": "Pattern pushes bypass general buffer blocking; circuit-conflict protection remains active.",
-  "gui.pccard.pattern_buffer.blocking.enabled": "Pattern Buffer Blocking: Enabled",
-  "gui.pccard.pattern_buffer.blocking.enabled.description": "Checks the selected mode before accepting each pattern push.",
-  "gui.pccard.pattern_buffer.blocking_mode": "Blocking Mode: %s",
-  "gui.pccard.pattern_buffer.blocking_mode.full": "Full",
-  "gui.pccard.pattern_buffer.blocking_mode.full.description": "Waits for all non-circuit buffered inputs to clear before accepting another pattern.",
-  "gui.pccard.pattern_buffer.blocking_mode.normal": "Normal",
-  "gui.pccard.pattern_buffer.blocking_mode.normal.description": "Uses standard blocking: waits when buffered contents match an input from any installed pattern.",
-  "gui.pccard.pattern_buffer.blocking_mode.smart": "Smart",
-  "gui.pccard.pattern_buffer.blocking_mode.smart.description": "Accepts another compatible copy of the incoming pattern, but blocks foreign buffered inputs.",
-  "gui.pccard.pattern_buffer.card": "Programmed Circuit Card",
-  "gui.pccard.pattern_buffer.card.tooltip": "Accepts one Programmed Circuit Card to decode circuit inputs and control the shared GTCEu circuit slot.",
-  "gui.pccard.pattern_buffer.card.locked": "Card changes are locked while non-circuit inputs remain buffered.",
-  "item.pccard.card_programmed_circuit": "Programmed Circuit Card"
+	"item.pccard.card_programmed_circuit": "Programmed Circuit Card"
 }

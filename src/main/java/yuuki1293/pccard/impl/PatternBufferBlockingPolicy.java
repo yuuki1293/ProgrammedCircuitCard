@@ -10,9 +10,9 @@ public final class PatternBufferBlockingPolicy {
         return !buffered.isEmpty();
     }
 
-    public static <T> boolean normal(Set<T> buffered, Set<T> advertised) {
+    public static <T> boolean normal(Set<T> buffered, Set<T> incoming) {
         return buffered.stream()
-            .anyMatch(advertised::contains);
+            .anyMatch(incoming::contains);
     }
 
     public static <T> boolean smart(Set<T> buffered, Set<T> incoming) {

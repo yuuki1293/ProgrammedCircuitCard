@@ -6,9 +6,9 @@ import com.lowdragmc.lowdraglib.gui.texture.ResourceTexture;
 
 public enum PatternBufferBlockingMode implements EnumSelectorWidget.SelectableEnum {
 
-    NORMAL("normal", 80, 16),
-    SMART("smart", 64, 16),
-    FULL("full", 96, 0);
+    NORMAL("Default", "default", 80, 16),
+    SMART("Smart", "smart", 64, 16),
+    FULL("Full", "all", 96, 0);
 
     public static final PatternBufferBlockingMode[] VALUES = values();
 
@@ -16,9 +16,9 @@ public enum PatternBufferBlockingMode implements EnumSelectorWidget.SelectableEn
     private final String descriptionKey;
     private final IGuiTexture icon;
 
-    PatternBufferBlockingMode(String name, int textureX, int textureY) {
-        this.translationKey = "gui.pccard.pattern_buffer.blocking_mode." + name;
-        this.descriptionKey = this.translationKey + ".description";
+    PatternBufferBlockingMode(String name, String description, int textureX, int textureY) {
+        this.translationKey = "gui.expandedae.blocking_mode." + name;
+        this.descriptionKey = "gui.expandedae.blocking_mode." + description;
         this.icon = ae2Icon(textureX, textureY);
     }
 

@@ -6,6 +6,7 @@ import java.util.Set;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fml.ModList;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -19,6 +20,7 @@ import com.gregtechceu.gtceu.api.capability.recipe.IO;
 import com.gregtechceu.gtceu.api.gui.GuiTextures;
 import com.gregtechceu.gtceu.api.gui.fancy.ConfiguratorPanel;
 import com.gregtechceu.gtceu.api.gui.fancy.IFancyConfiguratorButton;
+import com.gregtechceu.gtceu.api.gui.fancy.TabsWidget;
 import com.gregtechceu.gtceu.api.machine.IMachineBlockEntity;
 import com.gregtechceu.gtceu.api.machine.fancyconfigurator.FancySelectorConfigurator;
 import com.gregtechceu.gtceu.api.transfer.item.CustomItemStackHandler;
@@ -26,6 +28,7 @@ import com.gregtechceu.gtceu.common.item.IntCircuitBehaviour;
 import com.gregtechceu.gtceu.integration.ae2.machine.MEBusPartMachine;
 import com.gregtechceu.gtceu.integration.ae2.machine.MEPatternBufferPartMachine;
 import com.lowdragmc.lowdraglib.gui.texture.GuiTextureGroup;
+import com.lowdragmc.lowdraglib.gui.texture.IGuiTexture;
 import com.lowdragmc.lowdraglib.gui.widget.Widget;
 import com.lowdragmc.lowdraglib.gui.widget.WidgetGroup;
 import com.lowdragmc.lowdraglib.syncdata.annotation.DescSynced;
@@ -36,7 +39,7 @@ import appeng.api.stacks.AEFluidKey;
 import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.AEKey;
 import appeng.api.stacks.KeyCounter;
-import yuuki1293.pccard.PCCard;
+import appeng.core.localization.ButtonToolTips;
 import yuuki1293.pccard.impl.PatternBufferBlockingMode;
 import yuuki1293.pccard.impl.PatternBufferBlockingPolicy;
 import yuuki1293.pccard.impl.PatternBufferCardConfigurator;
@@ -116,6 +119,10 @@ public abstract class MixinMEPatternBufferPartMachine extends MEBusPartMachine {
     @Inject(method = "onLoad", at = @At("TAIL"))
     private void pCCard$onLoad(CallbackInfo ci) {
         if (isRemote()) return;
+        if (!pCCard$isExpandedAEInstalled() && pCCard$blockingMode != PatternBufferBlockingMode.NORMAL) {
+            pCCard$blockingMode = PatternBufferBlockingMode.NORMAL;
+            markDirty();
+        }
         ((PatternBufferCardInventory) pCCard$cardInventory).synchronizeCardState();
         pCCard$lastTransformationEnabled = pCCard$canTransformPatterns();
         pCCard$reconcileCircuitLease();
@@ -144,24 +151,33 @@ public abstract class MixinMEPatternBufferPartMachine extends MEBusPartMachine {
             () -> pCCard$blockingEnabled,
             (clickData, enabled) -> pCCard$setBlockingEnabled(enabled)).setTooltipsSupplier(
                 enabled -> List.of(
-                    Component.translatable(
-                        enabled ? "gui.pccard.pattern_buffer.blocking.enabled"
-                            : "gui.pccard.pattern_buffer.blocking.disabled"),
-                    Component.translatable(
-                        enabled ? "gui.pccard.pattern_buffer.blocking.enabled.description"
-                            : "gui.pccard.pattern_buffer.blocking.disabled.description")));
+                    ButtonToolTips.InterfaceBlockingMode.text(),
+                    (enabled ? ButtonToolTips.Blocking : ButtonToolTips.NonBlocking).text()));
+
+        if (!pCCard$isExpandedAEInstalled()) {
+            configuratorPanel.attachConfigurators(blockingConfigurator);
+            return;
+        }
 
         var modeConfigurator = new FancySelectorConfigurator<>(
             PatternBufferBlockingMode.VALUES,
             pCCard$getBlockingMode(),
-            this::pCCard$setBlockingMode).setTooltip(
-                mode -> List.of(
-                    Component.translatable(
-                        "gui.pccard.pattern_buffer.blocking_mode",
-                        Component.translatable(mode.translationKey())),
-                    Component.translatable(mode.descriptionKey())));
+            this::pCCard$setBlockingMode) {
+
+            @Override
+            public IGuiTexture getIcon() {
+                return new GuiTextureGroup(GuiTextures.BUTTON, pCCard$getBlockingMode().getIcon());
+            }
+        }.setTooltip(
+            mode -> List.of(
+                Component.translatable("gui.expandedae.blocking_mode", Component.translatable(mode.translationKey())),
+                Component.translatable(mode.descriptionKey())));
 
         configuratorPanel.attachConfigurators(blockingConfigurator, modeConfigurator);
+    }
+
+    public void attachSideTabs(TabsWidget tabsWidget) {
+        tabsWidget.setMainTab((MEPatternBufferPartMachine) (Object) this);
     }
 
     @Inject(method = "createUIWidget", at = @At("RETURN"), require = 1)
@@ -232,14 +248,8 @@ public abstract class MixinMEPatternBufferPartMachine extends MEBusPartMachine {
 
     @Unique
     private boolean pCCard$canTransformPatterns() {
-        if (
-            pCCard$cardInventory == null || pCCard$cardInventory.getStackInSlot(0)
-                .isEmpty()
-        ) return false;
-        if (
-            !pCCard$cardInventory.getStackInSlot(0)
-                .is(PCCard.PROGRAMMED_CIRCUIT_CARD_ITEM.get())
-        ) return false;
+        if (pCCard$cardInventory == null || !((PatternBufferCardInventory) pCCard$cardInventory).hasCard())
+            return false;
 
         var patternBuffer = (MEPatternBufferPartMachine) (Object) this;
         return isHasCircuitSlot() && isCircuitSlotEnabled()
@@ -269,33 +279,32 @@ public abstract class MixinMEPatternBufferPartMachine extends MEBusPartMachine {
 
     @Unique
     private PatternBufferBlockingMode pCCard$getBlockingMode() {
+        if (!pCCard$isExpandedAEInstalled()) return PatternBufferBlockingMode.NORMAL;
         return pCCard$blockingMode == null ? PatternBufferBlockingMode.NORMAL : pCCard$blockingMode;
     }
 
     @Unique
     private void pCCard$setBlockingMode(PatternBufferBlockingMode mode) {
-        if (mode == null || pCCard$getBlockingMode() == mode) return;
+        if (!pCCard$isExpandedAEInstalled() || mode == null || pCCard$getBlockingMode() == mode) return;
         pCCard$blockingMode = mode;
         if (!isRemote()) markDirty();
     }
 
     @Unique
     private boolean pCCard$isBlocked(IPatternDetails incomingPattern, Set<AEKey> bufferedKeys) {
+        var incomingInputs = new HashSet<AEKey>();
+        pCCard$addPatternInputs(incomingPattern, incomingInputs);
         return switch (pCCard$getBlockingMode()) {
             case FULL -> PatternBufferBlockingPolicy.full(bufferedKeys);
-            case NORMAL -> {
-                var advertisedInputs = new HashSet<AEKey>();
-                for (var pattern : ((MEPatternBufferPartMachine) (Object) this).getAvailablePatterns()) {
-                    pCCard$addPatternInputs(pattern, advertisedInputs);
-                }
-                yield PatternBufferBlockingPolicy.normal(bufferedKeys, advertisedInputs);
-            }
-            case SMART -> {
-                var incomingInputs = new HashSet<AEKey>();
-                pCCard$addPatternInputs(incomingPattern, incomingInputs);
-                yield PatternBufferBlockingPolicy.smart(bufferedKeys, incomingInputs);
-            }
+            case NORMAL -> PatternBufferBlockingPolicy.normal(bufferedKeys, incomingInputs);
+            case SMART -> PatternBufferBlockingPolicy.smart(bufferedKeys, incomingInputs);
         };
+    }
+
+    @Unique
+    private static boolean pCCard$isExpandedAEInstalled() {
+        return ModList.get()
+            .isLoaded("expandedae");
     }
 
     @Unique
