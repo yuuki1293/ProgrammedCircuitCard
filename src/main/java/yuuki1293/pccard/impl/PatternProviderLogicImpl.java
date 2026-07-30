@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.annotation.Nullable;
@@ -67,6 +68,29 @@ public class PatternProviderLogicImpl {
         if (definitionTag != null && definitionTag.contains(NBT_CIRCUIT)) {
             inputs.add(AEItemKey.of(IntCircuitBehaviour.stack(definitionTag.getInt(NBT_CIRCUIT))));
         }
+    }
+
+    public static boolean isProgrammedCircuit(appeng.api.stacks.AEKey key) {
+        return key != null && key.getId()
+            .equals(GTItems.PROGRAMMED_CIRCUIT.getId());
+    }
+
+    public static Optional<Integer> getCircuitNumber(IPatternDetails patternDetails) {
+        var definitionTag = patternDetails.getDefinition()
+            .getTag();
+        if (definitionTag != null && definitionTag.contains(NBT_CIRCUIT)) {
+            return Optional.of(definitionTag.getInt(NBT_CIRCUIT));
+        }
+
+        return Optional.empty();
+    }
+
+    public static void setPCNumber(NotifiableItemStackHandler inv, int number) {
+        if (inv.getSlots() == 0) return;
+
+        var machineStack = GTItems.PROGRAMMED_CIRCUIT.asStack();
+        IntCircuitBehaviour.setCircuitConfiguration(machineStack, number);
+        inv.setStackInSlot(0, machineStack);
     }
 
     public static void setPCNumber(IPatternDetails patternDetails, BlockEntity be, List<BlockPos> blockPoses) {

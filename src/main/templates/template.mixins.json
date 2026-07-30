@@ -24,8 +24,8 @@
     "common.MixinPatternProviderLogic",
     "common.MixinPatternProviderLogicHost",
     "common.MixinPatternProviderMenu",
-    "expandedae.AccessorExpandedPatternProviderTargetCache",
-    "expandedae.MixinExpandedPatternProviderTarget"
+    "expandedae.MixinExpandedPatternProviderTargetCache",
+    "gtceu.MixinMEPatternBufferPartMachine"
   ],
   "client": [
     "advanced_ae.MixinAdvPatternProviderScreen",
