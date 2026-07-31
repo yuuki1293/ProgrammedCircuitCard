@@ -15,7 +15,6 @@ import yuuki1293.pccard.PCCard;
 
 public final class PatternBufferCardConfigurator {
 
-    private static final int SLOT_COUNT = 3;
     private static final int SLOT_SIZE = 18;
     private static final int PANEL_MARGIN = 2;
     private static final int PANEL_WIDTH = SLOT_SIZE;
@@ -32,11 +31,9 @@ public final class PatternBufferCardConfigurator {
                     .getDescription(),
                 1)
                 .withStyle(ChatFormatting.GRAY));
-        for (int slot = 0; slot < SLOT_COUNT; slot++) {
-            panel.addWidget(
-                new SlotWidget(inventory, slot, 0, SLOT_Y + slot * SLOT_SIZE).setBackgroundTexture(GuiTextures.SLOT)
-                    .setHoverTooltips(tooltip));
-        }
+        panel.addWidget(
+            new SlotWidget(inventory, 0, 0, SLOT_Y).setBackgroundTexture(GuiTextures.SLOT)
+                .setHoverTooltips(tooltip));
 
         root.setSizeWidth(root.getSizeWidth() + PANEL_MARGIN * 2 + PANEL_WIDTH);
         root.addWidget(panel);
