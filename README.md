@@ -24,27 +24,41 @@ Programmed Circuit Card can be inserted into Pattern Provider. When pushing a re
 - [MEGA Cells](https://www.curseforge.com/minecraft/mc-mods/mega-cells) (by ninety)
 
 ## Develop
-By executing these tasks, the guide's resource pack can be updated during running. don't forget F3+T
-### Generate resource pack for guide.
-generate to [build/guides](build/guides).
-```groovy
-gradlew genGuideResources
+### Brief
+1. Run minecraft with `Client`.
+
+### Test with Monilabs
+1. Comment out this line.
 ```
-### Copy resource packs to run
-copy [build/guides](build/guides) to [run/resourcepacks](run/resourcepacks).  
-depends on `genGuideResources`
-```groovy
-gradlew copyResourcePacks
+modImplementation (libs.ae2) // AE2
 ```
 
+2. Uncomment those lines.
+```
+modCompileOnly (libs.ae2cosmo) // AE2 cosmolite
+modImplementation (libs.monilabs) // AE2 monilabs
+modRuntimeOnly (libs.kubejs) // depended by monilabs
+modRuntimeOnly (libs.rhino) // depended by KubeJS
+modRuntimeOnly (libs.melody) // depended by FancyMenu
+modRuntimeOnly (libs.konkrete) // depended by FancyMenu
+
+modRuntimeOnly (libs.chloride) // depended by monilabs
+modRuntimeOnly (libs.embeddium) // depended by monilabs
+modRuntimeOnly (libs.fancymenu) // depended by monilabs
+modRuntimeOnly (libs.oculus) // depended by monilabs
+```
+
+3. Run `Client-disableSlot`.
+
 ### Make release
-1. commit with "update version to vx.y.z"
-2. add tag "v1.2x.x-x.y.z"
-3. push with tag
+1. Update version in [Constants.kt](buildSrc/src/main/kotlin/Constants.kt).
+2. Update [Changelog](CHANGELOG.md).
+3. Run `Deploy` workflow.
 
 ## Other
 
 ### Disable adding upgrade slots
+If you can't open Pattern Provider GUI,
 Add the following to the JVM arguments.
 ```
 -Dpccard.disableSlot

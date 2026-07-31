@@ -23,7 +23,9 @@ import appeng.helpers.patternprovider.PatternProviderLogicHost;
 import yuuki1293.pccard.PCCard;
 import yuuki1293.pccard.impl.PatternProviderLogicImpl;
 
-@Mixin(value = PatternProviderLogic.class, remap = false)
+// ExpandedAE replaces the smart-mode input set at priority 1001. Applying PCC first makes this modifier run last,
+// preserving the programmed circuit in the final set.
+@Mixin(value = PatternProviderLogic.class, remap = false, priority = 1100)
 public abstract class MixinPatternProviderLogic implements IUpgradeableObject {
 
     @Shadow
