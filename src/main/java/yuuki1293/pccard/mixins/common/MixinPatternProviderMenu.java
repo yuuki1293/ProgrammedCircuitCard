@@ -2,6 +2,7 @@ package yuuki1293.pccard.mixins.common;
 
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.ItemStack;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -15,6 +16,7 @@ import appeng.helpers.patternprovider.PatternProviderLogicHost;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.ToolboxMenu;
 import appeng.menu.implementations.PatternProviderMenu;
+import yuuki1293.pccard.PCCard;
 import yuuki1293.pccard.wrapper.IPatternProviderMenuMixin;
 
 @Mixin(value = PatternProviderMenu.class, remap = false)
@@ -65,5 +67,13 @@ public abstract class MixinPatternProviderMenu extends AEBaseMenu implements IPa
     @Unique
     public ToolboxMenu pCCard$getToolbox() {
         return this.pCCard$toolbox;
+    }
+
+    @Override
+    protected ItemStack transferStackToMenu(ItemStack stack) {
+        if (stack.is(PCCard.PROGRAMMED_CIRCUIT_CARD_ITEM.get())) {
+            return pCCard$getUpgrades().addItems(stack);
+        }
+        return super.transferStackToMenu(stack);
     }
 }
