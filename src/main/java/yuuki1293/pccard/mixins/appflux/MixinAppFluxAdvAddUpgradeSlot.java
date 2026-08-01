@@ -1,5 +1,6 @@
 package yuuki1293.pccard.mixins.appflux;
 
+import net.minecraft.world.level.ItemLike;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogic;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.bawnorton.mixinsquared.TargetHandler;
 
 import appeng.api.upgrades.IUpgradeableObject;
+import yuuki1293.pccard.api.PatternProviderRegistration;
 
 @Mixin(value = AdvPatternProviderLogic.class, remap = false, priority = 1100)
 public abstract class MixinAppFluxAdvAddUpgradeSlot implements IUpgradeableObject {
@@ -28,7 +30,20 @@ public abstract class MixinAppFluxAdvAddUpgradeSlot implements IUpgradeableObjec
         method = "@MixinSquared:Handler",
         at = @At(
             value = "INVOKE",
-            target = "Lappeng/api/upgrades/UpgradeInventories;forMachine(Lnet/minecraft/world/level/ItemLike;ILappeng/api/upgrades/MachineUpgradesChanged;)Lappeng/api/upgrades/IUpgradeInventory;"))
+            target = "Lappeng/api/upgrades/UpgradeInventories;forMachine(Lnet/minecraft/world/level/ItemLike;ILappeng/api/upgrades/MachineUpgradesChanged;)Lappeng/api/upgrades/IUpgradeInventory;"),
+        index = 0)
+    private ItemLike registerProvider(ItemLike provider) {
+        PatternProviderRegistration.register(provider);
+        return provider;
+    }
+
+    @TargetHandler(mixin = "net.pedroksl.advanced_ae.mixins.appflux.MixinAdvPatternProviderLogic", name = "initUpgrade")
+    @ModifyArg(
+        method = "@MixinSquared:Handler",
+        at = @At(
+            value = "INVOKE",
+            target = "Lappeng/api/upgrades/UpgradeInventories;forMachine(Lnet/minecraft/world/level/ItemLike;ILappeng/api/upgrades/MachineUpgradesChanged;)Lappeng/api/upgrades/IUpgradeInventory;"),
+        index = 1)
     private int modifyMaxUpgrades(int maxUpgrades) {
         return maxUpgrades + 1;
     }

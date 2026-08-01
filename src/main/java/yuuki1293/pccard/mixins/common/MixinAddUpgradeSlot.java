@@ -19,6 +19,7 @@ import appeng.api.upgrades.IUpgradeableObject;
 import appeng.api.upgrades.UpgradeInventories;
 import appeng.helpers.patternprovider.PatternProviderLogic;
 import appeng.helpers.patternprovider.PatternProviderLogicHost;
+import yuuki1293.pccard.api.PatternProviderRegistration;
 
 @Mixin(value = PatternProviderLogic.class, remap = false)
 public abstract class MixinAddUpgradeSlot implements IUpgradeableObject {
@@ -38,6 +39,9 @@ public abstract class MixinAddUpgradeSlot implements IUpgradeableObject {
         at = @At("TAIL"))
     private void init(IManagedGridNode mainNode, PatternProviderLogicHost host, int patternInventorySize,
         CallbackInfo ci) {
+        PatternProviderRegistration.register(
+            host.getTerminalIcon()
+                .getItem());
         pCCard$upgrades = UpgradeInventories.forMachine(
             host.getTerminalIcon()
                 .getItem(),
