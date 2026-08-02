@@ -1,3 +1,5 @@
 {
-	"item.pccard.card_programmed_circuit": "编程电路卡"
+	"item.pccard.card_programmed_circuit": "编程电路卡",
+	"gui.pccard.pattern_buffer.blocking_mode.off": "阻挡：关闭",
+	"gui.pccard.pattern_buffer.blocking_mode.off.description": "无论缓冲区中有何输入，都允许推送样板。"
 }
