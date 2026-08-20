@@ -3,6 +3,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
 ## [Unreleased]
 
+## [1.3.2]
+### Fixed
+ - Fix nested Pattern P2P destination tracking. (by @SirEdvin)
+
 ## [1.3.1]
 ### Fixed
  - Restored Expanded AE's Smart Blocking adapter when Programmed Circuit Card is installed.
