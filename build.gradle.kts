@@ -235,6 +235,7 @@ dependencies {
     }
 
     annotationProcessor(variantOf(libs.mixin, "processor"))
+    testCompileOnly(libs.mixin)
     libs.mixinExtrasCommon.let {
         annotationProcessor(it)
         modCompileOnly(it)
@@ -497,6 +498,12 @@ val patternBufferPolicySelfCheck = tasks.register<JavaExec>("patternBufferPolicy
     mainClass = "yuuki1293.pccard.impl.PatternBufferBlockingPolicySelfCheck"
 }
 
+val patternP2PDestinationTimingSelfCheck = tasks.register<JavaExec>("patternP2PDestinationTimingSelfCheck") {
+    dependsOn(tasks.named("testClasses"))
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass = "yuuki1293.pccard.mixins.common.PatternP2PDestinationTimingSelfCheck"
+}
+
 tasks.named("check") {
-    dependsOn(patternBufferPolicySelfCheck)
+    dependsOn(patternBufferPolicySelfCheck, patternP2PDestinationTimingSelfCheck)
 }

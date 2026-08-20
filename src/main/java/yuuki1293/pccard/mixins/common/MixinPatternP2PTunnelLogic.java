@@ -30,7 +30,8 @@ public abstract class MixinPatternP2PTunnelLogic implements IPatternP2PTunnelLog
         method = "pushPattern",
         at = @At(
             value = "INVOKE",
-            target = "Lappeng/api/implementations/blockentities/ICraftingMachine;pushPattern(Lappeng/api/crafting/IPatternDetails;[Lappeng/api/stacks/KeyCounter;Lnet/minecraft/core/Direction;)Z"))
+            target = "Lappeng/api/implementations/blockentities/ICraftingMachine;pushPattern(Lappeng/api/crafting/IPatternDetails;[Lappeng/api/stacks/KeyCounter;Lnet/minecraft/core/Direction;)Z",
+            shift = At.Shift.AFTER))
     public void pushPattern(CallbackInfoReturnable<Boolean> cir, @Local ICraftingMachine craftingMachine) {
         if (craftingMachine instanceof IPatternP2PTunnelLogicMixin patternP2PTunnelLogicMixin) {
             this.pCCard$lastBlockPos = patternP2PTunnelLogicMixin.pCCard$getLastBlockPos();
