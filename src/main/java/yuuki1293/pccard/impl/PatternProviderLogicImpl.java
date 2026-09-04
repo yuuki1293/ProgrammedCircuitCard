@@ -8,9 +8,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
+import com.gregtechceu.gtceu.api.machine.MetaMachine;
+import com.gregtechceu.gtceu.integration.ae2.machine.MEStockingBusPartMachine;
+import com.gregtechceu.gtceu.integration.ae2.machine.MEStockingHatchPartMachine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -162,9 +166,16 @@ public class PatternProviderLogicImpl {
                 posDir.getB()
                     .getOpposite());
 
+            var stocking = getStocking(
+                level,
+                posDir.getA(),
+                posDir.getB()
+                    .getOpposite());
+
             if (children.isEmpty()) {
                 // This is a leaf node, add to results
                 allLeafNodes.add(posDir.getA());
+                allLeafNodes.addAll(stocking);
             } else {
                 // Add children to queue for next level traversal
                 for (var childPosDir : children) {
@@ -229,6 +240,24 @@ public class PatternProviderLogicImpl {
     }
 
     /**
+     * get BlockPos which ingredient are sent in subnet.
+     *
+     * @param level level
+     * @param pos   interface pos
+     * @param side  interface side
+     * @return storage bus dest
+     */
+    public static List<BlockPos> getStocking(Level level, BlockPos pos, Direction side) {
+        var host = getActionHost(level, pos, side);
+        var grid = getGrid(host);
+        var stockingBusParts = getStockingBusParts(grid);
+        var stockingHatchParts = getStockingHatchParts(grid);
+        var stockingBusPos = stockingBusParts.stream().map(MetaMachine::getPos);
+        var stockingHatchPos = stockingHatchParts.stream().map(MetaMachine::getPos);
+        return Stream.concat(stockingBusPos, stockingHatchPos).toList();
+    }
+
+    /**
      * get action host from blockEntity or part
      */
     private static IActionHost getActionHost(Level level, BlockPos pos, Direction side) {
@@ -266,6 +295,28 @@ public class PatternProviderLogicImpl {
         }
 
         return grid.getMachines(StorageBusPart.class);
+    }
+
+    /**
+     * get all StockingBusPart in grid
+     */
+    private static Set<MEStockingBusPartMachine> getStockingBusParts(IGrid grid) {
+        if (grid == null) {
+            return Set.of();
+        }
+
+        return grid.getMachines(MEStockingBusPartMachine.class);
+    }
+
+    /**
+     * get all StockingHatchPart in grid
+     */
+    private static Set<MEStockingHatchPartMachine> getStockingHatchParts(IGrid grid) {
+        if (grid == null) {
+            return Set.of();
+        }
+
+        return grid.getMachines(MEStockingHatchPartMachine.class);
     }
 
     /**
