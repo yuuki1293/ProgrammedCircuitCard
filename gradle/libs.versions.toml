@@ -48,6 +48,7 @@ cloth_config = "11.1.136"
 wirelessterminals = "5217955"
 curios = "5.14.1+1.20.1"
 architectury_api = "5137938"
+insaneae = "8775433"
 
 [libraries]
 mixin = { module = "org.spongepowered:mixin", version.ref = "mixin" }
@@ -86,6 +87,7 @@ cloth_config = { module = "me.shedaniel.cloth:cloth-config-forge", version.ref =
 wirelessterminals = { module = "curse.maven:applied-energistics-2-wireless-terminals-459929", version.ref = "wirelessterminals" }
 curios = { module = "top.theillusivec4.curios:curios-forge", version.ref = "curios" }
 architectury_api = { module = "curse.maven:architectury-api-419699", version.ref = "architectury_api" }
+insaneae = { module = "curse.maven:insaneae-1627326", version.ref = "insaneae" }
 
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "plugin_kotlin" }

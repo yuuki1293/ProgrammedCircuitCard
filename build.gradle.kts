@@ -220,11 +220,12 @@ dependencies {
     modRuntimeOnly (libs.guideme)
     modCompileOnly (libs.expandedae) // Expanded AE
 //    modRuntimeOnly (libs.expandedae)
-//    modRuntimeOnly (libs.megacells) // Mega Cells
+    modRuntimeOnly (libs.megacells) // Mega Cells
     modRuntimeOnly (libs.cloth.config) // Mega Cells
     modRuntimeOnly (libs.wirelessterminals) // AE2 Wireless Terminals
     modRuntimeOnly (libs.curios)
     modRuntimeOnly (libs.architectury.api)
+    modRuntimeOnly (libs.insaneae) // Insane AE
 
     if (isServer.get() != "1") {
 //        modRuntimeOnly (libs.chloride) // depended by monilabs

@@ -146,6 +146,20 @@ public class PCCard {
                 Upgrades.add(item, patternProviderMegaPart, 1, megaPatternProviderGroup);
             }
         }
+
+        // Insane Pattern Provider
+        {
+            var insanePatternProviderGroup = "block.insaneae.insane_pattern_provider";
+            var namespaceInsane = "insaneae";
+            var resourceInsaneBE = ResourceLocation.fromNamespaceAndPath(namespaceInsane, "insane_pattern_provider");
+            var resourceInsanePart = ResourceLocation.fromNamespaceAndPath(namespaceInsane, "cable_insane_pattern_provider");
+            var patternProviderInsaneBE = ForgeRegistries.BLOCKS.getValue(resourceInsaneBE);
+            var patternProviderInsanePart = ForgeRegistries.ITEMS.getValue(resourceInsanePart);
+            if (patternProviderInsaneBE != null && patternProviderInsanePart != null) {
+                Upgrades.add(item, patternProviderInsaneBE, 1, insanePatternProviderGroup);
+                Upgrades.add(item, patternProviderInsanePart, 1, insanePatternProviderGroup);
+            }
+        }
     }
 
     @SubscribeEvent
