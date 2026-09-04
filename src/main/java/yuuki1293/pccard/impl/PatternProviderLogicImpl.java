@@ -12,9 +12,6 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
-import com.gregtechceu.gtceu.api.machine.MetaMachine;
-import com.gregtechceu.gtceu.integration.ae2.machine.MEStockingBusPartMachine;
-import com.gregtechceu.gtceu.integration.ae2.machine.MEStockingHatchPartMachine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -25,11 +22,14 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 import org.slf4j.Logger;
 
+import com.gregtechceu.gtceu.api.machine.MetaMachine;
 import com.gregtechceu.gtceu.api.machine.SimpleTieredMachine;
 import com.gregtechceu.gtceu.api.machine.feature.IHasCircuitSlot;
 import com.gregtechceu.gtceu.api.machine.trait.NotifiableItemStackHandler;
 import com.gregtechceu.gtceu.common.data.GTItems;
 import com.gregtechceu.gtceu.common.item.IntCircuitBehaviour;
+import com.gregtechceu.gtceu.integration.ae2.machine.MEStockingBusPartMachine;
+import com.gregtechceu.gtceu.integration.ae2.machine.MEStockingHatchPartMachine;
 import com.mojang.logging.LogUtils;
 
 import appeng.api.crafting.IPatternDetails;
@@ -252,9 +252,12 @@ public class PatternProviderLogicImpl {
         var grid = getGrid(host);
         var stockingBusParts = getStockingBusParts(grid);
         var stockingHatchParts = getStockingHatchParts(grid);
-        var stockingBusPos = stockingBusParts.stream().map(MetaMachine::getPos);
-        var stockingHatchPos = stockingHatchParts.stream().map(MetaMachine::getPos);
-        return Stream.concat(stockingBusPos, stockingHatchPos).toList();
+        var stockingBusPos = stockingBusParts.stream()
+            .map(MetaMachine::getPos);
+        var stockingHatchPos = stockingHatchParts.stream()
+            .map(MetaMachine::getPos);
+        return Stream.concat(stockingBusPos, stockingHatchPos)
+            .toList();
     }
 
     /**
