@@ -35,3 +35,5 @@ Take a look at the following diagram.
 Set "Report inaccessible items" to "Yes" for all storage buses.  
 If left disabled, the blocking mode may not function properly.  
 ![](../pic/storage_bus_setting.png)
+
+The circuit numbers for the ME Stocking Bus and Hatch on the subnet will also be changed.
