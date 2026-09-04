@@ -1,3 +1,5 @@
 {
-	"item.pccard.card_programmed_circuit": "Programmed Circuit Card"
+	"item.pccard.card_programmed_circuit": "Programmed Circuit Card",
+	"gui.pccard.pattern_buffer.blocking_mode.off": "Blocking: Off",
+	"gui.pccard.pattern_buffer.blocking_mode.off.description": "Allow patterns to be pushed regardless of buffered inputs."
 }

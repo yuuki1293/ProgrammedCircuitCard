@@ -31,6 +31,7 @@ public final class PatternBufferCardInventory extends CustomItemStackHandler {
         var resized = tag.copy();
         resized.putInt("Size", SLOT_COUNT);
         super.deserializeNBT(resized);
+        migrateCardToVisibleSlot();
     }
 
     public boolean hasCard() {
@@ -41,7 +42,21 @@ public final class PatternBufferCardInventory extends CustomItemStackHandler {
     }
 
     public void synchronizeCardState() {
+        migrateCardToVisibleSlot();
         cardInstalled = hasCard();
+    }
+
+    private void migrateCardToVisibleSlot() {
+        if (!getStackInSlot(0).isEmpty()) return;
+
+        for (int slot = 1; slot < getSlots(); slot++) {
+            var stack = getStackInSlot(slot);
+            if (stack.is(PCCard.PROGRAMMED_CIRCUIT_CARD_ITEM.get())) {
+                super.setStackInSlot(0, stack);
+                super.setStackInSlot(slot, ItemStack.EMPTY);
+                return;
+            }
+        }
     }
 
     @Override

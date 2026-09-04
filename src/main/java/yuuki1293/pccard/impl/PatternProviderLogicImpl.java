@@ -200,7 +200,9 @@ public class PatternProviderLogicImpl {
                 if (craftingMachine instanceof IPatternP2PTunnelLogicMixin patternP2P) {
                     var patternP2PPos = patternP2P.pCCard$getLastBlockPos();
                     var patternP2PDirection = patternP2P.pCCard$getLastDirection();
-                    return new Tuple<>(patternP2PPos, patternP2PDirection);
+                    if (patternP2PPos != null && patternP2PDirection != null) {
+                        return new Tuple<>(patternP2PPos, patternP2PDirection);
+                    }
                 }
             }
 

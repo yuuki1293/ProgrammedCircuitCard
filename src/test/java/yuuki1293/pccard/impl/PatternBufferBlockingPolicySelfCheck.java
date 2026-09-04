@@ -50,8 +50,12 @@ public final class PatternBufferBlockingPolicySelfCheck {
             !ExpandedPatternProviderTarget.smartBlocks(Set.of(), Set.of(), Set.of("circuit-4"), Set.of("circuit-4")),
             "Smart mode must allow an exact programmed-circuit match");
         require(
-            ExpandedPatternProviderTarget.smartBlocks(Set.of(), Set.of(), Set.of("circuit-4"), Set.of("circuit-7")),
-            "Smart mode must block a wrong-circuit-only buffer");
+            !ExpandedPatternProviderTarget.smartBlocks(Set.of(), Set.of(), Set.of("circuit-4"), Set.of("circuit-7")),
+            "Smart mode must allow an idle target to replace a retained circuit");
+        require(
+            ExpandedPatternProviderTarget
+                .smartBlocks(Set.of("iron"), Set.of("iron"), Set.of("circuit-4"), Set.of("circuit-7")),
+            "Smart mode must block a different circuit while recipe inputs remain buffered");
         require(
             ExpandedPatternProviderTarget
                 .smartBlocks(Set.of("iron"), Set.of("iron"), Set.of("circuit-4", "circuit-7"), Set.of("circuit-4")),

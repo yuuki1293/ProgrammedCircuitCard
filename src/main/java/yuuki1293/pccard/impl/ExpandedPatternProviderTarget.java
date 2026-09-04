@@ -66,6 +66,6 @@ public final class ExpandedPatternProviderTarget implements PatternProviderTarge
     static <T> boolean smartBlocks(Set<T> bufferedInputs, Set<T> incomingInputs, Set<T> bufferedCircuits,
         Set<T> incomingCircuits) {
         return PatternBufferBlockingPolicy.smart(bufferedInputs, incomingInputs)
-            || !incomingCircuits.containsAll(bufferedCircuits);
+            || (!bufferedInputs.isEmpty() && !incomingCircuits.containsAll(bufferedCircuits));
     }
 }
