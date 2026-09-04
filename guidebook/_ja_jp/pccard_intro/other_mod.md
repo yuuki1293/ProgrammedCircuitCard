@@ -19,5 +19,9 @@ navigation:
 * MEGA Pattern Providerでの動作。
 ## Applied Flux
 * アップグレードスロットの統合。
+
+## Insane AE
+* Insane Pattern Providerでの動作.
+
 ## JEI/EMI
 * レシピ登録でプログラム回路も含まれるように動作を変更。

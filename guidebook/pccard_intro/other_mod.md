@@ -26,5 +26,8 @@ navigation:
 ## Applied Flux
 * Integration of the upgrade slot.
 
+## Insane AE
+* Compatibility with Insane Pattern Provider.
+
 ## JEI/EMI
 * Modified behavior to include the programmed circuit when registering recipes.

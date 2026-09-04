@@ -22,6 +22,7 @@ Programmed Circuit Card can be inserted into Pattern Provider. When pushing a re
 - [MAE2](https://www.curseforge.com/minecraft/mc-mods/modern-ae2-additions) (by AE2Enthusiast)
 - [Expanded AE](https://www.curseforge.com/minecraft/mc-mods/expanded-ae) (by Kolja)
 - [MEGA Cells](https://www.curseforge.com/minecraft/mc-mods/mega-cells) (by ninety)
+- [Insane AE](https://www.curseforge.com/minecraft/mc-mods/insaneae) (by taikun)
 
 ## Develop
 ### Brief
