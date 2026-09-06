@@ -327,7 +327,7 @@ tasks {
     }
 
     processResources {
-        from(rootProject.file("LICENSE")) {
+        from(rootProject.file("LICENSE.txt")) {
             rename { "LICENSE_${Constants.Mod.id}" }
         }
         dependsOn(generateModMetadata)

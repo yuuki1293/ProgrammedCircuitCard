@@ -166,16 +166,16 @@ public class PatternProviderLogicImpl {
                 posDir.getB()
                     .getOpposite());
 
-            var stocking = getStocking(
-                level,
-                posDir.getA(),
-                posDir.getB()
-                    .getOpposite());
+            allLeafNodes.addAll(
+                getStocking(
+                    level,
+                    posDir.getA(),
+                    posDir.getB()
+                        .getOpposite()));
 
             if (children.isEmpty()) {
                 // This is a leaf node, add to results
                 allLeafNodes.add(posDir.getA());
-                allLeafNodes.addAll(stocking);
             } else {
                 // Add children to queue for next level traversal
                 for (var childPosDir : children) {
