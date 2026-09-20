@@ -505,6 +505,12 @@ val patternP2PDestinationTimingSelfCheck = tasks.register<JavaExec>("patternP2PD
     mainClass = "yuuki1293.pccard.mixins.common.PatternP2PDestinationTimingSelfCheck"
 }
 
+val patternP2PSendDirectionSelfCheck = tasks.register<JavaExec>("patternP2PSendDirectionSelfCheck") {
+    dependsOn(tasks.named("testClasses"))
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass = "yuuki1293.pccard.impl.PatternP2PSendDirectionSelfCheck"
+}
+
 tasks.named("check") {
-    dependsOn(patternBufferPolicySelfCheck, patternP2PDestinationTimingSelfCheck)
+    dependsOn(patternBufferPolicySelfCheck, patternP2PDestinationTimingSelfCheck, patternP2PSendDirectionSelfCheck)
 }
