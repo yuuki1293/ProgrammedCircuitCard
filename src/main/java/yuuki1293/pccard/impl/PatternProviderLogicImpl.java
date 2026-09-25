@@ -212,7 +212,8 @@ public class PatternProviderLogicImpl {
                     var patternP2PPos = patternP2P.pCCard$getLastBlockPos();
                     var patternP2PDirection = patternP2P.pCCard$getLastDirection();
                     if (patternP2PPos != null && patternP2PDirection != null) {
-                        return new Tuple<>(patternP2PPos, patternP2PDirection);
+                        // MAE2 Target.side() is the insert face; getSendPos expects AE2 sendDirection.
+                        return new Tuple<>(patternP2PPos, patternP2PDirection.getOpposite());
                     }
                 }
             }
