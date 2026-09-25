@@ -3,6 +3,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
 ## [Unreleased]
 
+## [1.4.2]
+### Fixed
+ - Not working with MEA2 Pattern P2P correctly.
+
 ## [1.4.1]
 ### Fixed
  - The circuit numbers of the Stocking Buses and Hatches on the subnet was not be changed in shallow subnets.
