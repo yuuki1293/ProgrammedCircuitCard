@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
 ## [1.4.2]
 ### Fixed
- - Not working with MEA2 Pattern P2P correctly.
+ - Not working with MEA2 Pattern P2P correctly. (by @BuchNieZyje)
 
 ## [1.4.1]
 ### Fixed
